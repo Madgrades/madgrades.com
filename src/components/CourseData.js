@@ -1,11 +1,10 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import actions from "../redux/actions/index"
+import actions from "../redux/actions/index";
 import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
 import Select from "react-select";
-import * as termCodes from "../util/termCodes";
-import * as gradeDistributions from "../util/gradeDistributions";
+import utils from "../utils";
 import {GpaChart} from "../containers/charts/GpaChart";
 
 class CourseData extends Component {
@@ -22,65 +21,43 @@ class CourseData extends Component {
   termOptions = () => {
     const { gradesData } = this.props;
 
-    const cumulative = {
-      value: 0,
-      label: 'Cumulative',
-      data: gradesData.cumulative,
-      clearableValue: false
-    };
-    const courseOfferings = gradesData.courseOfferings.map(offering => {
+    return gradesData.courseOfferings.map(offering => {
       return {
         value: offering.termCode,
-        label: termCodes.toName(offering.termCode),
+        label: utils.termCodes.toName(offering.termCode),
         data: offering.cumulative
       }
     });
-    return [cumulative].concat(courseOfferings);
   };
 
-  onChangeTerm = (nextOption) => {
-    const { selectedTerms } = this.state;
-
+  onChangeTerm = (term) => {
     this.setState({
-      selectedTerm: nextOption
+      selectedTerm: term
     })
-
-    // let allOptions = this.termOptions();
-    // let fromCumulative = selectedTerms.filter(option => option.value === 0).length > 0;
-    // let toCumulative = nextOption.filter(option => option.value === 0).length > 0;
-    //
-    // let nextSelected = nextOption;
-    //
-    // if (!fromCumulative && toCumulative) {
-    //   nextSelected = [allOptions[0]];
-    // } else if (fromCumulative && toCumulative) {
-    //   nextSelected = nextSelected.filter(option => option.value !== 0);
-    // }
-    //
-    // this.setState({
-    //   selectedTerms: nextSelected.sort((a, b) => b.value - a.value)
-    // });
   };
 
   render = () => {
-    const { uuid, courseData, gradesData } = this.props;
-    const { selectedTerms } = this.state;
+    const { courseData, gradesData } = this.props;
+    const { selectedTerm } = this.state;
 
-    if (!courseData || !gradesData)
+    if (!gradesData)
       return null;
 
     const termOptions = this.termOptions();
 
-    if (!selectedTerm || selectedTerm.length === 0) {
-      this.setState({
-        selectedTerm: termOptions[0]
-      });
-      return null;
+    let chart = {
+      label: undefined,
+      data: undefined
+    };
+
+    if (selectedTerm) {
+      chart.label = selectedTerm.label;
+      chart.data = selectedTerm.data;
     }
-
-    // let gradeDistribution = gradeDistributions.combineAll(selectedTerms.map(option => option.data));
-
-    let gradeDistribution = selectedTerm.data;
+    else {
+      chart.label = "Cumulative";
+      chart.data = gradesData.cumulative;
+    }
 
     let allTerms = gradesData.courseOfferings.map(offering => {
       return {
@@ -94,11 +71,12 @@ class CourseData extends Component {
           <div>{courseData.names}</div>
           <div style={{width: "600px", height: "250px"}}>
             <GradeDistributionChart
-                title={termCodes.}
-                gradeDistribution={gradeDistribution}
+                title={courseData.names[0] + " - " + chart.label}
+                gradeDistribution={chart.data}
             />
           </div>
           <Select
+              placeholder="Filter by term"
               searchable={false}
               value={selectedTerm}
               onChange={this.onChangeTerm}

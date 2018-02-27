@@ -9,7 +9,7 @@ import {
   YAxis
 } from "recharts";
 import PropTypes from "prop-types";
-import * as termCodes from "../../util/termCodes";
+import utils from "../../utils";
 
 const CustomizedAxisTick = (props) => {
   const {x, y, stroke, payload} = props;
@@ -33,10 +33,9 @@ export class GpaChart extends Component {
       return null;
 
     const data = gradeDistributions.map(gradeDistribution => {
-      console.log(gradeDistribution.termCode, termCodes.toName(gradeDistribution.termCode), gradeDistribution.gpa);
       return {
         gpa: gradeDistribution.gpa,
-        term: termCodes.toName(gradeDistribution.termCode)
+        term: utils.termCodes.toName(gradeDistribution.termCode)
       }
     });
 
@@ -45,8 +44,8 @@ export class GpaChart extends Component {
           <LineChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 50 }}>
             <CartesianGrid stroke="#ccc"/>
             <XAxis dataKey="term" interval={0} angle={-45} textAnchor="end" type="category"/>
-            <YAxis>
-              <Label value="Average GPA" position="insideLeft" dy={15} angle={-90}/>
+            <YAxis domain={[min => Math.floor(Math.min(3.0, min)), max => 4.0]}>
+              <Label value="GPA" position="insideLeft" angle={-90}/>
             </YAxis>
             <Line type="monotone" dataKey="gpa" isAnimationActive={false}/>
             <Tooltip/>

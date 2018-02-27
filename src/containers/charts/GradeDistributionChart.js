@@ -9,7 +9,7 @@ import {
   YAxis
 } from "recharts";
 import PropTypes from "prop-types";
-import * as gradeDistributions from "../../util/gradeDistributions";
+import utils from "../../utils";
 
 const renderBarLabel = (props) => {
   const { x, y, width, value } = props;
@@ -33,12 +33,12 @@ class GradeDistributionChart extends Component {
     if (!gradeDistribution)
       return null;
 
-    const totalCount = gradeDistribution.count;
+    const gpaTotal = gradeDistribution.gpaTotal;
 
-    const data = gradeDistributions.getGradeKeys(false).map(key => {
-      const name = gradeDistributions.keyToName(key);
+    const data = utils.grades.getGradeKeys(false).map(key => {
+      const name = utils.grades.keyToName(key);
       const gradeCount = gradeDistribution[key];
-      const outOf = totalCount || 1; // we don't want to divide by 0
+      const outOf = gpaTotal || 1; // we don't want to divide by 0
       const percent = (gradeCount / outOf) * 100;
       const label = percent.toFixed(1) + "% (" + gradeCount + ")";
 
@@ -50,23 +50,27 @@ class GradeDistributionChart extends Component {
     });
 
     return (
-        <div style={{width: "100%", height: "100%"}}>
-          <h2 style={{textAlign: "center"}}>
-            {title}
-          </h2>
-          <ResponsiveContainer minWidth={200} minHeight={100}>
-            <BarChart data={data}>
-              <XAxis dataKey="name">
-                <Label value="Grades Received" position="insideBottom" offset={-5}/>
-              </XAxis>
-              <YAxis domain={[0, 100]} tickCount={11}>
-                <Label value="Counts (%)" position="insideLeft" dy={15} angle={-90}/>
-              </YAxis>
-              <Bar dataKey="percent" isAnimationActive={false} fill="rgba(0, 0, 0, 1)">
-                <LabelList dataKey="label" content={renderBarLabel} position="top"/>
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column"}}>
+          <div>
+            <p style={{textAlign: "center"}}>
+              {title}
+            </p>
+          </div>
+          <div style={{flex: 1}}>
+            <ResponsiveContainer minWidth={200} minHeight={100}>
+              <BarChart data={data}>
+                <XAxis dataKey="name">
+                  <Label value="Grades Received" position="insideBottom" offset={-5}/>
+                </XAxis>
+                <YAxis domain={[0, 100]} tickCount={11}>
+                  <Label value="Counts (%)" position="insideLeft" dy={15} angle={-90}/>
+                </YAxis>
+                <Bar dataKey="percent" isAnimationActive={false} fill="rgba(0, 0, 0, 1)">
+                  <LabelList dataKey="label" content={renderBarLabel} position="top"/>
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
     );
   }

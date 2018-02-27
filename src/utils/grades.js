@@ -18,8 +18,9 @@ export const keyToName = (key) => key.replace("Count", "").toUpperCase();
 
 export const zero = () => {
   const result = {
-    count: 0,
-    gpa: null
+    gpa: null,
+    gpaTotal: 0,
+    total: 0
   };
   getGradeKeys(true).forEach(key => {
     result[key] = 0;
@@ -29,7 +30,8 @@ export const zero = () => {
 
 export const combine = (a, b) => {
   let result = zero();
-  result.count = (a.count || 0) + (b.count || 0);
+  result.gpaTotal = (a.gpaTotal || 0) + (b.gpaTotal || 0);
+  result.total = (a.total || 0) + (b.total || 0);
   getGradeKeys(true).forEach(key => {
     result[key] = (a[key] || 0) + (b[key] || 0)
   });

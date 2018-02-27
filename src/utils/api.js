@@ -1,4 +1,9 @@
-export default class Api {
+
+export function create(url) {
+  return new Api(url);
+}
+
+class Api {
   constructor(url) {
     this.url = url;
   }

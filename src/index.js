@@ -7,12 +7,12 @@ import {createStore, combineReducers, applyMiddleware} from 'redux'
 import { Provider } from 'react-redux'
 import reducers from './redux/reducers'
 import thunk from 'redux-thunk';
-import MadgradesApi from "./util/api";
+import utils from "./utils";
 import logger from 'redux-logger'
 import './styles/index.css'
 import 'react-select/dist/react-select.css';
 
-const api = new MadgradesApi("http://localhost:3001/");
+const api = utils.api.create("http://localhost:3001/");
 
 const store = createStore(
     combineReducers(reducers),

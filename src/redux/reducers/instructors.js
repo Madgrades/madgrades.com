@@ -24,7 +24,7 @@ export default function reducer(state = initialState, action) {
           ...state.data,
           [action.id]: {
             isFetching: false,
-            response: action.data
+            ...action.data
           }
         }
       }

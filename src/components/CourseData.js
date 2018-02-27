@@ -40,7 +40,8 @@ class CourseData extends Component {
     const { courseData, gradesData } = this.props;
     const { selectedTerm } = this.state;
 
-    if (!gradesData)
+    // don't render if we don't have data
+    if (!gradesData || gradesData.isFetching)
       return null;
 
     const termOptions = this.termOptions();
@@ -98,8 +99,8 @@ function mapStateToProps(state, ownProps) {
   const gradesData = state.grades.courses.data[ownProps.uuid];
 
   return {
-    courseData: courseData && courseData.response,
-    gradesData: gradesData && gradesData.response
+    courseData: courseData,
+    gradesData: gradesData
   }
 }
 

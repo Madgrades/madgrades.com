@@ -29,7 +29,7 @@ export default function reducer(state = initialState, action) {
             ...state.courses.data,
             [action.uuid]: {
               isFetching: false,
-              response: action.data
+              ...action.data
             }
           }
         }

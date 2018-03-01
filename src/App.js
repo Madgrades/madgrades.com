@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound";
 import {Container} from "semantic-ui-react";
 import "./styles/App.css";
 import SiteHeader from "./containers/SiteHeader";
+import Course from "./pages/Course";
 
 class App extends Component {
   render = () => {
@@ -14,6 +15,7 @@ class App extends Component {
             <SiteHeader/>
             <Switch>
               <Route exact path="/" component={Home}/>
+              <Route path="/courses/:uuid" component={Course}/>
               <Route component={NotFound}/>
             </Switch>
           </Container>

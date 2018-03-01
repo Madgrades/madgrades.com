@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
-import {Container, Dimmer, Loader} from "semantic-ui-react";
-import CourseSearchResult from "../containers/CourseSearchResult";
+import {Dimmer, Loader} from "semantic-ui-react";
+import CourseSearchResultItem from "../containers/CourseSearchResultItem";
+import Div from "../containers/Div";
 
 class CourseSearchResults extends Component {
   componentDidUpdate = () => {
@@ -15,7 +16,7 @@ class CourseSearchResults extends Component {
   renderResults = (results) => results.map(result => {
     return (
         <div key={result.uuid} style={{marginBottom: "10px"}}>
-          <CourseSearchResult result={result}/>
+          <CourseSearchResultItem result={result}/>
         </div>
     )
   });
@@ -32,7 +33,7 @@ class CourseSearchResults extends Component {
     }
     else if (searchData.isFetching) {
       return (
-          <Dimmer.Dimmable as={Container}>
+          <Dimmer.Dimmable as={Div}>
             <Dimmer active inverted>
               <Loader disabled={false} inverted inline>Loading</Loader>
             </Dimmer>

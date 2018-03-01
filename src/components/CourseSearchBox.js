@@ -21,13 +21,13 @@ class CourseSearchBox extends Component {
     // delay search request so as to not spam requests
     setTimeout(() => {
       if (this.searchValue === value) {
+        // go to home page
+        this.props.history.push('/');
+
         setCourseSearchQuery(value);
         this.setState({
           isTyping: false
         });
-
-        // go to home page
-        this.props.history.push('/');
       }
     }, 500);
   };

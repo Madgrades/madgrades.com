@@ -9,7 +9,7 @@ const GPA_KEYS = [
   'fCount'
 ];
 
-const ALL_KEYS = GPA_KEYS + [
+const ALL_KEYS = GPA_KEYS.concat([
   'sCount',
   'ubCount',
   'crCount',
@@ -19,7 +19,7 @@ const ALL_KEYS = GPA_KEYS + [
   'nwCount',
   'nrCount',
   'otherCount'
-];
+]);
 
 export const getGradeKeys = (includeMisc) => {
   // todo: do include misc thing

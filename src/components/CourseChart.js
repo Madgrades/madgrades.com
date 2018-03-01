@@ -1,12 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import utils from "../utils";
 import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
+import {Container, Dimmer, Dropdown, Loader, Segment} from "semantic-ui-react";
+import Div from "../containers/Div";
 
 class CourseChart extends Component {
   static propTypes = {
-    uuid: PropTypes.number.isRequired
+    uuid: PropTypes.string.isRequired,
+    termCode: PropTypes.number
   };
 
   componentWillMount = () => {
@@ -16,17 +19,48 @@ class CourseChart extends Component {
   };
 
   render = () => {
-    const { data } = this.props;
+    const { data, termCode } = this.props;
 
-    if (!data || !data.cumulative)
-      return null;
+    let chart;
+    let gradeDistribution;
+
+    if (data && data.cumulative) {
+      if (termCode) {
+        let termData = data.courseOfferings.filter(offering => offering.termCode === termCode);
+
+        if (termData) {
+          gradeDistribution = termData[0].cumulative;
+        }
+      }
+      else {
+        gradeDistribution = data.cumulative;
+      }
+    }
+
+    let isLoaded = gradeDistribution !== undefined;
+
+    if (isLoaded) {
+      chart = (
+          <GradeDistributionChart
+              title={`Cumulative Grade Distribution - (${utils.round(gradeDistribution.gpa, 2)} GPA)`}
+              gradeDistribution={gradeDistribution}/>
+      )
+    }
+    else {
+      chart = (
+          <GradeDistributionChart
+              title="Cumulative Grade Distribution"
+              gradeDistribution={utils.grades.zero()}/>
+      )
+    }
 
     return (
-        <div style={{width: "500px", maxWidth: "100%", height: "300px"}}>
-          <GradeDistributionChart
-              title={`Cumulative Grade Distribution - (${utils.math.round(data.cumulative.gpa, 2)} GPA)`}
-              gradeDistribution={data.cumulative}/>
-        </div>
+        <Dimmer.Dimmable as={Div} style={{width: "500px", maxWidth: "100%", height: "300px"}}>
+          <Dimmer active={!isLoaded} inverted>
+            <Loader active={!isLoaded} inverted>Loading Data</Loader>
+          </Dimmer>
+          {chart}
+        </Dimmer.Dimmable>
     )
   }
 }

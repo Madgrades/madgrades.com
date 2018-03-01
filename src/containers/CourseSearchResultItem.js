@@ -17,7 +17,7 @@ const renderSubjectNames = (subjectCodes) => subjectCodes.map((code, i, arr) => 
   )
 });
 
-const CourseSearchResult = ({ result }) => (
+const CourseSearchResultItem = ({ result }) => (
     <Segment>
       <Header>
         <Header.Content>
@@ -34,4 +34,4 @@ const CourseSearchResult = ({ result }) => (
       </Header>
     </Segment>
 );
-export default CourseSearchResult;
+export default CourseSearchResultItem;

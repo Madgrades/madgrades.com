@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
-import {Container, Dimmer, Loader, Segment} from "semantic-ui-react";
+import {Container, Dimmer, Loader} from "semantic-ui-react";
 import CourseSearchResult from "../containers/CourseSearchResult";
 
 class CourseSearchResults extends Component {
@@ -22,8 +22,6 @@ class CourseSearchResults extends Component {
 
   render = () => {
     const { searchData } = this.props;
-
-    console.log("DATA", searchData);
 
     if (!searchData) {
       return (

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import CourseSearchResults from "../components/CourseSearchResults";
 import "../styles/pages/Home.css";
 

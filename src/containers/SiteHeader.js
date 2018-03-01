@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {Divider, Grid, Header, Label, Sticky} from "semantic-ui-react";
+import React from "react";
+import {Divider, Grid, Header} from "semantic-ui-react";
 import CourseSearchBox from "../components/CourseSearchBox";
-import "../styles/containers/SiteHeader.css"
+import "../styles/containers/SiteHeader.css";
 
 const SiteHeader = () => (
     <div className="SiteHeader">

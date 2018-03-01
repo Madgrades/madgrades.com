@@ -21,7 +21,6 @@ class CourseName extends Component {
   };
 
   render = () => {
-    console.log(this.props);
     const { name, fallback } = this.props;
     return <span>{name || fallback}</span>
   }

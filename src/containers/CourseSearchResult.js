@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 import {Header, Segment} from "semantic-ui-react";
 import SubjectName from "../components/SubjectName";
 import CourseName from "../components/CourseName";

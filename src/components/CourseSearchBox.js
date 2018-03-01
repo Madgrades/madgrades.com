@@ -10,10 +10,6 @@ class CourseSearchBox extends Component {
     isTyping: false
   };
 
-  componentWillMount = () => {
-    const { actions } = this.props;
-  };
-
   onInputChange = (event, data) => {
     const { setCourseSearchQuery } = this.props.actions;
     const { value } = data;

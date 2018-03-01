@@ -68,11 +68,11 @@ class CourseChart extends Component {
           <Dimmer active={!isLoaded} inverted>
             <Loader active={!isLoaded} inverted>Loading Data</Loader>
           </Dimmer>
-          <div style={{width: "500px", height: "300px"}}>
+          <div style={{height: "300px"}}>
             {chart}
           </div>
           <br/><br/>
-          <div style={{width: "500px", height: "300px"}}>
+          <div style={{height: "300px"}}>
             <GpaChart title="Average GPA Over Time" gradeDistributions={courseOfferings}/>
           </div>
         </Dimmer.Dimmable>

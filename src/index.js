@@ -12,11 +12,14 @@ import logger from 'redux-logger'
 import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css'
 
-const api = utils.api.create("https://api.madgrades.com/v1/", "1d06acf389504274a8408e8f55f17c32");
+const api = utils.api.create("https://api.madgrades.com/v1/", "fe85238d9504436eb7c1a59fdc8eb92a");
 
 const store = createStore(
     combineReducers(reducers),
-    applyMiddleware(thunk.withExtraArgument(api), logger)
+    applyMiddleware(
+        thunk.withExtraArgument(api),
+        // logger
+    )
 );
 
 ReactDOM.render(

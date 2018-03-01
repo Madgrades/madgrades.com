@@ -7,14 +7,15 @@ import CourseSearchResult from "../containers/CourseSearchResult";
 class CourseSearchResults extends Component {
   componentDidUpdate = () => {
     const { actions, courseSearchQuery } = this.props;
-    actions.fetchCourseSearch(courseSearchQuery, 1);
+
+    if (courseSearchQuery)
+      actions.fetchCourseSearch(courseSearchQuery, 1);
   };
 
   renderResults = (results) => results.map(result => {
     return (
-        <div key={result.uuid}>
+        <div key={result.uuid} style={{marginBottom: "10px"}}>
           <CourseSearchResult result={result}/>
-          <br/>
         </div>
     )
   });
@@ -22,11 +23,13 @@ class CourseSearchResults extends Component {
   render = () => {
     const { searchData } = this.props;
 
+    console.log("DATA", searchData);
+
     if (!searchData) {
       return (
-          <Container>
-            What
-          </Container>
+          <div>
+            Finding a course is easy, just use the search box above!
+          </div>
       )
     }
     else if (searchData.isFetching) {
@@ -42,9 +45,9 @@ class CourseSearchResults extends Component {
     const { results } = searchData;
 
     return (
-        <Container>
+        <div>
           {this.renderResults(results)}
-        </Container>
+        </div>
     )
   }
 }

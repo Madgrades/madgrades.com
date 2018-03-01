@@ -53,13 +53,13 @@ class GradeDistributionChart extends Component {
             </p>
           </div>
           <div style={{flex: 1}}>
-            <ResponsiveContainer minWidth={200} minHeight={100}>
-              <BarChart data={data} margin={{ top: 15, right: 5, left: 5, bottom: 20 }}>
+            <ResponsiveContainer minWidth={200}>
+              <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
                 <XAxis dataKey="name">
                   <Label value={`Grades Received (${gpaTotal})`} position="insideBottom" offset={-10}/>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>
-                  <Label value="Counts (%)" position="insideLeft" dy={15} angle={-90}/>
+                  <Label value="Counts (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>
                 </YAxis>
                 <Bar dataKey="percent" isAnimationActive={false} fill="rgba(0, 0, 0, 1)">
                   <LabelList dataKey="label" content={renderBarLabel} position="top"/>

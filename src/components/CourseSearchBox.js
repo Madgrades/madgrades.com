@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
 import {Input} from "semantic-ui-react";
+import {withRouter} from "react-router";
 
 class CourseSearchBox extends Component {
   searchValue = undefined;
@@ -28,6 +29,9 @@ class CourseSearchBox extends Component {
         this.setState({
           isTyping: false
         });
+
+        // go to home page
+        this.props.history.push('/');
       }
     }, 500);
   };
@@ -52,4 +56,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseSearchBox)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(withRouter(CourseSearchBox))

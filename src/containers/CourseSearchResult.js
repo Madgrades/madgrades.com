@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Header, Segment} from "semantic-ui-react";
 import SubjectName from "../components/SubjectName";
 import CourseName from "../components/CourseName";
+import {Link} from "react-router-dom";
 
 const renderSubjectNames = (subjectCodes) => subjectCodes.map((code, i, arr) => {
   let divider = i < arr.length - 1 && <span>/</span>;
@@ -20,12 +21,14 @@ const CourseSearchResult = ({ result }) => (
     <Segment>
       <Header>
         <Header.Content>
-          <CourseName
-              data={result}
-              uuid={result.uuid}
-              fallback={"(Unknown Name)"}/>
+          <Link to={`/courses/${result.uuid}`}>
+            <CourseName
+                data={result}
+                uuid={result.uuid}
+                fallback={"(Unknown Name)"}/>
+          </Link>
           <Header.Subheader>
-            {renderSubjectNames(result.subjects)}
+            {renderSubjectNames(result.subjects)} {result.number}
           </Header.Subheader>
         </Header.Content>
       </Header>

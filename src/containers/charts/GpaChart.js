@@ -23,11 +23,12 @@ const CustomizedAxisTick = (props) => {
 
 export class GpaChart extends Component {
   static propTypes = {
-    gradeDistributions: PropTypes.arrayOf(PropTypes.object).isRequired
+    gradeDistributions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    title: PropTypes.string
   };
 
   render = () => {
-    const { gradeDistributions } = this.props;
+    const { title, gradeDistributions } = this.props;
 
     if (!gradeDistributions)
       return null;
@@ -35,22 +36,31 @@ export class GpaChart extends Component {
     const data = gradeDistributions.map(gradeDistribution => {
       return {
         gpa: gradeDistribution.gpa,
-        term: utils.termCodes.toName(gradeDistribution.termCode)
+        termName: utils.termCodes.toName(gradeDistribution.termCode)
       }
     });
 
     return (
-        <ResponsiveContainer minWidth={200} minHeight={100}>
-          <LineChart data={data} margin={{ top: 20, right: 20, left: 20, bottom: 50 }}>
-            <CartesianGrid stroke="#ccc"/>
-            <XAxis dataKey="term" interval={0} angle={-45} textAnchor="end" type="category"/>
-            <YAxis domain={[min => Math.floor(Math.min(3.0, min)), max => 4.0]}>
-              <Label value="GPA" position="insideLeft" angle={-90}/>
-            </YAxis>
-            <Line type="monotone" dataKey="gpa" isAnimationActive={false}/>
-            <Tooltip/>
-          </LineChart>
-        </ResponsiveContainer>
+        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column"}}>
+          <div>
+            <p style={{textAlign: "center"}}>
+              {title}
+            </p>
+          </div>
+          <div style={{flex: 1}}>
+            <ResponsiveContainer minWidth={200}>
+              <LineChart data={data} margin={{ top: 20, right: 20, left: -15, bottom: 50 }}>
+                <CartesianGrid stroke="#ccc"/>
+                <XAxis dataKey="termName" interval={0} angle={-45} textAnchor="end" type="category"/>
+                <YAxis domain={[min => Math.floor(Math.min(3.0, min)), max => 4.0]}>
+                  <Label value="Average GPA" position="insideLeft" dx={15} dy={25} angle={-90}/>
+                </YAxis>
+                <Line type="monotone" dataKey="gpa" isAnimationActive={false}/>
+                <Tooltip/>
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
     );
   }
 }

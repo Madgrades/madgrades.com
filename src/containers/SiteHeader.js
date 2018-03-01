@@ -2,9 +2,10 @@ import React from "react";
 import {Divider, Grid, Header} from "semantic-ui-react";
 import CourseSearchBox from "../components/CourseSearchBox";
 import "../styles/containers/SiteHeader.css";
+import * as classnames from "classnames";
 
-const SiteHeader = () => (
-    <div className="SiteHeader">
+const SiteHeader = ({style, className}) => (
+    <div className={classnames("SiteHeader", className)} style={style}>
       <Grid doubling columns={2} verticalAlign="bottom">
         <Grid.Column width={6}>
           <Header as='h2'>

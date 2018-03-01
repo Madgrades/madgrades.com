@@ -5,6 +5,7 @@ import utils from "../utils";
 import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
 import {Container, Dimmer, Dropdown, Loader, Segment} from "semantic-ui-react";
 import Div from "../containers/Div";
+import {GpaChart} from "../containers/charts/GpaChart";
 
 class CourseChart extends Component {
   static propTypes = {
@@ -54,12 +55,26 @@ class CourseChart extends Component {
       )
     }
 
+
+    let courseOfferings = (data && data.courseOfferings && data.courseOfferings.sort((a, b) => a.termCode - b.termCode).map(offering => {
+      return {
+        ...offering.cumulative,
+        termCode: offering.termCode
+      }
+    })) || [];
+
     return (
-        <Dimmer.Dimmable as={Div} style={{width: "500px", maxWidth: "100%", height: "300px"}}>
+        <Dimmer.Dimmable as={Div}>
           <Dimmer active={!isLoaded} inverted>
             <Loader active={!isLoaded} inverted>Loading Data</Loader>
           </Dimmer>
-          {chart}
+          <div style={{width: "500px", height: "300px"}}>
+            {chart}
+          </div>
+          <br/><br/>
+          <div style={{width: "500px", height: "300px"}}>
+            <GpaChart title="Average GPA Over Time" gradeDistributions={courseOfferings}/>
+          </div>
         </Dimmer.Dimmable>
     )
   }

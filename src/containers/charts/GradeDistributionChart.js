@@ -59,7 +59,7 @@ class GradeDistributionChart extends Component {
                   <Label value={`Grades Received (${utils.numberWithCommas(gpaTotal)})`} position="insideBottom" offset={-10}/>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>
-                  <Label value="Counts (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>
+                  <Label value="Students (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>
                 </YAxis>
                 <Bar dataKey="percent" isAnimationActive={false} fill="rgba(0, 0, 0, 1)">
                   <LabelList dataKey="label" content={renderBarLabel} position="top"/>

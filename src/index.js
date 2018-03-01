@@ -9,10 +9,10 @@ import reducers from './redux/reducers'
 import thunk from 'redux-thunk';
 import utils from "./utils";
 import logger from 'redux-logger'
+import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css'
-import 'react-select/dist/react-select.css';
 
-const api = utils.api.create("http://localhost:3001/");
+const api = utils.api.create("https://api.madgrades.com/v1/", "1d06acf389504274a8408e8f55f17c32");
 
 const store = createStore(
     combineReducers(reducers),

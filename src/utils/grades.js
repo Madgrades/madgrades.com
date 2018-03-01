@@ -1,5 +1,5 @@
 
-const GRADE_KEYS = [
+const GPA_KEYS = [
   'aCount',
   'abCount',
   'bCount',
@@ -9,9 +9,23 @@ const GRADE_KEYS = [
   'fCount'
 ];
 
+const ALL_KEYS = GPA_KEYS + [
+  'sCount',
+  'ubCount',
+  'crCount',
+  'nCount',
+  'pCount',
+  'iCount',
+  'nwCount',
+  'nrCount',
+  'otherCount'
+];
+
 export const getGradeKeys = (includeMisc) => {
   // todo: do include misc thing
-  return GRADE_KEYS;
+  if (includeMisc)
+    return ALL_KEYS;
+  return GPA_KEYS;
 };
 
 export const keyToName = (key) => key.replace("Count", "").toUpperCase();

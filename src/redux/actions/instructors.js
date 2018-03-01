@@ -7,7 +7,7 @@ const requestInstructor = (id) => {
   }
 };
 
-const receiveInstructor = (uuid, data) => {
+const receiveInstructor = (id, data) => {
   return {
     type: actionTypes.RECEIVE_INSTRUCTOR,
     id,
@@ -15,8 +15,8 @@ const receiveInstructor = (uuid, data) => {
   }
 };
 
-export const fetchCourse = (id) => async (dispatch, getState, api) => {
+export const fetchInstructor = (id) => async (dispatch, getState, api) => {
   dispatch(requestInstructor(id));
   let response = await api.getInstructor(id);
-  dispatch(receiveInstructor(uuid, response));
+  dispatch(receiveInstructor(id, response));
 };

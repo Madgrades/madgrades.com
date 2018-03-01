@@ -2,22 +2,22 @@ import React, {Component} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Course from "./pages/Course";
+import {Container} from "semantic-ui-react";
+import "./styles/App.css";
+import SiteHeader from "./containers/SiteHeader";
 
 class App extends Component {
   render = () => {
     return (
-      <div className="app">
         <BrowserRouter>
-          <div>
+          <Container className="app">
+            <SiteHeader/>
             <Switch>
               <Route exact path="/" component={Home}/>
-              <Route path="/courses/:id" component={Course}/>
               <Route component={NotFound}/>
             </Switch>
-          </div>
+          </Container>
         </BrowserRouter>
-      </div>
     );
   }
 }

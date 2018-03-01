@@ -1,5 +1,5 @@
 {
-  "name": "madgrades.com",
+  "name": "madgrades-api",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,11 +13,12 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "react-select": "^1.2.1",
     "recharts": "^1.0.0-beta.10",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.3.0",
+    "semantic-ui-react": "^0.78.3"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",

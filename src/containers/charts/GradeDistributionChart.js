@@ -30,11 +30,7 @@ class GradeDistributionChart extends Component {
   render = () => {
     const { title, gradeDistribution } = this.props;
 
-    if (!gradeDistribution)
-      return null;
-
     const gpaTotal = gradeDistribution.gpaTotal;
-
     const data = utils.grades.getGradeKeys(false).map(key => {
       const name = utils.grades.keyToName(key);
       const gradeCount = gradeDistribution[key];
@@ -58,9 +54,9 @@ class GradeDistributionChart extends Component {
           </div>
           <div style={{flex: 1}}>
             <ResponsiveContainer minWidth={200} minHeight={100}>
-              <BarChart data={data}>
+              <BarChart data={data} margin={{ top: 15, right: 5, left: 5, bottom: 20 }}>
                 <XAxis dataKey="name">
-                  <Label value="Grades Received" position="insideBottom" offset={-5}/>
+                  <Label value={`Grades Received (${gpaTotal})`} position="insideBottom" offset={-10}/>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>
                   <Label value="Counts (%)" position="insideLeft" dy={15} angle={-90}/>

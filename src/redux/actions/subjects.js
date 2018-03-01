@@ -1,36 +1,36 @@
 import * as actionTypes from "../actionTypes";
 
-const requestCourse = (uuid) => {
+const requestSubject = (code) => {
   return {
-    type: actionTypes.REQUEST_COURSE,
-    uuid
+    type: actionTypes.REQUEST_SUBJECT,
+    code
   }
 };
 
-const receiveCourse = (uuid, data) => {
+const receiveSubject = (code, data) => {
   return {
-    type: actionTypes.RECEIVE_COURSE,
-    uuid,
+    type: actionTypes.RECEIVE_SUBJECT,
+    code,
     data
   }
 };
 
-export const fetchCourse = (uuid) => async (dispatch, getState, api) => {
+export const fetchSubject = (code) => async (dispatch, getState, api) => {
   const state = getState();
-  let courseData = state.courses.data[uuid];
+  let subjectData = state.subjects.data[code];
 
   // don't fetch again
-  if (courseData)
+  if (subjectData)
     return;
 
   // request action
-  dispatch(requestCourse(uuid));
+  dispatch(requestSubject(code));
 
   // perform request
-  courseData = await api.getCourse(uuid);
+  subjectData = await api.getSubject(code);
 
   // receive action
-  dispatch(receiveCourse(uuid, courseData));
+  dispatch(receiveSubject(code, subjectData));
 };
 
 

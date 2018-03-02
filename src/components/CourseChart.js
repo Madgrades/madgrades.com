@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import utils from "../utils";
 import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
-import {Container, Dimmer, Dropdown, Loader, Segment} from "semantic-ui-react";
+import {Dimmer, Loader} from "semantic-ui-react";
 import Div from "../containers/Div";
 import {GpaChart} from "../containers/charts/GpaChart";
 
@@ -24,7 +24,7 @@ class CourseChart extends Component {
 
     let chart;
     let gradeDistribution;
-
+    
     if (data && data.cumulative) {
       if (termCode) {
         let termData = data.courseOfferings.filter(offering => offering.termCode === termCode);

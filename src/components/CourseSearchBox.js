@@ -29,7 +29,7 @@ class CourseSearchBox extends Component {
           isTyping: false
         });
       }
-    }, 500);
+    }, 700);
   };
 
   render = () => {

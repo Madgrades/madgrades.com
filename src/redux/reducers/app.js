@@ -1,7 +1,7 @@
 import * as actionTypes from "../actionTypes";
 
 const initialState = {
-  courseSearchQuery: undefined
+  courseSearchQuery: ""
 };
 
 export default function reducer(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function reducer(state = initialState, action) {
     case actionTypes.SET_COURSE_SEARCH_QUERY:
       return {
         ...state,
-        courseSearchQuery: action.query
+        courseSearchQuery: action.query || ""
       };
     default: {
       return state

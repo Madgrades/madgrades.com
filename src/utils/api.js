@@ -9,12 +9,6 @@ class Api {
     this.apiToken = apiToken;
   }
 
-  /**
-   * performs an api http request with the api token header
-   * @param path
-   * @returns {Promise.<*>}
-   * @private
-   */
   async _fetchPath(path) {
     return await fetch(this.url + path, {
       method: 'get',

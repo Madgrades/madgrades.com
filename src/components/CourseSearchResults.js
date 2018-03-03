@@ -4,6 +4,18 @@ import utils from "../utils";
 import {Dimmer, Loader} from "semantic-ui-react";
 import CourseSearchResultItem from "../containers/CourseSearchResultItem";
 import Div from "../containers/Div";
+import {Link} from "react-router-dom";
+
+const exampleCourses = [
+    "Physics 103", "Music in Performance", "MATH 222", "cs graphics",
+    "Art 100", "Geoscience 331"
+];
+
+const exampleQueries = exampleCourses.map(name => (
+    <li key={name}>
+      <Link to={`/search/${name}`}>{name}</Link>
+    </li>
+));
 
 class CourseSearchResults extends Component {
   componentDidUpdate = () => {
@@ -22,36 +34,40 @@ class CourseSearchResults extends Component {
   });
 
   render = () => {
-    const { searchData } = this.props;
+    const { isFetching, results } = this.props.searchData;
 
-    if (!searchData) {
-      return (
-          <div>
-            Finding a course is easy, just use the search box above!
-          </div>
-      )
-    }
-    else if (searchData.isFetching) {
+    if (isFetching || (results && results.length > 0)) {
       return (
           <Dimmer.Dimmable as={Div}>
-            <Dimmer active inverted>
-              <Loader disabled={false} inverted inline>Loading</Loader>
+            <Dimmer active={isFetching} inverted>
+              <Loader active={isFetching} inverted inline>Loading</Loader>
             </Dimmer>
+            {this.renderResults(results || [])}
           </Dimmer.Dimmable>
       )
     }
 
-    const { results } = searchData;
-
     return (
         <div>
-          {this.renderResults(results)}
+          <p>
+            We couldn't find that course, sorry! Note that we don't have every course name, so try searching
+            by subject and course number (i.e. Math 221, English 120).
+          </p>
+          <p>
+            <strong>Examples:</strong>
+          </p>
+          <ul>
+            {exampleQueries}
+          </ul>
+          <p>
+            See the <Link to="/about">about</Link> page to report an issue.
+          </p>
         </div>
     )
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const { courseSearchQuery } = state.app;
 
   const queryResults = state.courses.searches[courseSearchQuery];
@@ -60,7 +76,7 @@ function mapStateToProps(state, ownProps) {
 
   return {
     courseSearchQuery,
-    searchData
+    searchData: searchData || {}
   };
 }
 

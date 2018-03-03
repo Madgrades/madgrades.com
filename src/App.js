@@ -7,6 +7,8 @@ import "./styles/App.css";
 import SiteHeader from "./containers/SiteHeader";
 import Course from "./pages/Course";
 import SiteFooter from "./containers/SiteFooter";
+import Search from "./pages/Search";
+import About from "./pages/About";
 
 class App extends Component {
   render = () => {
@@ -18,7 +20,9 @@ class App extends Component {
               <div className="app-content">
                 <Switch>
                   <Route exact path="/" component={Home}/>
+                  <Route path="/search/:query?" component={Search}/>
                   <Route path="/courses/:uuid" component={Course}/>
+                  <Route path="/about" component={About}/>
                   <Route component={NotFound}/>
                 </Switch>
               </div>

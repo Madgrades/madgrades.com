@@ -1,54 +1,62 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
-import {Input} from "semantic-ui-react";
+import {Form, Input} from "semantic-ui-react";
 import {withRouter} from "react-router";
 
 class CourseSearchBox extends Component {
-  searchValue = undefined;
   state = {
-    isTyping: false
+    searchValue: ""
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    // when we get an outside search value update, reflect that in the
+    // search box via the local state
+    this.setState({
+      searchValue: nextProps.courseSearchQuery
+    })
+  };
+
+  performSearch = () => {
+    // tell the app about the search!
+    this.props.history.push(`/search/${this.state.searchValue}`);
   };
 
   onInputChange = (event, data) => {
-    const { setCourseSearchQuery } = this.props.actions;
-    const { value } = data;
-    this.searchValue = value;
+    // update the state of the search box to the new value
     this.setState({
-      isTyping: true
-    });
-
-    // delay search request so as to not spam requests
-    setTimeout(() => {
-      if (this.searchValue === value) {
-        // go to home page
-        this.props.history.push('/');
-
-        setCourseSearchQuery(value);
-        this.setState({
-          isTyping: false
-        });
-      }
-    }, 700);
+      searchValue: data.value
+    })
   };
 
   render = () => {
-    const { isTyping } = this.state;
+    const { searchValue } = this.state;
 
     return (
-        <Input
-            loading={isTyping}
-            fluid
-            onChange={this.onInputChange}
-            icon='search'
-            placeholder='Search courses...'
-        />
+        <Form onSubmit={this.performSearch}>
+          <Input
+              value={searchValue}
+              fluid
+              onChange={this.onInputChange}
+              icon={{
+                name: 'search',
+                link: true,
+                onClick: this.performSearch,
+                title: "Perform Search"
+              }}
+              placeholder='Search courses...'
+          />
+        </Form>
     )
   }
 }
 
 function mapStateToProps(state, ownProps) {
-  return {};
+  // we grab the app state search query, only used on page load basically
+  // like when you refresh the search page for some odd reason
+  return {
+    courseSearchQuery: state.app.courseSearchQuery
+  };
 }
 
 

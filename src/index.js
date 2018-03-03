@@ -10,7 +10,7 @@ import thunk from 'redux-thunk';
 import utils from "./utils";
 import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css'
-// import logger from 'redux-logger'
+import logger from 'redux-logger'
 
 const api = utils.api.create("https://api.madgrades.com/v1/", "fe85238d9504436eb7c1a59fdc8eb92a");
 

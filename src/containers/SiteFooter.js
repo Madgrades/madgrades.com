@@ -1,13 +1,13 @@
 import React from "react";
 import {Divider, Icon} from "semantic-ui-react";
 import "../styles/containers/SiteFooter.css";
+import {Link} from "react-router-dom";
 
 const SiteFooter = () => (
     <div className="SiteFooter">
       <Divider/>
       <p>
-        Made by Keenan Thompson
-        (<a href="https://github.com/thekeenant/madgrades">Github</a>)
+        <Link to="/">Home</Link> | <Link to="/about">About</Link>
       </p>
     </div>
 );

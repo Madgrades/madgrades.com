@@ -1,12 +1,9 @@
 import React from "react";
-import CourseSearchResults from "../components/CourseSearchResults";
 import "../styles/pages/Home.css";
 
 const Home = () => (
     <div className="Home">
-      <div className="course-search-results">
-        <CourseSearchResults/>
-      </div>
+      Welcome to Madgrades.
     </div>
 );
 export default Home;

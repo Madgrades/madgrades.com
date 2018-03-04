@@ -1,13 +1,13 @@
 import React from "react";
-import CourseSearchResults from "../components/CourseSearchResults";
-import "../styles/pages/Home.css";
-import SetCourseSearchQuery from "../components/SetCourseSearchQuery";
+import SetSearchQuery from "../components/SetSearchQuery";
+import {Container} from "semantic-ui-react";
+import SearchResults from "../components/SearchResults";
 
 const Search = ({match}) => (
-    <div className="Search">
-      <h2>Search</h2>
-      <SetCourseSearchQuery query={match.params.query}/>
-      <CourseSearchResults/>
-    </div>
+    <Container className="Search">
+      <br/>
+      <SearchResults/>
+      <SetSearchQuery query={match.params[0]}/>
+    </Container>
 );
 export default Search;

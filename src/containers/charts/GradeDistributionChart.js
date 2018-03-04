@@ -53,7 +53,7 @@ class GradeDistributionChart extends Component {
             </p>
           </div>
           <div style={{flex: 1}}>
-            <ResponsiveContainer minWidth={200}>
+            <ResponsiveContainer minWidth={200} minHeight={200}>
               <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
                 <XAxis dataKey="name">
                   <Label value={`Grades Received (${utils.numberWithCommas(gpaTotal)})`} position="insideBottom" offset={-10}/>

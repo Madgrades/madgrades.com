@@ -1,13 +1,14 @@
 import React from "react";
-import "../styles/pages/Home.css";
 import CourseChart from "../components/CourseChart";
 import CourseName from "../components/CourseName";
+import {Container} from "semantic-ui-react";
 
 const Course = ({ match }) => (
-    <div className="Course">
+    <Container className="Course">
+      <p></p>
       <h1><CourseName uuid={match.params.uuid}/></h1>
       <CourseChart uuid={match.params.uuid}/>
       {/*<TermSelect termCodes={[1082]} includeCumulative={true}/>*/}
-    </div>
+    </Container>
 );
 export default Course;

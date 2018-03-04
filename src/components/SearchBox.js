@@ -4,7 +4,7 @@ import utils from "../utils";
 import {Form, Input} from "semantic-ui-react";
 import {withRouter} from "react-router";
 
-class CourseSearchBox extends Component {
+class SearchBox extends Component {
   state = {
     searchValue: ""
   };
@@ -13,13 +13,15 @@ class CourseSearchBox extends Component {
     // when we get an outside search value update, reflect that in the
     // search box via the local state
     this.setState({
-      searchValue: nextProps.courseSearchQuery
+      searchValue: nextProps.searchQuery
     })
   };
 
   performSearch = () => {
+    const { searchValue } = this.state;
+
     // tell the app about the search!
-    this.props.history.push(`/search/${this.state.searchValue}`);
+    this.props.history.push(`/search/${searchValue}`);
   };
 
   onInputChange = (event, data) => {
@@ -29,24 +31,32 @@ class CourseSearchBox extends Component {
     })
   };
 
+  onKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      this.performSearch();
+      event.target.blur();
+    }
+  };
+
   render = () => {
     const { searchValue } = this.state;
 
     return (
-        <Form onSubmit={this.performSearch}>
-          <Input
-              value={searchValue}
-              fluid
-              onChange={this.onInputChange}
-              icon={{
-                name: 'search',
-                link: true,
-                onClick: this.performSearch,
-                title: "Perform Search"
-              }}
-              placeholder='Search courses...'
-          />
-        </Form>
+        <Input
+            className='SearchBox'
+            style={{minWidth: "250px"}}
+            value={searchValue}
+            onChange={this.onInputChange}
+            onKeyPress={this.onKeyPress}
+            icon={{
+              name: 'search',
+              link: true,
+              onClick: this.performSearch,
+              title: "Perform Search"
+            }}
+            placeholder='Search...'
+            fluid
+        />
     )
   }
 }
@@ -55,9 +65,9 @@ function mapStateToProps(state, ownProps) {
   // we grab the app state search query, only used on page load basically
   // like when you refresh the search page for some odd reason
   return {
-    courseSearchQuery: state.app.courseSearchQuery
+    searchQuery: state.app.searchQuery
   };
 }
 
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(withRouter(CourseSearchBox))
+export default connect(mapStateToProps, utils.mapDispatchToProps)(withRouter(SearchBox))

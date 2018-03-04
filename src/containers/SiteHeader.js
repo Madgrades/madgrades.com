@@ -1,28 +1,63 @@
-import React from "react";
-import {Divider, Grid, Header} from "semantic-ui-react";
-import CourseSearchBox from "../components/CourseSearchBox";
-import "../styles/containers/SiteHeader.css";
-import * as classnames from "classnames";
-import {Link} from "react-router-dom";
+import React, {Component} from "react";
+import {Button, Container, Image, Menu, Segment} from "semantic-ui-react";
+import {NavLink} from "react-router-dom";
+import {withRouter} from "react-router";
+import Div from "./Div";
+import SearchBox from "../components/SearchBox";
 
-const SiteHeader = ({style, className}) => (
-    <div className={classnames("SiteHeader", className)} style={style}>
-      <Grid doubling columns={2} verticalAlign="bottom">
-        <Grid.Column width={6}>
-          <Header as='h1'>
-            <Header.Content>
-              <Link to="/">Madgrades</Link>
-              <Header.Subheader>
-                UW Madison Course Data
-              </Header.Subheader>
-            </Header.Content>
-          </Header>
-        </Grid.Column>
-        <Grid.Column floated='right' textAlign="right" width={5}>
-          <CourseSearchBox/>
-        </Grid.Column>
-      </Grid>
-      <Divider/>
-    </div>
-);
-export default SiteHeader;
+class SiteHeader extends Component {
+  state = {
+    isNavToggled: false
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      isNavToggled: false
+    });
+  };
+
+  toggleNav = () => {
+    this.setState({
+      isNavToggled: !this.state.isNavToggled
+    })
+  };
+
+  render = () => {
+    const { isNavToggled } = this.state;
+    const toggled = isNavToggled ? "toggled" : "";
+
+    return (
+        <Segment as={Div} inverted attached className="SiteHeader">
+          <Menu inverted pointing secondary stackable>
+            <Container>
+              <Menu.Item className='madgrades-logo'>
+                <Button as='a' className='toggle-button' icon='bars' color='grey' basic onClick={this.toggleNav}/>
+                <NavLink to="/">
+                  <Image src="/icon-white.svg" width={40} style={{display: "inline-block", marginRight: "10px"}}/>
+                </NavLink>
+                <div style={{width: "40px"}}/>
+              </Menu.Item>
+
+              <Menu.Menu className={`toggleable ${toggled}`} style={{alignItems: "center"}}>
+                <Menu.Item style={{alignSelf: "center"}}>
+                  <SearchBox/>
+                </Menu.Item>
+                <Menu.Menu position='right'>
+                  <Menu.Item as={NavLink} to="/courses">
+                    Courses
+                  </Menu.Item>
+                  <Menu.Item as={NavLink} to="/instructors">
+                    Instructors
+                  </Menu.Item>
+                  <Menu.Item as={NavLink} to="/about">
+                    About
+                  </Menu.Item>
+                </Menu.Menu>
+              </Menu.Menu>
+            </Container>
+          </Menu>
+        </Segment>
+    );
+  }
+}
+export default withRouter(SiteHeader)

@@ -19,10 +19,10 @@ const exampleQueries = exampleCourses.map(name => (
 
 class CourseSearchResults extends Component {
   componentDidUpdate = () => {
-    const { actions, courseSearchQuery } = this.props;
+    const { actions, searchQuery } = this.props;
 
-    if (courseSearchQuery)
-      actions.fetchCourseSearch(courseSearchQuery, 1);
+    if (searchQuery)
+      actions.fetchCourseSearch(searchQuery, 1);
   };
 
   renderResults = (results) => results.map(result => {
@@ -50,7 +50,7 @@ class CourseSearchResults extends Component {
     return (
         <div>
           <p>
-            We couldn't find that course, sorry! Note that we don't have every course name, so try searching
+            No courses were found for your query. Note that we don't have every course name, so try searching
             by subject and course number (i.e. Math 221, English 120).
           </p>
           <p>
@@ -68,14 +68,14 @@ class CourseSearchResults extends Component {
 }
 
 function mapStateToProps(state) {
-  const { courseSearchQuery } = state.app;
+  const { searchQuery } = state.app;
 
-  const queryResults = state.courses.searches[courseSearchQuery];
+  const queryResults = state.courses.searches[searchQuery];
 
   const searchData = queryResults && queryResults[1];
 
   return {
-    courseSearchQuery,
+    searchQuery,
     searchData: searchData || {}
   };
 }

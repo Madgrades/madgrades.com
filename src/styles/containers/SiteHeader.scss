@@ -1,3 +1,66 @@
+
 .SiteHeader {
-  margin-top: 30px;
+  border: none !important;
+
+  .SearchBox.ui.input {
+    color: #fff;
+
+    input {
+      background: #333;
+      color: #fff;
+      border: 0;
+
+      &::selection {
+        color: #fff;
+      }
+    }
+  }
+
+  .toggle-button {
+    display: none;
+  }
+
+  .toggleable {
+    display: flex;
+    flex: 1;
+  }
+
+  .madgrades-logo {
+    a {
+      font-size: 18px;
+    }
+  }
+
+  .menu .item.active {
+    border-color: #c5050c !important;
+  }
 }
+
+@media only screen and (max-width: 767px) {
+  .SiteHeader {
+    .madgrades-logo {
+      text-align: center;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .toggle-button {
+      display: block;
+      width: 40px;
+    }
+
+    .menu .item.active {
+      border-color: transparent !important;
+    }
+
+
+    .toggleable {
+      display: none;
+    }
+
+    .toggled {
+      display: block;
+    }
+  }
+}
+

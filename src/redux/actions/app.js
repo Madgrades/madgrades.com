@@ -1,8 +1,8 @@
 import * as actionTypes from "../actionTypes";
 
-export const setCourseSearchQuery = (query) => {
+export const setSearchQuery = (query) => {
   return {
-    type: actionTypes.SET_COURSE_SEARCH_QUERY,
+    type: actionTypes.SET_SEARCH_QUERY,
     query
   }
 };

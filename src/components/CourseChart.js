@@ -55,25 +55,13 @@ class CourseChart extends Component {
       )
     }
 
-
-    let courseOfferings = (data && data.courseOfferings && data.courseOfferings.sort((a, b) => a.termCode - b.termCode).map(offering => {
-      return {
-        ...offering.cumulative,
-        termCode: offering.termCode
-      }
-    })) || [];
-
     return (
         <Dimmer.Dimmable as={Div}>
           <Dimmer active={!isLoaded} inverted>
             <Loader active={!isLoaded} inverted>Loading Data</Loader>
           </Dimmer>
-          <div style={{height: "300px"}}>
+          <div style={{height: "400px"}}>
             {chart}
-          </div>
-          <br/><br/>
-          <div style={{height: "300px"}}>
-            <GpaChart title="Average GPA Over Time" gradeDistributions={courseOfferings}/>
           </div>
         </Dimmer.Dimmable>
     )

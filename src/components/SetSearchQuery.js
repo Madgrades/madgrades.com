@@ -3,6 +3,10 @@ import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types";
 
+/**
+ * When rendered or updated, the global app
+ * search updates to the prop for this component.
+ */
 class SetSearchQuery extends Component {
   static propTypes = {
     query: PropTypes.string

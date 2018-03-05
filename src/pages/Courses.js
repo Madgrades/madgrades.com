@@ -43,15 +43,6 @@ const extractParams = (location) => {
   }
 };
 
-const subjects = [
-  { key: '600', text: 'MATH', value: '600' },
-  { key: '266', text: 'COMP SCI', value: '266' },
-];
-
-const instructors = [
-  { key: '2512312', text: 'Bob Joe', value: '2412323' }
-];
-
 const sort = [
   { key: 'relevance', text: 'Best match', value: 'relevance' },
   { key: 'trending_recent', text: 'Trending', value: 'trending_recent' },
@@ -69,8 +60,8 @@ const Courses = ({ location }) => (
         <Grid.Column computer={4} mobile={16} tablet={6}>
           <Form>
             <Form.Field>
-              <label>Search</label>
-              <Input placeholder="Search..."/>
+              <label>Course Name</label>
+              <Input/>
             </Form.Field>
             <Form.Field>
               <label>Subjects</label>
@@ -80,7 +71,10 @@ const Courses = ({ location }) => (
               <label>Instructors</label>
               <EntitySelect entityType='instructor'/>
             </Form.Field>
-            <Form.Button>Search</Form.Button>
+            <Form.Button positive floated='right'>Search</Form.Button>
+            <Form.Group>
+              <Form.Button>Clear</Form.Button>
+            </Form.Group>
           </Form>
         </Grid.Column>
         <Grid.Column computer={12} mobile={16} tablet={10}>

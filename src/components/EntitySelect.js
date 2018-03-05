@@ -5,6 +5,9 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types"
 import {Dropdown} from "semantic-ui-react";
 
+/**
+ * A dropdown/searh box for selecting a particular entity from madgrades.
+ */
 class EntitySelect extends Component {
   static propTypes = {
     entityType: PropTypes.oneOf(['instructor', 'subject']).isRequired,
@@ -115,7 +118,7 @@ class EntitySelect extends Component {
 
     return (
         <Dropdown
-            placeholder='Instructors'
+            placeholder={'Search...'}
             fluid
             multiple
             selection

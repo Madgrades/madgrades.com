@@ -7,7 +7,7 @@ import Div from "../containers/Div";
 import {Link} from "react-router-dom";
 
 const exampleCourses = [
-    "Physics 103", "Music in Performance", "MATH 222", "cs graphics",
+    "Physics 103", "Music in Performance", "MATH 222", "CS graphics",
     "Art 100", "Geoscience 331"
 ];
 

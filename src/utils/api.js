@@ -15,8 +15,9 @@ class Api {
 
   async _fetchPath(path, params) {
     let queryString = '';
-    if (params)
+    if (params) {
       queryString = '?' + this._queryString(params);
+    }
 
     return await fetch(this.url + path + queryString, {
       method: 'get',
@@ -41,7 +42,7 @@ class Api {
   }
 
   async getCourse(uuid)  {
-    let res = await this._fetchPath('courses/' + uuid);
+    let res = await this._fetchPath(`courses/${uuid}`);
     return res.json();
   }
 
@@ -49,6 +50,29 @@ class Api {
     let res = await this._fetchPath('courses', {
       query: query,
       page: page,
+      per_page: 100
+    });
+    return res.json();
+  }
+
+  /**
+   * Performs a complex course search/filter with optional sorting.
+   */
+  async filterCourses(uuid, query, subjects, instructors, sort, order, page) {
+    let queryParam = query;
+    let subjectParam = Array.isArray(subjects) && subjects.join(',');
+    let instructorParam = Array.isArray(instructors) && instructors.join(',');
+    let sortParam = sort;
+    let orderParam = order;
+    let pageParam = page;
+
+    let res = await this._fetchPath('courses', {
+      query: queryParam,
+      subject: subjectParam,
+      instructor: instructorParam,
+      sort: sortParam,
+      order: orderParam,
+      page: pageParam,
       per_page: 100
     });
     return res.json();

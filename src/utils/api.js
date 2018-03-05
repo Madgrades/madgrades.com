@@ -29,7 +29,7 @@ class Api {
   }
 
   async searchCourses(query, page) {
-    let res = await this._fetchPath('courses/search?query=' + encodeURIComponent(query) + '&page=' + page);
+    let res = await this._fetchPath('courses?query=' + encodeURIComponent(query) + '&page=' + page);
     return res.json();
   }
 

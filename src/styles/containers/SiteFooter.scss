@@ -1,4 +1,15 @@
 .SiteFooter {
-  padding-bottom: 20px;
-  text-align: center;
+  margin-top: 50px;
+  color: #695f5e;
+  padding: 20px 0;
+  width: 100%;
+
+  .logo {
+    text-align: center;
+    
+    img {
+      width: 36px;
+      opacity: 0.3;
+    }
+  }
 }

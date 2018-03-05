@@ -4,6 +4,7 @@ import {NavLink} from "react-router-dom";
 import {withRouter} from "react-router";
 import Div from "./Div";
 import SearchBox from "../components/SearchBox";
+import logo from "../assets/icon-white.svg";
 
 class SiteHeader extends Component {
   state = {
@@ -33,7 +34,7 @@ class SiteHeader extends Component {
               <Menu.Item className='madgrades-logo'>
                 <Button as='a' className='toggle-button' icon='bars' color='grey' basic onClick={this.toggleNav}/>
                 <NavLink to="/">
-                  <Image src="/icon-white.svg" width={40} style={{display: "inline-block", marginRight: "10px"}}/>
+                  <img src={logo} width={40} style={{display: "inline-block", marginRight: "10px"}}/>
                 </NavLink>
                 <div style={{width: "40px"}}/>
               </Menu.Item>

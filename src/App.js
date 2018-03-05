@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import {Container} from "semantic-ui-react";
 import SiteHeader from "./containers/SiteHeader";
 import Course from "./pages/Course";
 import SiteFooter from "./containers/SiteFooter";

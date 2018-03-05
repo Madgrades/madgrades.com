@@ -7,42 +7,12 @@ import InstructorSearchResultItem from "../containers/InstructorSearchResultItem
 import CourseSearchResults from "./CourseSearchResults";
 import InstructorSearchResults from "./InstructorSearchResults";
 import SearchBox from "./SearchBox";
+import {withRouter} from "react-router";
 
 class SearchResults extends Component {
-  state = {
-    activeIndex: 0,
-    autoTabbed: false
-  };
-
   componentDidUpdate = () => {
     this.props.actions.fetchInstructorSearch(this.props.searchQuery, 1);
     this.props.actions.fetchCourseSearch(this.props.searchQuery, 1);
-  };
-
-  componentDidMount = () => {
-    const { courseCount, instructorCount } = this.props;
-
-    if (!this.state.autoTabbed) {
-      if (instructorCount !== undefined && courseCount !== undefined) {
-        this.setState({
-          activeIndex: courseCount >= instructorCount ? 0 : 1,
-          autoTabbed: true
-        });
-      }
-    }
-  };
-
-  componentWillReceiveProps = (nextProps) => {
-    const { courseCount, instructorCount } = nextProps;
-
-    if (!this.state.autoTabbed) {
-      if (instructorCount !== undefined && courseCount !== undefined) {
-        this.setState({
-          activeIndex: courseCount >= instructorCount ? 0 : 1,
-          autoTabbed: true
-        });
-      }
-    }
   };
 
   panes = () => {
@@ -61,9 +31,7 @@ class SearchResults extends Component {
   };
 
   onTabChange = (event, data) => {
-    this.setState({
-      activeIndex: data.activeIndex
-    })
+    this.props.history.push(`/search/${this.props.query}/${data.activeIndex}`)
   };
 
   render = () => {
@@ -74,7 +42,7 @@ class SearchResults extends Component {
               menu={{ secondary: true, pointing: true }}
               panes={this.panes()}
               onTabChange={this.onTabChange}
-              activeIndex={this.state.activeIndex}/>
+              activeIndex={this.props.tab}/>
         </div>
     )
   }
@@ -97,4 +65,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(SearchResults)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(withRouter(SearchResults))

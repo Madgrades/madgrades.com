@@ -20,9 +20,7 @@ const exampleQueries = exampleCourses.map(name => (
 class CourseSearchResults extends Component {
   componentDidUpdate = () => {
     const { actions, searchQuery } = this.props;
-
-    if (searchQuery)
-      actions.fetchCourseSearch(searchQuery, 1);
+    actions.fetchCourseSearch(searchQuery, 1);
   };
 
   renderResults = (results) => results.map(result => {

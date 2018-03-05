@@ -6,8 +6,8 @@ import SearchResults from "../components/SearchResults";
 const Search = ({match}) => (
     <Container className="Search">
       <br/>
-      <SearchResults/>
-      <SetSearchQuery query={match.params[0]}/>
+      <SearchResults query={match.params.query} tab={match.params.tab || 0}/>
+      <SetSearchQuery query={match.params.query}/>
     </Container>
 );
 export default Search;

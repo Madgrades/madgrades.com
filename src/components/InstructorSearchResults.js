@@ -15,9 +15,7 @@ class InstructorSearchResults extends Component {
 
   componentDidMount = () => {
     const { actions, searchQuery } = this.props;
-
-    if (searchQuery)
-      actions.fetchInstructorSearch(searchQuery, 1);
+    actions.fetchInstructorSearch(searchQuery, 1);
   };
 
   renderResults = (results) => results.map(result => {

@@ -9,8 +9,16 @@ class Api {
     this.apiToken = apiToken;
   }
 
-  async _fetchPath(path) {
-    return await fetch(this.url + path, {
+  _queryString = (params) => Object.keys(params)
+    .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+    .join('&');
+
+  async _fetchPath(path, params) {
+    let queryString = '';
+    if (params)
+      queryString = '?' + this._queryString(params);
+
+    return await fetch(this.url + path + queryString, {
       method: 'get',
       headers: {
         'Authorization': 'Token token=' + this.apiToken
@@ -29,7 +37,11 @@ class Api {
   }
 
   async searchCourses(query, page) {
-    let res = await this._fetchPath('courses?query=' + encodeURIComponent(query) + '&page=' + page);
+    let res = await this._fetchPath('courses', {
+      query: query,
+      page: page,
+      per_page: 100
+    });
     return res.json();
   }
 
@@ -44,7 +56,11 @@ class Api {
   }
 
   async searchInstructors(query, page) {
-    let res = await this._fetchPath('instructors/search?query=' + encodeURIComponent(query) + '&page=' + page);
+    let res = await this._fetchPath('instructors', {
+      query: query,
+      page: page,
+      per_page: 100
+    });
     return res.json();
   }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {Container, Divider, Grid, List} from "semantic-ui-react";
 import {Link} from "react-router-dom";
-import logo from "../assets/icon-black.svg"
+import logo from "../assets/logo-black.svg"
 
 const SiteFooter = () => (
     <div className="SiteFooter">

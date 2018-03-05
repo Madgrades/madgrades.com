@@ -4,7 +4,7 @@ import {NavLink} from "react-router-dom";
 import {withRouter} from "react-router";
 import Div from "./Div";
 import SearchBox from "../components/SearchBox";
-import logo from "../assets/icon-white.svg";
+import logo from "../assets/logo-white.svg";
 
 class SiteHeader extends Component {
   state = {
@@ -44,6 +44,9 @@ class SiteHeader extends Component {
                   <SearchBox/>
                 </Menu.Item>
                 <Menu.Menu position='right'>
+                  <Menu.Item as={NavLink} to="/explore">
+                    Explore
+                  </Menu.Item>
                   <Menu.Item as={NavLink} to="/courses">
                     Courses
                   </Menu.Item>

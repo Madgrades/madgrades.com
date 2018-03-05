@@ -34,37 +34,37 @@ export const fetchSubject = (code) => async (dispatch, getState, api) => {
 };
 
 
-const requestCourseSearch = (query, page) => {
+const requestSubjectSearch = (query, page) => {
   return {
-    type: actionTypes.REQUEST_COURSE_SEARCH,
+    type: actionTypes.REQUEST_SUBJECT_SEARCH,
     query,
     page
   }
 };
 
-const receiveCourseSearch = (query, page, data) => {
+const receiveSubjectSearch = (query, page, data) => {
   return {
-    type: actionTypes.RECEIVE_COURSE_SEARCH,
+    type: actionTypes.RECEIVE_SUBJECT_SEARCH,
     query,
     page,
     data
   }
 };
 
-export const fetchCourseSearch = (query, page) => async (dispatch, getState, api) => {
+export const fetchSubjectSearch = (query, page) => async (dispatch, getState, api) => {
   const state = getState();
-  let courseSearchData = state.courses.searches[query];
+  let subjectSearchData = state.courses.searches[query];
 
   // don't fetch again
-  if (courseSearchData)
+  if (subjectSearchData)
     return;
 
   // request action
-  dispatch(requestCourseSearch(query, page));
+  dispatch(requestSubjectSearch(query, page));
 
   // perform request
-  courseSearchData = await api.searchCourses(query, page);
+  subjectSearchData = await api.searchSubjects(query, page);
 
   // receive action
-  dispatch(receiveCourseSearch(query, page, courseSearchData));
+  dispatch(receiveSubjectSearch(query, page, subjectSearchData));
 };

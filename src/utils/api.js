@@ -31,6 +31,15 @@ class Api {
     return res.json();
   }
 
+  async searchSubjects(query, page) {
+    let res = await this._fetchPath('subjects', {
+      query: query,
+      page: page,
+      per_page: 100
+    });
+    return res.json();
+  }
+
   async getCourse(uuid)  {
     let res = await this._fetchPath('courses/' + uuid);
     return res.json();

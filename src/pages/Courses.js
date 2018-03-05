@@ -1,10 +1,15 @@
 import React from "react";
 import {
-  Button,
-  Container, Divider, Dropdown, Form, Grid, Header, Icon, Input,
-  Label, Segment
+  Container,
+  Divider,
+  Dropdown,
+  Form,
+  Grid,
+  Header,
+  Input
 } from "semantic-ui-react";
-import { parse } from 'qs';
+import {parse} from 'qs';
+import EntitySelect from "../components/EntitySelect";
 
 const extractParams = (location) => {
   const params = parse(location.search.substr(1));
@@ -50,9 +55,13 @@ const instructors = [
 const sort = [
   { key: 'relevance', text: 'Best match', value: 'relevance' },
   { key: 'trending_recent', text: 'Trending', value: 'trending_recent' },
-  { key: 'trending_all', text: 'Trending (All time)', value: 'trending_all' },
-  { key: 'number', text: 'Course number', value: 'number' }
+  { key: 'trending_all', text: 'Trending (All Time)', value: 'trending_all' },
+  { key: 'number', text: 'Number', value: 'number' }
 ];
+
+const search = (input) => {
+  console.log(input);
+};
 
 const Courses = ({ location }) => (
     <Container className="Courses">
@@ -65,27 +74,27 @@ const Courses = ({ location }) => (
             </Form.Field>
             <Form.Field>
               <label>Subjects</label>
-              <Dropdown placeholder='Subjects' fluid multiple search selection options={subjects}/>
+              <EntitySelect entityType='subject'/>
             </Form.Field>
             <Form.Field>
               <label>Instructors</label>
-              <Dropdown placeholder='Instructors' fluid multiple search selection options={instructors}/>
+              <EntitySelect entityType='instructor'/>
             </Form.Field>
             <Form.Button>Search</Form.Button>
           </Form>
         </Grid.Column>
         <Grid.Column computer={12} mobile={16} tablet={10}>
           <Grid verticalAlign='middle'>
-            <Grid.Column width={8}>
+            <Grid.Column width={6}>
               <Header as='h2'>
                 <Header.Content>
                   0 courses
                 </Header.Content>
               </Header>
             </Grid.Column>
-            <Grid.Column width={8}>
+              <Grid.Column width={10}>
               <Header as='h4' floated='right'>
-                Sort by: <Dropdown inline header='Sort options' options={sort} defaultValue={sort[0].value} />
+                Sort by: <Dropdown inline direction='left' header='Sort options' options={sort} defaultValue={sort[0].value} />
               </Header>
             </Grid.Column>
           </Grid>

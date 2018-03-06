@@ -68,3 +68,31 @@ export const fetchCourseSearch = (query, page) => async (dispatch, getState, api
   // receive action
   dispatch(receiveCourseSearch(query, page, courseSearchData));
 };
+
+const requestAdvancedCourseSearch = (params, page) => {
+  return {
+    type: actionTypes.REQUEST_ADVANCED_COURSE_SEARCH,
+    params,
+    page
+  }
+};
+
+const receiveAdvancedCourseSearch = (params, page, data) => {
+  return {
+    type: actionTypes.RECEIVE_ADVANCED_COURSE_SEARCH,
+    params,
+    page,
+    data
+  }
+};
+
+export const fetchAdvancedCourseSearch = (params, page) => async (dispatch, getState, api) => {
+  // request action
+  dispatch(requestAdvancedCourseSearch(params, page));
+
+  // perform request
+  const searchData = await api.filterCourses(params, page);
+
+  // receive action
+  dispatch(receiveAdvancedCourseSearch(params, page, searchData));
+};

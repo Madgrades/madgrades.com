@@ -1,7 +1,8 @@
 import * as actionTypes from "../actionTypes";
 
 const initialState = {
-  data: {}
+  data: {},
+  searches: {}
 };
 
 export default function reducer(state = initialState, action) {
@@ -12,7 +13,8 @@ export default function reducer(state = initialState, action) {
         data: {
           ...state.data,
           [action.code]: {
-            isFetching: true
+            isFetching: true,
+            code: action.code
           }
         }
       }

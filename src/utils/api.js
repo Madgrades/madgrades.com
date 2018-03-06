@@ -58,23 +58,34 @@ class Api {
   /**
    * Performs a complex course search/filter with optional sorting.
    */
-  async filterCourses(uuid, query, subjects, instructors, sort, order, page) {
-    let queryParam = query;
+  async filterCourses(params, page) {
+    let { query, subjects, instructors, sort, order } = params;
+
     let subjectParam = Array.isArray(subjects) && subjects.join(',');
     let instructorParam = Array.isArray(instructors) && instructors.join(',');
     let sortParam = sort;
     let orderParam = order;
-    let pageParam = page;
 
-    let res = await this._fetchPath('courses', {
-      query: queryParam,
-      subject: subjectParam,
-      instructor: instructorParam,
+    let queryString = {
       sort: sortParam,
       order: orderParam,
-      page: pageParam,
+      page: page,
       per_page: 100
-    });
+    };
+
+    if (subjectParam) {
+      queryString.subject = subjectParam;
+    }
+
+    if (instructorParam) {
+      queryString.instructor = instructorParam;
+    }
+
+    if (query) {
+      queryString.query = query;
+    }
+
+    let res = await this._fetchPath('courses', queryString);
     return res.json();
   }
 

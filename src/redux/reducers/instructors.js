@@ -13,7 +13,8 @@ export default function reducer(state = initialState, action) {
         data: {
           ...state.data,
           [action.id]: {
-            isFetching: true
+            isFetching: true,
+            id: parseInt(action.id, 10)
           }
         }
       }
@@ -25,7 +26,7 @@ export default function reducer(state = initialState, action) {
           ...state.data,
           [action.id]: {
             isFetching: false,
-            ...action.data
+            ...action.data,
           }
         }
       }

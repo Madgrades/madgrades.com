@@ -6,3 +6,10 @@ export const setSearchQuery = (query) => {
     query
   }
 };
+
+export const setCourseFilterParams = (params) => {
+  return {
+    type: actionTypes.SET_COURSE_FILTER_PARAMS,
+    params
+  }
+};

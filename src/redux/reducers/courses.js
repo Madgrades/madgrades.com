@@ -2,7 +2,11 @@ import * as actionTypes from "../actionTypes";
 
 const initialState = {
   data: {},
-  searches: {}
+  searches: {},
+  advancedSearch: {
+    params: {},
+    pages: {}
+  }
 };
 
 export default function reducer(state = initialState, action) {
@@ -51,6 +55,29 @@ export default function reducer(state = initialState, action) {
           [action.query]: {
             [action.page]: {
               isFetching: false,
+              ...action.data
+            }
+          }
+        }
+      }
+    }
+    case actionTypes.REQUEST_ADVANCED_COURSE_SEARCH: {
+      return {
+        ...state,
+        advancedSearch: {
+          params: action.params,
+          isFetching: true
+        }
+      }
+    }
+    case actionTypes.RECEIVE_ADVANCED_COURSE_SEARCH: {
+      return {
+        ...state,
+        advancedSearch: {
+          params: action.params,
+          isFetching: false,
+          pages: {
+            [action.page]: {
               ...action.data
             }
           }

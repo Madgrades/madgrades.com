@@ -67,4 +67,10 @@ export const fetchSubjectSearch = (query, page) => async (dispatch, getState, ap
 
   // receive action
   dispatch(receiveSubjectSearch(query, page, subjectSearchData));
+
+  const { results } = subjectSearchData;
+
+  results.forEach(subject => {
+    dispatch(receiveSubject(subject.code, subject));
+  });
 };

@@ -55,4 +55,10 @@ export const fetchInstructorSearch = (query, page) => async (dispatch, getState,
 
   // receive action
   dispatch(receiveInstructorSearch(query, page, instructorSearchData));
+
+  const { results } = instructorSearchData;
+
+  results.forEach(instructor => {
+    dispatch(receiveInstructor(instructor.id.toString(), instructor));
+  });
 };

@@ -4,23 +4,26 @@ import utils from "../utils";
 import {Dimmer, Loader} from "semantic-ui-react";
 import CourseSearchResultItem from "../containers/CourseSearchResultItem";
 import Div from "../containers/Div";
-import {Link} from "react-router-dom";
-
-const exampleCourses = [
-    "Physics 103", "Music in Performance", "MATH 222", "CS graphics",
-    "Art 100", "Geoscience 331"
-];
-
-const exampleQueries = exampleCourses.map(name => (
-    <li key={name}>
-      <Link to={`/search/${name}`}>{name}</Link>
-    </li>
-));
+import PropTypes from "prop-types";
+import * as _ from "lodash";
 
 class CourseSearchResults extends Component {
-  componentDidUpdate = () => {
-    const { actions, searchQuery } = this.props;
-    actions.fetchCourseSearch(searchQuery, 1);
+  static propTypes = {
+    searchQuery: PropTypes.string,
+    isAdvanced: PropTypes.bool
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    const { actions, searchQuery, isAdvanced, courseFilterParams } = nextProps;
+
+    if (isAdvanced) {
+      if (!_.isEqual(courseFilterParams, this.props.courseFilterParams)) {
+        actions.fetchAdvancedCourseSearch(courseFilterParams, 1);
+      }
+    }
+    else {
+      actions.fetchCourseSearch(searchQuery, 1);
+    }
   };
 
   renderResults = (results) => results.map(result => {
@@ -32,7 +35,8 @@ class CourseSearchResults extends Component {
   });
 
   render = () => {
-    const { isFetching, results } = this.props.searchData;
+    const { isFetching } = this.props;
+    const { results } = this.props.searchData;
 
     if (isFetching || (results && results.length > 0)) {
       return (
@@ -48,32 +52,34 @@ class CourseSearchResults extends Component {
     return (
         <div>
           <p>
-            No courses were found for your query. Note that we don't have every course name, so try searching
-            by subject and course number (i.e. Math 221, English 120).
-          </p>
-          <p>
-            <strong>Examples:</strong>
-          </p>
-          <ul>
-            {exampleQueries}
-          </ul>
-          <p>
-            See the <Link to="/about">about</Link> page to report an issue.
+            No courses were found for your search.
           </p>
         </div>
     )
   }
 }
 
-function mapStateToProps(state) {
-  const { searchQuery } = state.app;
+function mapStateToProps(state, ownProps) {
+  const { searchQuery, courseFilterParams } = state.app;
 
-  const queryResults = state.courses.searches[searchQuery];
 
-  const searchData = queryResults && queryResults[1];
+  let searchData, isFetching;
+
+  if (ownProps.isAdvanced) {
+    const search = state.courses.advancedSearch;
+    searchData = search.pages && search.pages[1];
+    isFetching = search.isFetching;
+  }
+  else {
+    const queryResults = state.courses.searches[searchQuery];
+    searchData = queryResults && queryResults[1];
+    isFetching = searchData && searchData.isFetching;
+  }
 
   return {
     searchQuery,
+    courseFilterParams,
+    isFetching,
     searchData: searchData || {}
   };
 }

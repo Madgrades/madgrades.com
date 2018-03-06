@@ -1,7 +1,13 @@
 import * as actionTypes from "../actionTypes";
 
 const initialState = {
-  searchQuery: ""
+  searchQuery: "",
+  courseFilterParams: {
+    subjects: null,
+    instructors: null,
+    sort: null,
+    order: null
+  }
 };
 
 export default function reducer(state = initialState, action) {
@@ -10,6 +16,14 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         searchQuery: action.query || ""
+      };
+    case actionTypes.SET_COURSE_FILTER_PARAMS:
+      return {
+        ...state,
+        courseFilterParams: {
+          ...state.courseFilterParams,
+          ...action.params
+        }
       };
     default: {
       return state

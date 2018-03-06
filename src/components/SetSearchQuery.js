@@ -25,9 +25,7 @@ class SetSearchQuery extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {
-    searchQuery: state.app.searchQuery
-  };
+  return {};
 }
 
 

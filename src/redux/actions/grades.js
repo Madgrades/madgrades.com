@@ -33,6 +33,7 @@ export const fetchCourseGrades = (uuid) => async (dispatch, getState, api) => {
 
 
   let byInstructor = {};
+  let instructorNames = {};
 
   // iterate each offering
   gradesData.courseOfferings.forEach(offering => {
@@ -43,12 +44,14 @@ export const fetchCourseGrades = (uuid) => async (dispatch, getState, api) => {
 
       // each instructor for the section
       section.instructors.forEach(instructor => {
+        const { id, name } = instructor;
+        instructorNames[id] = name;
 
         // add or put instructor in map
-        let instructorGrades = byInstructor[instructor];
+        let instructorGrades = byInstructor[id];
         if (!instructorGrades) {
-          instructorGrades = {terms: {}, id: instructor};
-          byInstructor[instructor] = instructorGrades;
+          instructorGrades = {terms: {}, id: id};
+          byInstructor[id] = instructorGrades;
         }
 
         let { terms } = instructorGrades;
@@ -90,6 +93,7 @@ export const fetchCourseGrades = (uuid) => async (dispatch, getState, api) => {
     // add instructor to data
     gradesData.instructors.push({
       id: data.id,
+      name: instructorNames[data.id],
       cumulative,
       terms,
       latestTerm

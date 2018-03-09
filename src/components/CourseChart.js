@@ -52,8 +52,8 @@ class CourseChart extends Component {
 
         if (instructor) {
           secondary = instructor.cumulative;
-          secondaryLabel = `${instructorId} (Cumulative)`;
-          title += ` vs. ${instructorId}`;
+          secondaryLabel = `${instructor.name} (Cumulative)`;
+          title += ` vs. ${instructor.name}`;
         }
         else {
           console.error(`Invalid course/instructor combination: ${uuid}/${instructorId}`);
@@ -67,8 +67,8 @@ class CourseChart extends Component {
 
           if (offering) {
             secondary = offering;
-            secondaryLabel = `${instructorId} (Term ${termName})`;
-            title += ` vs. ${instructorId} - ${termName}`;
+            secondaryLabel = `${instructor.name} (Term ${termName})`;
+            title += ` vs. ${instructorId.name} - ${termName}`;
           }
           else {
             console.error(`Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`);
@@ -119,8 +119,6 @@ class CourseChart extends Component {
 function mapStateToProps(state, ownProps) {
   const course = state.courses.data[ownProps.uuid];
   const data = state.grades.courses.data[ownProps.uuid];
-
-  console.log(course);
 
   return {
     course,

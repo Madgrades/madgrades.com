@@ -20,7 +20,7 @@ const Course = ({ match }) => (
           <TermSelect termCodes={[1082]} includeCumulative={true}/>
         </Grid.Column>
         <Grid.Column width={12} mobile={16} tablet={10} computer={12}>
-          <CourseChart uuid={match.params.uuid}/>
+          <CourseChart uuid={match.params.uuid} instructorId={4434130}/>
         </Grid.Column>
       </Grid>
     </Container>

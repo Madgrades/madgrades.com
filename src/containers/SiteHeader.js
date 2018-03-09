@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Container, Image, Menu, Segment} from "semantic-ui-react";
+import {Button, Container, Menu, Segment} from "semantic-ui-react";
 import {NavLink} from "react-router-dom";
 import {withRouter} from "react-router";
 import Div from "./Div";
@@ -18,7 +18,6 @@ class SiteHeader extends Component {
   };
 
   toggleNav = () => {
-    console.log("CLICKED");
     this.setState({
       isNavToggled: !this.state.isNavToggled
     })
@@ -35,7 +34,7 @@ class SiteHeader extends Component {
               <Menu.Item className='madgrades-logo'>
                 <Button as='a' className='toggle-button' icon='bars' color='grey' basic onClick={this.toggleNav}/>
                 <NavLink to="/">
-                  <img src={logo} width={40} style={{display: "inline-block", marginRight: "10px"}}/>
+                  <img alt="Madgrades Logo" src={logo} width={40} style={{display: "inline-block", marginRight: "10px"}}/>
                 </NavLink>
                 <div style={{width: "40px"}}/>
               </Menu.Item>

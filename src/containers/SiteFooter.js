@@ -29,7 +29,7 @@ const SiteFooter = () => (
           </Grid.Column>
           <Grid.Column width={2} className="logo">
             <Link to="/">
-              <img title="Madgrades Logo" src={logo}/>
+              <img alt="Madgrades Logo" src={logo}/>
             </Link>
           </Grid.Column>
           <Grid.Column width={7} textAlign="right">

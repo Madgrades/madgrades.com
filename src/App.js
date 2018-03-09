@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Router, Route, Switch} from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import SiteHeader from "./containers/SiteHeader";
@@ -8,7 +8,7 @@ import SiteFooter from "./containers/SiteFooter";
 import Search from "./pages/Search";
 import About from "./pages/About";
 import Instructors from "./pages/Instructors";
-import { createBrowserHistory } from "history";
+import {createBrowserHistory} from "history";
 
 const history = createBrowserHistory();
 

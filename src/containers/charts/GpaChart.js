@@ -1,10 +1,11 @@
 import React, {Component} from "react";
 import {
   CartesianGrid,
-  Label, Legend,
+  Label,
   Line,
   LineChart,
-  ResponsiveContainer, Tooltip,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis
 } from "recharts";

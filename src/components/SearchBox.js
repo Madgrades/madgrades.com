@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
-import {Form, Input} from "semantic-ui-react";
+import {Input} from "semantic-ui-react";
 import {withRouter} from "react-router";
 
 class SearchBox extends Component {

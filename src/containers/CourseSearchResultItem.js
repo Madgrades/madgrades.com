@@ -3,7 +3,6 @@ import {Header, Segment} from "semantic-ui-react";
 import SubjectName from "../components/SubjectName";
 import CourseName from "../components/CourseName";
 import {Link} from "react-router-dom";
-import CourseChart from "../components/CourseChart";
 
 const renderSubjectNames = (subjectCodes) => subjectCodes.map((code, i, arr) => {
   let divider = i < arr.length - 1 && <span>/</span>;

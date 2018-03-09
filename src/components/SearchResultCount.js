@@ -1,9 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import PropTypes from "prop-types";
 import utils from "../utils";
 
-class AdvancedSearchResultCount extends Component {
+class SearchResultCount extends Component {
   render = () => {
     const { count } = this.props;
 
@@ -12,10 +11,10 @@ class AdvancedSearchResultCount extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const { advancedSearch } = state.courses;
+  const { search } = state.courses;
 
-  let count = advancedSearch && advancedSearch.pages && advancedSearch.pages[1]
-    && advancedSearch.pages[1].results && advancedSearch.pages[1].results.length;
+  let count = search && search.pages && search.pages[1]
+    && search.pages[1].results && search.pages[1].results.length;
 
   if (count) {
     return {
@@ -30,4 +29,4 @@ function mapStateToProps(state, ownProps) {
 }
 
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(AdvancedSearchResultCount)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(SearchResultCount)

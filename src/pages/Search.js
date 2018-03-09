@@ -1,25 +1,24 @@
 import React from "react";
-import {Container, Divider, Dropdown, Grid, Header} from "semantic-ui-react";
+import {Container, Divider, Grid, Header} from "semantic-ui-react";
 import {parse} from 'qs';
 import SetCourseFilterParams from "../components/SetCourseFilterParams";
 import CourseFilterForm from "../components/CourseFilterForm";
-import CourseSearchResultItem from "../containers/CourseSearchResultItem";
 import CourseSearchResults from "../components/CourseSearchResults";
-import AdvancedSearchResultCount from "../components/AdvancedSearchResultCount";
+import SearchResultCount from "../components/SearchResultCount";
 import CourseSortForm from "../components/CourseSortForm";
 
 const extractParams = (location) => {
   const params = parse(location.search.substr(1));
 
   let query = params.query || null;
-  let page = parseInt(params.page || '1');
+  let page = parseInt(params.page || '1', 10);
   let subjects = undefined;
   if (params.subjects && Array.isArray(params.subjects)) {
     subjects = params.subjects.map(s => s);
   }
   let instructors = undefined;
   if (Array.isArray(params.instructors)) {
-    instructors = params.instructors.map(i => parseInt(i));
+    instructors = params.instructors.map(i => parseInt(i, 10));
   }
   let order = (params.order || '').toLowerCase();
   if (!['asc', 'desc'].includes(order)) {
@@ -53,7 +52,7 @@ const Courses = ({ location }) => (
             <Grid.Column width={6}>
               <Header as='h2'>
                 <Header.Content>
-                  <AdvancedSearchResultCount/> courses
+                  <SearchResultCount/> courses
                 </Header.Content>
               </Header>
             </Grid.Column>
@@ -66,7 +65,7 @@ const Courses = ({ location }) => (
             </Grid.Column>
           </Grid>
           <Divider/>
-          <CourseSearchResults isAdvanced/>
+          <CourseSearchResults/>
         </Grid.Column>
       </Grid>
     </Container>

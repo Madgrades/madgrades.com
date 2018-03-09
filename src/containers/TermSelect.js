@@ -36,9 +36,10 @@ class TermSelect extends Component {
 
     return (
         <Dropdown
-          selection
-          defaultValue={defaultValue}
-          options={options}/>
+            fluid
+            selection
+            defaultValue={defaultValue}
+            options={options}/>
     )
   }
 }

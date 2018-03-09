@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Header, Image} from "semantic-ui-react";
+import {Container, Header} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 
 const Home = () => (

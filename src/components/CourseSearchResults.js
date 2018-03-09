@@ -9,20 +9,14 @@ import * as _ from "lodash";
 
 class CourseSearchResults extends Component {
   static propTypes = {
-    searchQuery: PropTypes.string,
-    isAdvanced: PropTypes.bool
+    courseFilterParams: PropTypes.object
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const { actions, searchQuery, isAdvanced, courseFilterParams } = nextProps;
+    const { actions, courseFilterParams } = nextProps;
 
-    if (isAdvanced) {
-      if (!_.isEqual(courseFilterParams, this.props.courseFilterParams)) {
-        actions.fetchAdvancedCourseSearch(courseFilterParams, 1);
-      }
-    }
-    else {
-      actions.fetchCourseSearch(searchQuery, 1);
+    if (!_.isEqual(courseFilterParams, this.props.courseFilterParams)) {
+      actions.fetchCourseSearch(courseFilterParams, 1);
     }
   };
 
@@ -62,19 +56,11 @@ class CourseSearchResults extends Component {
 function mapStateToProps(state, ownProps) {
   const { searchQuery, courseFilterParams } = state.app;
 
-
   let searchData, isFetching;
 
-  if (ownProps.isAdvanced) {
-    const search = state.courses.advancedSearch;
-    searchData = search.pages && search.pages[1];
-    isFetching = search.isFetching;
-  }
-  else {
-    const queryResults = state.courses.searches[searchQuery];
-    searchData = queryResults && queryResults[1];
-    isFetching = searchData && searchData.isFetching;
-  }
+  const search = state.courses.search;
+  searchData = search.pages && search.pages[1];
+  isFetching = search.isFetching;
 
   return {
     searchQuery,

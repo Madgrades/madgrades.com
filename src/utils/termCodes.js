@@ -13,7 +13,7 @@ export const toName = (termCode) => {
   if (seasonId === 2)
     offset -= 1;
 
-  let calendarYear = 2001 + offset
+  let calendarYear = 2001 + offset;
   let season = SEASON_IDS[seasonId];
   return `${season} ${calendarYear}`
 };

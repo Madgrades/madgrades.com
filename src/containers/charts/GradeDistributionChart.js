@@ -3,7 +3,7 @@ import {
   Bar,
   BarChart,
   Label,
-  LabelList,
+  LabelList, Legend,
   ResponsiveContainer,
   XAxis,
   YAxis
@@ -24,24 +24,56 @@ const renderBarLabel = (props) => {
 class GradeDistributionChart extends Component {
   static propTypes = {
     title: PropTypes.string,
-    gradeDistribution: PropTypes.object.isRequired
+    primary: PropTypes.object,
+    primaryLabel: PropTypes.string,
+    secondary: PropTypes.object,
+    secondaryLabel: PropTypes.string
+  };
+
+  static defaultProps = {
+    title: "Grade Distribution",
+    primary: utils.grades.zero(),
+    secondaryLabel: "Secondary"
   };
 
   render = () => {
-    const { title, gradeDistribution } = this.props;
+    const { title, primary, secondary } = this.props;
+    let { primaryLabel, secondaryLabel } = this.props;
 
-    const total = gradeDistribution.total;
+    if (!primaryLabel) {
+      if (secondary) {
+        primaryLabel = "Primary";
+      }
+      else {
+        primaryLabel = "Grades Received";
+      }
+    }
+
     const data = utils.grades.getGradeKeys(false).map(key => {
       const name = utils.grades.keyToName(key);
-      const gradeCount = gradeDistribution[key];
-      const outOf = total || 1; // we don't want to divide by 0
-      const percent = (gradeCount / outOf) * 100;
-      const label = utils.numberWithCommas(gradeCount);
+
+      let percent, label, percentSecondary, labelSecondary;
+
+      if (primary) {
+        const gradeCount = primary[key];
+        const outOf = primary.total || 1; // we don't want to divide by 0
+        percent = (gradeCount / outOf) * 100;
+        label = utils.numberWithCommas(gradeCount);
+      }
+
+      if (secondary) {
+        const gradeCount = secondary[key];
+        const outOf = secondary.total || 1; // we don't want to divide by 0
+        percentSecondary = (gradeCount / outOf) * 100;
+        labelSecondary = utils.numberWithCommas(gradeCount);
+      }
 
       return {
         name,
         percent,
-        label
+        label,
+        percentSecondary,
+        labelSecondary
       }
     });
 
@@ -56,14 +88,19 @@ class GradeDistributionChart extends Component {
             <ResponsiveContainer minWidth={200} minHeight={200}>
               <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
                 <XAxis dataKey="name">
-                  <Label value={`Grades Received (${utils.numberWithCommas(total)})`} position="insideBottom" offset={-10}/>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>
                   <Label value="Students (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>
                 </YAxis>
-                <Bar dataKey="percent" isAnimationActive={false} fill="rgba(0, 0, 0, 1)">
+                <Bar name={primaryLabel} dataKey="percent" isAnimationActive={false} fill="#000000">
                   <LabelList dataKey="label" content={renderBarLabel} position="top"/>
                 </Bar>
+                { secondary &&
+                  <Bar name={secondaryLabel} dataKey="percentSecondary" isAnimationActive={false} fill="#c5050c">
+                    <LabelList dataKey="labelSecondary" content={renderBarLabel} position="top"/>
+                  </Bar>
+                }
+                <Legend/>
               </BarChart>
             </ResponsiveContainer>
           </div>

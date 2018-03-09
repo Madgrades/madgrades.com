@@ -43,6 +43,8 @@ class EntitySelect extends Component {
       case 'subject':
         this.props.actions.fetchSubjectSearch(query, 1);
         return;
+      default:
+        return;
     }
   };
 
@@ -54,6 +56,8 @@ class EntitySelect extends Component {
       case 'subject':
         this.props.actions.fetchSubject(key);
         return;
+      default:
+        return;
     }
   };
 
@@ -63,6 +67,8 @@ class EntitySelect extends Component {
         return entity.id;
       case 'subject':
         return entity.code;
+      default:
+        return;
     }
   };
 
@@ -87,7 +93,9 @@ class EntitySelect extends Component {
             key: entity.code,
             value: entity.code,
             text: entity.name
-          }
+          };
+        default:
+          return;
       }
     }
   };
@@ -201,6 +209,8 @@ function mapStateToProps(state, ownProps) {
     case 'subject':
       entityState = state.subjects;
       break;
+    default:
+      return;
   }
 
   return {

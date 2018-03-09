@@ -5,12 +5,12 @@ import utils from "../utils";
 import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
 import {Dimmer, Loader} from "semantic-ui-react";
 import Div from "../containers/Div";
-import {GpaChart} from "../containers/charts/GpaChart";
 
 class CourseChart extends Component {
   static propTypes = {
     uuid: PropTypes.string.isRequired,
-    termCode: PropTypes.number
+    termCode: PropTypes.number,
+    instructorId: PropTypes.number
   };
 
   componentWillMount = () => {
@@ -20,38 +20,86 @@ class CourseChart extends Component {
   };
 
   render = () => {
-    const { data, termCode } = this.props;
+    const { course, uuid, data, termCode, instructorId } = this.props;
 
-    let chart;
-    let gradeDistribution;
-    
+    let chart, primary, label, secondary, secondaryLabel, isLoaded;
+
+    let title = course && course.name;
+    title += ' (Cumulative';
+
     if (data && data.cumulative) {
-      if (termCode) {
-        let termData = data.courseOfferings.filter(offering => offering.termCode === termCode);
+      isLoaded = true;
 
-        if (termData) {
-          gradeDistribution = termData[0].cumulative;
+      primary = data.cumulative;
+      label = `Cumulative - ${utils.round(utils.grades.gpa(data.cumulative), 2)} GPA`;
+
+      let termName = termCode && utils.termCodes.toName(termCode);
+
+      if (termCode && !instructorId) {
+        let offering = data.courseOfferings.filter(o => o.termCode === termCode)[0];
+
+        if (offering) {
+          secondary = offering.cumulative;
+          secondaryLabel = `${termName}`;
+          title += ` vs. ${termName}`;
+        }
+        else {
+          console.error(`Invalid course/term combination: ${uuid}/${termCode}`);
+        }
+      }
+      else if (instructorId && !termCode) {
+        let instructor = data.instructors.filter(i => i.id === instructorId)[0];
+
+        if (instructor) {
+          secondary = instructor.cumulative;
+          secondaryLabel = `${instructorId} (Cumulative)`;
+          title += ` vs. ${instructorId}`;
+        }
+        else {
+          console.error(`Invalid course/instructor combination: ${uuid}/${instructorId}`);
+        }
+      }
+      else if (instructorId && termCode) {
+        let instructor = data.instructors.filter(i => i.id === instructorId)[0];
+
+        if (instructor) {
+          let offering = instructor.terms.filter(o => o.termCode === termCode)[0];
+
+          if (offering) {
+            secondary = offering;
+            secondaryLabel = `${instructorId} (Term ${termName})`;
+            title += ` vs. ${instructorId} - ${termName}`;
+          }
+          else {
+            console.error(`Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`);
+          }
         }
       }
       else {
-        gradeDistribution = data.cumulative;
+        // no secondary
       }
+
+      if (secondary) {
+        secondaryLabel += ' - ' + utils.round(utils.grades.gpa(secondary), 2) + ' GPA';
+      }
+      title += ')';
     }
 
-    let isLoaded = gradeDistribution !== undefined;
 
     if (isLoaded) {
       chart = (
           <GradeDistributionChart
-              title={`Cumulative Grade Distribution - (${utils.round(utils.grades.gpa(gradeDistribution), 2)} GPA)`}
-              gradeDistribution={gradeDistribution}/>
+              title={title}
+              primary={primary}
+              primaryLabel={label}
+              secondary={secondary}
+              secondaryLabel={secondaryLabel}/>
       )
     }
     else {
       chart = (
           <GradeDistributionChart
-              title="Cumulative Grade Distribution"
-              gradeDistribution={utils.grades.zero()}/>
+              title="Cumulative Grade Distribution"/>
       )
     }
 
@@ -69,10 +117,14 @@ class CourseChart extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  const courseGrades = state.grades.courses.data;
+  const course = state.courses.data[ownProps.uuid];
+  const data = state.grades.courses.data[ownProps.uuid];
+
+  console.log(course);
 
   return {
-    data: courseGrades[ownProps.uuid]
+    course,
+    data
   }
 }
 

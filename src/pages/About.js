@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, Divider, Icon, Image} from "semantic-ui-react";
+import {Button, Container, Divider, Icon} from "semantic-ui-react";
 
 const githubLink = "https://github.com/thekeenant/madgrades";
 const gradeDistLink = "https://registrar.wisc.edu/wp-content/uploads/sites/36/2017/09/report-gradedistribution-2010-2011spring.pdf";

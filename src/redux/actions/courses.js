@@ -1,4 +1,5 @@
 import * as actionTypes from "../actionTypes";
+import * as _ from "lodash";
 
 const requestCourse = (uuid) => {
   return {
@@ -33,66 +34,37 @@ export const fetchCourse = (uuid) => async (dispatch, getState, api) => {
   dispatch(receiveCourse(uuid, courseData));
 };
 
-
-const requestCourseSearch = (query, page) => {
+const requestCourseSearch = (params, page) => {
   return {
     type: actionTypes.REQUEST_COURSE_SEARCH,
-    query,
+    params,
     page
   }
 };
 
-const receiveCourseSearch = (query, page, data) => {
+const receiveCourseSearch = (params, page, data) => {
   return {
     type: actionTypes.RECEIVE_COURSE_SEARCH,
-    query,
+    params,
     page,
     data
   }
 };
 
-export const fetchCourseSearch = (query, page) => async (dispatch, getState, api) => {
+export const fetchCourseSearch = (params, page) => async (dispatch, getState, api) => {
   const state = getState();
-  let courseSearchData = state.courses.searches[query];
+  let searchData = state.courses.search;
 
-  // don't fetch again
-  if (courseSearchData)
+  // if params are the same, we don't need to fetch
+  if (_.isEqual(searchData.params, params))
     return;
 
   // request action
-  dispatch(requestCourseSearch(query, page));
+  dispatch(requestCourseSearch(params, page));
 
   // perform request
-  courseSearchData = await api.searchCourses(query, page);
+  searchData = await api.filterCourses(params, page);
 
   // receive action
-  dispatch(receiveCourseSearch(query, page, courseSearchData));
-};
-
-const requestAdvancedCourseSearch = (params, page) => {
-  return {
-    type: actionTypes.REQUEST_ADVANCED_COURSE_SEARCH,
-    params,
-    page
-  }
-};
-
-const receiveAdvancedCourseSearch = (params, page, data) => {
-  return {
-    type: actionTypes.RECEIVE_ADVANCED_COURSE_SEARCH,
-    params,
-    page,
-    data
-  }
-};
-
-export const fetchAdvancedCourseSearch = (params, page) => async (dispatch, getState, api) => {
-  // request action
-  dispatch(requestAdvancedCourseSearch(params, page));
-
-  // perform request
-  const searchData = await api.filterCourses(params, page);
-
-  // receive action
-  dispatch(receiveAdvancedCourseSearch(params, page, searchData));
+  dispatch(receiveCourseSearch(params, page, searchData));
 };

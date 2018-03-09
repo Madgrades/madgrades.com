@@ -14,6 +14,7 @@ import logger from 'redux-logger'
 import initReactFastclick from 'react-fastclick';
 
 const api = utils.api.create("https://api.madgrades.com/v1/", "fe85238d9504436eb7c1a59fdc8eb92a");
+// const api = utils.api.create("http://localhost:3001/v1/", "none");
 
 const store = createStore(
     combineReducers(reducers),

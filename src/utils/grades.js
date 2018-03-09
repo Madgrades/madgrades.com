@@ -30,10 +30,20 @@ export const getGradeKeys = (includeMisc) => {
 
 export const keyToName = (key) => key.replace("Count", "").toUpperCase();
 
+export const gpa = (dist) => {
+  const numer = dist.aCount * 4.0 +
+      dist.abCount * 3.5 +
+      dist.bCount * 3.0 +
+      dist.bcCount * 2.5 +
+      dist.cCount * 2.0 +
+      dist.dCount * 1.0;
+  const denom = dist.total;
+
+  return numer / denom;
+};
+
 export const zero = () => {
   const result = {
-    gpa: null,
-    gpaTotal: 0,
     total: 0
   };
   getGradeKeys(true).forEach(key => {
@@ -44,12 +54,10 @@ export const zero = () => {
 
 export const combine = (a, b) => {
   let result = zero();
-  result.gpaTotal = (a.gpaTotal || 0) + (b.gpaTotal || 0);
   result.total = (a.total || 0) + (b.total || 0);
   getGradeKeys(true).forEach(key => {
     result[key] = (a[key] || 0) + (b[key] || 0)
   });
-  // todo: combine 2 gpa's
   return result;
 };
 

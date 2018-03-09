@@ -35,7 +35,7 @@ export class GpaChart extends Component {
 
     const data = gradeDistributions.map(gradeDistribution => {
       return {
-        gpa: gradeDistribution.gpa,
+        gpa: utils.grades.gpa(gradeDistribution),
         termName: utils.termCodes.toName(gradeDistribution.termCode)
       }
     });

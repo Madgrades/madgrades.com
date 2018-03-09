@@ -43,7 +43,7 @@ class CourseChart extends Component {
     if (isLoaded) {
       chart = (
           <GradeDistributionChart
-              title={`Cumulative Grade Distribution - (${utils.round(gradeDistribution.gpa, 2)} GPA)`}
+              title={`Cumulative Grade Distribution - (${utils.round(utils.grades.gpa(gradeDistribution), 2)} GPA)`}
               gradeDistribution={gradeDistribution}/>
       )
     }

@@ -30,11 +30,11 @@ class GradeDistributionChart extends Component {
   render = () => {
     const { title, gradeDistribution } = this.props;
 
-    const gpaTotal = gradeDistribution.gpaTotal;
+    const total = gradeDistribution.total;
     const data = utils.grades.getGradeKeys(false).map(key => {
       const name = utils.grades.keyToName(key);
       const gradeCount = gradeDistribution[key];
-      const outOf = gpaTotal || 1; // we don't want to divide by 0
+      const outOf = total || 1; // we don't want to divide by 0
       const percent = (gradeCount / outOf) * 100;
       const label = utils.numberWithCommas(gradeCount);
 
@@ -56,7 +56,7 @@ class GradeDistributionChart extends Component {
             <ResponsiveContainer minWidth={200} minHeight={200}>
               <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
                 <XAxis dataKey="name">
-                  <Label value={`Grades Received (${utils.numberWithCommas(gpaTotal)})`} position="insideBottom" offset={-10}/>
+                  <Label value={`Grades Received (${utils.numberWithCommas(total)})`} position="insideBottom" offset={-10}/>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>
                   <Label value="Students (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>

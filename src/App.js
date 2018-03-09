@@ -8,11 +8,22 @@ import SiteFooter from "./containers/SiteFooter";
 import Search from "./pages/Search";
 import About from "./pages/About";
 import Instructors from "./pages/Instructors";
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
+
+// google analytics
+history.listen(location => {
+  if (window.ga) {
+    window.ga('set', 'page', location.pathname + location.search);
+    window.ga('send', 'pageview', location.pathname + location.search);
+  }
+});
 
 class App extends Component {
   render = () => {
     return (
-        <BrowserRouter>
+        <BrowserRouter history={history}>
           <div className="App">
             <SiteHeader/>
             <div className="app-content">

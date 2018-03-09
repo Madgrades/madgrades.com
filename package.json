@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "history": "^4.7.2",
     "lodash": "^4.17.5",
     "node-sass-chokidar": "0.0.3",
     "normalize.css": "^8.0.0",

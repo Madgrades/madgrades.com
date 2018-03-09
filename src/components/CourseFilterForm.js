@@ -1,22 +1,25 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
-import {Button, Form} from "semantic-ui-react";
+import {Button, Divider, Form, Input} from "semantic-ui-react";
 import EntitySelect from "./EntitySelect";
 import {withRouter} from "react-router";
 import {stringify} from "qs";
+import * as _ from "lodash";
 
 class CourseFilterForm extends Component {
   state = {
     subjects: [],
-    instructors: []
+    instructors: [],
+    query: undefined
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const { subjects, instructors } = nextProps.courseFilterParams;
+    const { subjects, instructors, query } = nextProps.courseFilterParams;
     this.setState({
       subjects,
-      instructors
+      instructors,
+      query
     })
   };
 
@@ -32,27 +35,44 @@ class CourseFilterForm extends Component {
     })
   };
 
-  onClear = () => {
+  onQueryChange = (event, { value }) => {
+    this.setState({
+      query: value
+    })
+  };
+
+  onClear = (event) => {
+    event.preventDefault();
     this.setState({
       subjects: [],
-      instructors: []
+      instructors: [],
+      query: undefined
     })
   };
 
   onSubmit = () => {
-    const params = {
+    const allParams = {
       ...this.props.courseFilterParams,
       ...this.state
     };
 
-    this.props.history.push('/courses?' + stringify(params, { encode: false }));
+    let params = _.omitBy(allParams, _.isNil);
+    this.props.history.push('/search?' + stringify(params));
   };
 
   render = () => {
-    const { instructors, subjects } = this.state;
+    const { instructors, subjects, query } = this.state;
 
     return (
         <Form onSubmit={this.onSubmit}>
+          <Form.Field>
+            <label>Search</label>
+            <Input
+                placeholder='i.e. Math 222, Music in Performance'
+                value={query || ""}
+                onChange={this.onQueryChange}/>
+          </Form.Field>
+          <Divider horizontal content='Filter' style={{color: "#888", fontSize: "80%"}}/>
           <Form.Field>
             <label>Subjects</label>
             <EntitySelect

@@ -18,6 +18,7 @@ class SiteHeader extends Component {
   };
 
   toggleNav = () => {
+    console.log("CLICKED");
     this.setState({
       isNavToggled: !this.state.isNavToggled
     })
@@ -44,15 +45,6 @@ class SiteHeader extends Component {
                   <SearchBox/>
                 </Menu.Item>
                 <Menu.Menu position='right'>
-                  <Menu.Item as={NavLink} to="/explore">
-                    Explore
-                  </Menu.Item>
-                  <Menu.Item as={NavLink} to="/courses">
-                    Courses
-                  </Menu.Item>
-                  <Menu.Item as={NavLink} to="/instructors">
-                    Instructors
-                  </Menu.Item>
                   <Menu.Item as={NavLink} to="/about">
                     About
                   </Menu.Item>

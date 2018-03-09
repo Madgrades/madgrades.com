@@ -6,3 +6,7 @@
 @import url('./containers/SiteHeader.css');
 @import url('./containers/SiteFooter.css');
 @import url('components/SearchBox.css');
+
+html {
+  touch-action: manipulation;
+}

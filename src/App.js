@@ -7,7 +7,6 @@ import Course from "./pages/Course";
 import SiteFooter from "./containers/SiteFooter";
 import Search from "./pages/Search";
 import About from "./pages/About";
-import Courses from "./pages/Courses";
 import Instructors from "./pages/Instructors";
 
 class App extends Component {
@@ -19,9 +18,8 @@ class App extends Component {
             <div className="app-content">
               <Switch>
                 <Route exact path="/" component={Home}/>
-                <Route path="/search/:query/:tab?" component={Search}/>
                 <Route path="/courses/:uuid" component={Course}/>
-                <Route path="/courses" component={Courses}/>
+                <Route path="/search" component={Search}/>
                 <Route path="/instructors" component={Instructors}/>
                 <Route path="/about" component={About}/>
                 <Route component={NotFound}/>

@@ -21,7 +21,7 @@ class SearchBox extends Component {
     const { searchValue } = this.state;
 
     // tell the app about the search!
-    this.props.history.push(`/search/${searchValue}`);
+    this.props.history.push(`/search?query=${searchValue}`);
   };
 
   onInputChange = (event, data) => {

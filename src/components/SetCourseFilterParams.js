@@ -10,8 +10,9 @@ class SetCourseFilterParams extends Component {
 
   setCourseFilterParams = () => {
     const { params, actions } = this.props;
+    const { page } = params;
     actions.setCourseFilterParams(params);
-    actions.fetchAdvancedCourseSearch(params, 1);
+    actions.fetchAdvancedCourseSearch(params, page);
   };
 
   componentDidMount = this.setCourseFilterParams;

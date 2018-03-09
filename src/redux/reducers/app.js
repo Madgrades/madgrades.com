@@ -3,10 +3,10 @@ import * as actionTypes from "../actionTypes";
 const initialState = {
   searchQuery: "",
   courseFilterParams: {
-    subjects: null,
-    instructors: null,
-    sort: null,
-    order: null
+    subjects: undefined,
+    instructors: undefined,
+    sort: undefined,
+    order: undefined
   }
 };
 

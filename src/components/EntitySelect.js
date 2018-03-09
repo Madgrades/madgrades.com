@@ -161,7 +161,7 @@ class EntitySelect extends Component {
 
   render = () => {
     const { options, isFetching, isTyping, query } = this.state;
-    const { value } = this.props;
+    const { value, entityType } = this.props;
 
     let message = 'No results found';
     if (query.length < 2)
@@ -171,7 +171,7 @@ class EntitySelect extends Component {
 
     return (
         <Dropdown
-            placeholder={'Search...'}
+            placeholder={`Search ${entityType}s...`}
             noResultsMessage={message}
             fluid
             multiple

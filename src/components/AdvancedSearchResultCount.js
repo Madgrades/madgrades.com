@@ -7,7 +7,7 @@ class AdvancedSearchResultCount extends Component {
   render = () => {
     const { count } = this.props;
 
-    return <span>{count === 100 ? "100+" : utils.numberWithCommas(count)}</span>
+    return <span>{count === 50 ? "50+" : utils.numberWithCommas(count)}</span>
   }
 }
 
@@ -15,7 +15,7 @@ function mapStateToProps(state, ownProps) {
   const { advancedSearch } = state.courses;
 
   let count = advancedSearch && advancedSearch.pages && advancedSearch.pages[1]
-    && advancedSearch.pages[1].results.length;
+    && advancedSearch.pages[1].results && advancedSearch.pages[1].results.length;
 
   if (count) {
     return {

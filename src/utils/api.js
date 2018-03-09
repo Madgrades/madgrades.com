@@ -50,7 +50,7 @@ class Api {
     let res = await this._fetchPath('courses', {
       query: query,
       page: page,
-      per_page: 100
+      per_page: 50
     });
     return res.json();
   }
@@ -63,14 +63,10 @@ class Api {
 
     let subjectParam = Array.isArray(subjects) && subjects.join(',');
     let instructorParam = Array.isArray(instructors) && instructors.join(',');
-    let sortParam = sort;
-    let orderParam = order;
 
     let queryString = {
-      sort: sortParam,
-      order: orderParam,
       page: page,
-      per_page: 100
+      per_page: 50
     };
 
     if (subjectParam) {
@@ -79,6 +75,14 @@ class Api {
 
     if (instructorParam) {
       queryString.instructor = instructorParam;
+    }
+
+    if (sort) {
+      queryString.sort = sort;
+    }
+
+    if (order) {
+      queryString.order = order
     }
 
     if (query) {

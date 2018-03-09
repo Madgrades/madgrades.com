@@ -9,6 +9,11 @@ import {stringify} from "qs";
 
 const sortOptions = [
   {
+    key: 'relevance',
+    text: 'Best Match',
+    value: 'relevance'
+  },
+  {
     key: 'number',
     text: 'Number (Lowest First)',
     value: 'number'
@@ -17,26 +22,6 @@ const sortOptions = [
     key: 'number_desc',
     text: 'Number (Highest First)',
     value: 'number_desc'
-  },
-  {
-    key: 'trending',
-    text: 'Trending',
-    value: 'trending_recent'
-  },
-  {
-    key: 'dying',
-    text: 'Dying',
-    value: 'dying'
-  },
-  {
-    key: 'rising_gpa',
-    text: 'Rising GPA',
-    value: 'rising_gpa'
-  },
-  {
-    key: 'falling_gpa',
-    text: 'Falling GPA',
-    value: 'falling_gpa'
   }
 ];
 
@@ -50,22 +35,16 @@ class CourseFilterForm extends Component {
     const { sort, order } = nextProps.courseFilterParams;
     let value;
 
-    console.log(sort, order);
-
-    if (!sort || sort === 'number') {
+    if (!sort) {
+      value = 'relevance';
+    }
+    else if (sort === 'relevance') {
+      value = 'relevance'
+    }
+    else if (sort === 'number') {
       value = 'number';
       if (order === 'desc')
         value = 'number_desc';
-    }
-    else if (sort === 'trending_recent') {
-      value = sort;
-      if (order === 'asc')
-        value = 'dying';
-    }
-    else if (sort === 'trending_gpa_recent') {
-      value = 'rising_gpa';
-      if (order === 'asc')
-        value = 'falling_gpa';
     }
 
     if (value !== this.state.value) {
@@ -89,21 +68,8 @@ class CourseFilterForm extends Component {
       sort = 'number';
       order = 'desc';
     }
-    else if (value === 'trending_recent') {
-      sort = 'trending_recent';
-      order = 'desc';
-    }
-    else if (value === 'dying') {
-      sort = 'trending_recent';
-      order = 'asc';
-    }
-    else if (value === 'rising_gpa') {
-      sort = 'trending_gpa_recent';
-      order = 'desc';
-    }
-    else if (value === 'falling_gpa') {
-      sort = 'trending_gpa_recent';
-      order = 'asc';
+    else if (value === 'relevance') {
+      // nothing to do
     }
 
     const params = {
@@ -111,7 +77,7 @@ class CourseFilterForm extends Component {
       sort,
       order
     };
-    this.props.history.push('/courses?' + stringify(params, { encode: false }));
+    this.props.history.push('/search?' + stringify(params, { encode: false }));
   };
 
 

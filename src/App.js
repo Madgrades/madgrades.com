@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom";
+import {Router, Route, Switch} from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import SiteHeader from "./containers/SiteHeader";
@@ -16,14 +16,14 @@ const history = createBrowserHistory();
 history.listen(location => {
   if (window.ga) {
     window.ga('set', 'page', location.pathname + location.search);
-    window.ga('send', 'pageview', location.pathname + location.search);
+    window.ga('send', 'pageview');
   }
 });
 
 class App extends Component {
   render = () => {
     return (
-        <BrowserRouter history={history}>
+        <Router history={history}>
           <div className="App">
             <SiteHeader/>
             <div className="app-content">
@@ -38,7 +38,7 @@ class App extends Component {
             </div>
             <SiteFooter/>
           </div>
-        </BrowserRouter>
+        </Router>
     );
   }
 }

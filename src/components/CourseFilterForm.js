@@ -72,7 +72,7 @@ class CourseFilterForm extends Component {
                 value={query || ""}
                 onChange={this.onQueryChange}/>
           </Form.Field>
-          <Divider horizontal content='Filter' style={{color: "#888", fontSize: "80%"}}/>
+          <Divider horizontal content='Filter' className='divider-small'/>
           <Form.Field>
             <label>Subjects</label>
             <EntitySelect

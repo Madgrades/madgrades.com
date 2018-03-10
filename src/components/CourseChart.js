@@ -25,13 +25,13 @@ class CourseChart extends Component {
     let chart, primary, label, secondary, secondaryLabel, isLoaded;
 
     let title = course && course.name;
-    title += ' (Cumulative';
+    title += ': Cumulative';
 
     if (data && data.cumulative) {
       isLoaded = true;
 
       primary = data.cumulative;
-      label = `Cumulative - ${utils.round(utils.grades.gpa(data.cumulative), 2)} GPA`;
+      label = `Cumulative - ${utils.grades.gpa(data.cumulative).toFixed(2)} GPA`;
 
       let termName = termCode && utils.termCodes.toName(termCode);
 
@@ -52,7 +52,7 @@ class CourseChart extends Component {
 
         if (instructor) {
           secondary = instructor.cumulative;
-          secondaryLabel = `${instructor.name} (Cumulative)`;
+          secondaryLabel = instructor.name;
           title += ` vs. ${instructor.name}`;
         }
         else {
@@ -67,8 +67,8 @@ class CourseChart extends Component {
 
           if (offering) {
             secondary = offering;
-            secondaryLabel = `${instructor.name} (Term ${termName})`;
-            title += ` vs. ${instructorId.name} - ${termName}`;
+            secondaryLabel = `${instructor.name} (${termName})`;
+            title += ` vs. ${instructor.name} (${termName})`;
           }
           else {
             console.error(`Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`);
@@ -80,9 +80,8 @@ class CourseChart extends Component {
       }
 
       if (secondary) {
-        secondaryLabel += ' - ' + utils.round(utils.grades.gpa(secondary), 2) + ' GPA';
+        secondaryLabel += ' - ' + utils.grades.gpa(secondary).toFixed(2) + ' GPA';
       }
-      title += ')';
     }
 
 

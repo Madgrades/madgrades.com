@@ -61,7 +61,7 @@ class SearchBox extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   // we grab the app state search query, only used on page load basically
   // like when you refresh the search page for some odd reason
   return {

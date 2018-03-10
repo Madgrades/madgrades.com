@@ -37,7 +37,7 @@ export const gpa = (dist) => {
       dist.bcCount * 2.5 +
       dist.cCount * 2.0 +
       dist.dCount * 1.0;
-  const denom = dist.total;
+  const denom = Math.max(1, dist.total);
   return numer / denom;
 };
 

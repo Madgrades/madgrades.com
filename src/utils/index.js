@@ -13,9 +13,6 @@ const utils = {
       actions: bindActionCreators(actions, dispatch)
     }
   },
-  round: (number, places) => {
-    return +(Math.round(number + "e+" + places) + "e-" + places);
-  },
   numberWithCommas: (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }

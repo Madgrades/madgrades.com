@@ -12,16 +12,6 @@ import {
 import PropTypes from "prop-types";
 import utils from "../../utils";
 
-const CustomizedAxisTick = (props) => {
-  const {x, y, stroke, payload} = props;
-
-  return (
-      <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
-      </g>
-  );
-};
-
 export class GpaChart extends Component {
   static propTypes = {
     gradeDistributions: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -57,7 +47,7 @@ export class GpaChart extends Component {
                   <Label value="Average GPA" position="insideLeft" dx={15} dy={25} angle={-90}/>
                 </YAxis>
                 <Line type="monotone" dataKey="gpa" isAnimationActive={false}/>
-                <Tooltip/>
+                <Tooltip formatter={gpa => gpa.toFixed(2)}/>
               </LineChart>
             </ResponsiveContainer>
           </div>

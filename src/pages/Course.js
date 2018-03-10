@@ -1,28 +1,46 @@
 import React from "react";
-import CourseChart from "../components/CourseChart";
 import CourseName from "../components/CourseName";
-import {Container, Dropdown, Grid} from "semantic-ui-react";
-import TermSelect from "../containers/TermSelect";
+import {Container, Divider, Header} from "semantic-ui-react";
+import CourseChartViewer from "../components/CourseChartViewer";
+import CourseGpaChart from "../components/CourseGpaChart";
+import {parse, stringify} from "qs";
 
-const options = [
-  { key: 1, text: 'JAMES SKRENTNY', description: '3.5 GPA', value: 1 },
-  { key: 2, text: 'Two', value: 2 },
-  { key: 3, text: 'Three', value: 3 },
-];
+const Course = ({ match, location, history }) => {
+  const { uuid } = match.params;
+  const params = parse(location.search.substr(1));
 
-const Course = ({ match }) => (
-    <Container className="Course">
-      <p></p>
-      <h1><CourseName uuid={match.params.uuid}/></h1>
-      <Grid>
-        <Grid.Column width={4} mobile={16} tablet={6} computer={4}>
-          <Dropdown placeholder='Select instructor...' fluid selection search options={options}/>
-          <TermSelect termCodes={[1082]} includeCumulative={true}/>
-        </Grid.Column>
-        <Grid.Column width={12} mobile={16} tablet={10} computer={12}>
-          <CourseChart uuid={match.params.uuid}/>
-        </Grid.Column>
-      </Grid>
-    </Container>
-);
+  let { instructorId, termCode } = params;
+
+  instructorId = parseInt(instructorId || '0', 10);
+  termCode = parseInt(termCode || '0', 10);
+
+  const onChange = (params) => {
+    history.push(`/courses/${uuid}?${stringify(params)}`)
+  };
+
+  return (
+      <Container className="Course">
+        <Header size='huge'>
+          <Header.Content style={{maxWidth: "100%"}}>
+            <CourseName
+                uuid={uuid}
+                fallback={"(Unknown Name)"}/>
+            <Header.Subheader style={{maxWidth: "100%"}}>
+              <CourseName
+                  uuid={uuid}
+                  asSubjectAndNumber={true}/>
+            </Header.Subheader>
+          </Header.Content>
+        </Header>
+        <Divider/>
+        <CourseChartViewer
+            instructorId={instructorId}
+            termCode={termCode}
+            onChange={onChange}
+            uuid={uuid}/>
+        <Divider/>
+        <CourseGpaChart uuid={uuid}/>
+      </Container>
+  )
+};
 export default Course;

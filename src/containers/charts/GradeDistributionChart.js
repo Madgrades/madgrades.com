@@ -3,7 +3,8 @@ import {
   Bar,
   BarChart,
   Label,
-  LabelList, Legend,
+  LabelList,
+  Legend,
   ResponsiveContainer,
   XAxis,
   YAxis
@@ -92,10 +93,10 @@ class GradeDistributionChart extends Component {
                 <YAxis domain={[0, 100]} tickCount={11}>
                   <Label value="Students (%)" position="insideLeft" dx={15} dy={30} angle={-90}/>
                 </YAxis>
-                <Bar name={primaryLabel} dataKey="percent" isAnimationActive={false} fill="#000000">
+                <Bar name={primaryLabel} dataKey="percent" isAnimationActive={false} fill="#282728">
                   <LabelList dataKey="label" content={renderBarLabel} position="top"/>
                 </Bar>
-                { secondary &&
+                {secondary &&
                   <Bar name={secondaryLabel} dataKey="percentSecondary" isAnimationActive={false} fill="#c5050c">
                     <LabelList dataKey="labelSecondary" content={renderBarLabel} position="top"/>
                   </Bar>

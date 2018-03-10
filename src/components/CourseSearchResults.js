@@ -53,7 +53,7 @@ class CourseSearchResults extends Component {
   }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   const { searchQuery, courseFilterParams } = state.app;
 
   let searchData, isFetching;

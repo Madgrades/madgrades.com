@@ -2,44 +2,59 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import utils from "../utils";
-
-const selectName = (names) => names && names.filter(name => name !== null)[0];
+import SubjectNameList from "../containers/SubjectNameList";
 
 class CourseName extends Component {
   static propTypes = {
     uuid: PropTypes.string.isRequired,
     fallback: PropTypes.string,
-    data: PropTypes.object
+    data: PropTypes.object,
+    asSubjectAndNumber: PropTypes.bool
   };
 
   componentWillMount = () => {
-    const { data, actions, uuid } = this.props;
+    const { actions, uuid, data } = this.props;
 
     if (!data) {
       actions.fetchCourse(uuid);
     }
   };
 
+  componentDidUpdate = this.componentWillMount;
+
   render = () => {
-    const { name, fallback } = this.props;
-    return <span>{name || fallback}</span>
+    const { name, subjects, number, fallback, asSubjectAndNumber } = this.props;
+
+    if (asSubjectAndNumber) {
+      if (subjects)
+        return (
+            <span>
+              <SubjectNameList subjectCodes={subjects}/> {number}
+            </span>
+        );
+      else
+        return <span>{fallback} {number}</span>
+    }
+    else {
+      return <span>{name || fallback}</span>;
+    }
   }
 }
 
 function mapStateToProps(state, ownProps) {
   const { uuid, data } = ownProps;
 
-  if (data) {
-    return {
-      name: selectName(data.names)
-    }
+  let courseData = data;
+
+  if (!data) {
+    const { courses } = state;
+    courseData = courses.data[uuid];
   }
 
-  const { courses } = state;
-  const courseData = courses.data[uuid];
-
   return {
-    name: courseData && selectName(courseData.names)
+    name: courseData && courseData.name,
+    subjects: courseData && courseData.subjects,
+    number: courseData && courseData.number
   }
 }
 

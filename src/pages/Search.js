@@ -40,7 +40,7 @@ const extractParams = (location) => {
 };
 
 const Courses = ({ location }) => (
-    <Container className="Courses">
+    <Container className="Search">
       <SetCourseFilterParams params={extractParams(location)}/>
 
       <Grid columns={16}>

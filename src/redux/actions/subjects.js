@@ -53,7 +53,7 @@ const receiveSubjectSearch = (query, page, data) => {
 
 export const fetchSubjectSearch = (query, page) => async (dispatch, getState, api) => {
   const state = getState();
-  let subjectSearchData = state.courses.searches[query];
+  let subjectSearchData = state.subjects.searches[query];
 
   // don't fetch again
   if (subjectSearchData)

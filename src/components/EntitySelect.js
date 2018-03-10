@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types"
 import {Dropdown} from "semantic-ui-react";
+import _ from "lodash";
 
 /**
  * A dropdown/search box for selecting a particular entity from madgrades.
@@ -25,14 +26,6 @@ class EntitySelect extends Component {
     options: [],
     isTyping: false,
     isFetching: false
-  };
-
-  clear = () => {
-    this.setState({
-      query: '',
-      isFetching: false,
-      isTyping: false
-    });
   };
 
   performSearch = (query) => {
@@ -113,13 +106,9 @@ class EntitySelect extends Component {
       isTyping: true
     });
 
-    if (searchQuery.length < 2)
-      return;
-
     setTimeout(() => {
       if (this.state.query === searchQuery) {
         this.setState({
-          isFetching: true,
           isTyping: false
         });
         this.performSearch(searchQuery);
@@ -127,16 +116,14 @@ class EntitySelect extends Component {
     }, 500);
   };
 
-  componentWillReceiveProps = (nextProps) => {
-    const { entityType, entityData, searches, value } = nextProps;
+  componentDidUpdate = () => {
+    const { entityType, entityData, searches, value } = this.props;
     const { query } = this.state;
 
-    let isFetching = false;
+    let searchData;
 
     if (query.length >= 2) {
-      isFetching = searches[query] &&
-          searches[query] &&
-          searches[query][1].isFetching;
+      searchData = searches[query] && searches[query][1];
     }
 
     let options = [];
@@ -161,10 +148,23 @@ class EntitySelect extends Component {
       }
     }
 
-    this.setState({
-      options,
-      isFetching
-    })
+    // if we are searching, only show options found in the search
+    if (searchData && !searchData.isFetching) {
+      let keys = searchData.results.map(e => this.entityToKey(e, entityType));
+      options = options.filter(o => keys.includes(o.key) || value.includes(o.key));
+    }
+
+    // otherwise the only options are the already selected values
+    else {
+      options = options.filter(o => value.includes(o.key));
+    }
+
+    // only update if options are new, we don't want infinite loop
+    if (!_.isEqual(this.state.options, options)) {
+      this.setState({
+        options
+      })
+    }
   };
 
   render = () => {
@@ -182,6 +182,7 @@ class EntitySelect extends Component {
             placeholder={`Search ${entityType}s...`}
             noResultsMessage={message}
             fluid
+            minCharacters={0}
             multiple
             scrolling={false}
             selection
@@ -192,7 +193,7 @@ class EntitySelect extends Component {
             searchQuery={query}
             onChange={this.onChange}
             onSearchChange={this.onSearchChange}
-            search/>
+            search={options => options}/>
     )
   }
 }

@@ -1,14 +1,9 @@
 import React, {Component} from "react";
-import {Route, Router, Switch} from "react-router-dom";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
+import {Router} from "react-router-dom";
 import SiteHeader from "./containers/SiteHeader";
-import Course from "./pages/Course";
 import SiteFooter from "./containers/SiteFooter";
-import Search from "./pages/Search";
-import About from "./pages/About";
-import Instructors from "./pages/Instructors";
 import {createBrowserHistory} from "history";
+import Routes from "./Routes";
 
 const history = createBrowserHistory();
 
@@ -27,14 +22,7 @@ class App extends Component {
           <div className="App">
             <SiteHeader/>
             <div className="app-content">
-              <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route path="/courses/:uuid" component={Course}/>
-                <Route path="/search" component={Search}/>
-                <Route path="/instructors" component={Instructors}/>
-                <Route path="/about" component={About}/>
-                <Route component={NotFound}/>
-              </Switch>
+              <Routes/>
             </div>
             <SiteFooter/>
           </div>

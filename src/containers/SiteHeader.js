@@ -27,6 +27,8 @@ class SiteHeader extends Component {
     const { isNavToggled } = this.state;
     const toggled = isNavToggled ? "toggled" : "";
 
+    const { pathname } = this.props.location;
+
     return (
         <Segment as={Div} inverted attached className="SiteHeader">
           <Menu inverted pointing secondary stackable>
@@ -44,6 +46,9 @@ class SiteHeader extends Component {
                   <SearchBox/>
                 </Menu.Item>
                 <Menu.Menu position='right'>
+                  <Menu.Item as={NavLink} to="/search" active={pathname.startsWith('/search')}>
+                    Courses
+                  </Menu.Item>
                   <Menu.Item as={NavLink} to="/about">
                     About
                   </Menu.Item>

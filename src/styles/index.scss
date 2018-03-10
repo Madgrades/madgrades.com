@@ -1,12 +1,21 @@
 /* any global styles for every page go here */
-@import url('./App.css');
-@import url('./pages/Courses.css');
-@import url('./pages/Search.css');
-@import url('./pages/Home.css');
-@import url('./containers/SiteHeader.css');
-@import url('./containers/SiteFooter.css');
+@import url('App.css');
+@import url('pages/Course.css');
+@import url('pages/Search.css');
+@import url('pages/Home.css');
+@import url('containers/SiteHeader.css');
+@import url('containers/SiteFooter.css');
 @import url('components/SearchBox.css');
 
 html {
   touch-action: manipulation;
+}
+
+.ui.horizontal.divider.divider-small {
+  color: #888;
+  font-size: 80%;
+}
+
+span {
+  word-wrap: break-word;
 }

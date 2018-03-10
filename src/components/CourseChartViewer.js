@@ -2,9 +2,11 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types"
-import {Dropdown, Form, Grid} from "semantic-ui-react";
+import {Button, Divider, Dropdown, Form, Grid} from "semantic-ui-react";
 import TermSelect from "../containers/TermSelect";
 import CourseChart from "./CourseChart";
+import domtoimage from "dom-to-image";
+import FileSaver from "file-saver";
 
 class CourseChartViewer extends Component {
   static propTypes = {
@@ -43,6 +45,13 @@ class CourseChartViewer extends Component {
     }, () => {
       onChange({termCode, instructorId: value})
     });
+  };
+
+  onSaveChart = () => {
+    domtoimage.toBlob(this.chart, {bgcolor: "#fff"})
+      .then(data => {
+        FileSaver.saveAs(data, `madgrades-${new Date().toISOString()}.png`);
+      });
   };
 
   render = () => {
@@ -140,10 +149,20 @@ class CourseChartViewer extends Component {
                     onChange={this.onTermCodeChange}
                     descriptions={termDescs}/>
               </Form.Field>
+              <Form.Field>
+                <label>Export</label>
+                <Button icon='download' basic size='small' content='Save PNG' onClick={this.onSaveChart}/>
+              </Form.Field>
             </Form>
           </Grid.Column>
           <Grid.Column width={12} mobile={16} tablet={16} computer={12}>
-            <CourseChart uuid={uuid} instructorId={instructorChosen} termCode={termChosen}/>
+            <div ref={ref => this.chart = ref}>
+            <CourseChart
+
+                uuid={uuid}
+                instructorId={instructorChosen}
+                termCode={termChosen}/>
+            </div>
           </Grid.Column>
         </Grid>
     )

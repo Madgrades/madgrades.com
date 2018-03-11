@@ -13,7 +13,11 @@ class CourseChartViewer extends Component {
     uuid: PropTypes.string.isRequired,
     termCode: PropTypes.number,
     instructorId: PropTypes.number,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+  };
+
+  state = {
+    isExporting: false
   };
 
   static defaultProps = {
@@ -48,14 +52,30 @@ class CourseChartViewer extends Component {
   };
 
   onSaveChart = () => {
+    if (this.state.isExporting)
+      return;
+
+    this.setState({
+      isExporting: true
+    });
+
     domtoimage.toBlob(this.chart, {bgcolor: "#fff"})
-      .then(data => {
-        FileSaver.saveAs(data, `madgrades-${new Date().toISOString()}.png`);
+      .then(blob => {
+        FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);
+        this.setState({
+          isExporting: false
+        });
+      })
+      .catch(error => {
+        this.setState({
+          isExporting: false
+        });
       });
   };
 
   render = () => {
     const { uuid, data, instructorId, termCode } = this.props;
+    const { isExporting } = this.state;
 
     let instructorOptions = [],
         termCodes = [],
@@ -151,7 +171,7 @@ class CourseChartViewer extends Component {
               </Form.Field>
               <Form.Field>
                 <label>Export</label>
-                <Button icon='download' basic size='small' content='Save PNG' onClick={this.onSaveChart}/>
+                <Button icon='download' loading={isExporting} basic size='small' content='Save PNG' onClick={this.onSaveChart}/>
               </Form.Field>
             </Form>
           </Grid.Column>

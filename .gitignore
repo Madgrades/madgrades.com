@@ -1,4 +1,6 @@
 .idea
+.env.production
+.env.development
 
 # we use sass
 *.css

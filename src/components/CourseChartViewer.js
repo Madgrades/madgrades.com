@@ -2,11 +2,12 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types"
-import {Button, Divider, Dropdown, Form, Grid} from "semantic-ui-react";
+import {Button, Dropdown, Form} from "semantic-ui-react";
 import TermSelect from "../containers/TermSelect";
 import CourseChart from "./CourseChart";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
+import {Col, Grid, Row} from "react-flexbox-grid";
 
 class CourseChartViewer extends Component {
   static propTypes = {
@@ -146,8 +147,8 @@ class CourseChartViewer extends Component {
         termChosen = termCode || undefined;
 
     return (
-        <Grid>
-          <Grid.Column width={4} mobile={16} tablet={16} computer={4}>
+        <Row>
+          <Col xs={12} md={12} lg={4}>
             <Form>
               <Form.Field>
                 <label>Instructors</label>
@@ -174,17 +175,17 @@ class CourseChartViewer extends Component {
                 <Button icon='download' loading={isExporting} basic size='small' content='Save PNG' onClick={this.onSaveChart}/>
               </Form.Field>
             </Form>
-          </Grid.Column>
-          <Grid.Column width={12} mobile={16} tablet={16} computer={12}>
+            <br/>
+          </Col>
+          <Col xs={12} lg={8}>
             <div ref={ref => this.chart = ref}>
             <CourseChart
-
                 uuid={uuid}
                 instructorId={instructorChosen}
                 termCode={termChosen}/>
             </div>
-          </Grid.Column>
-        </Grid>
+          </Col>
+        </Row>
     )
   }
 }

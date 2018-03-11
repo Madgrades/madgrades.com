@@ -79,14 +79,14 @@ class GradeDistributionChart extends Component {
     });
 
     return (
-        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column"}}>
+        <div style={{display: "flex", flexDirection: "column"}}>
           <div>
             <p style={{textAlign: "center"}}>
               {title}
             </p>
           </div>
           <div style={{flex: 1}}>
-            <ResponsiveContainer minWidth={200} minHeight={200}>
+            <ResponsiveContainer width='100%' aspect={16.0/9.0}>
               <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
                 <XAxis dataKey="name">
                 </XAxis>

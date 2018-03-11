@@ -29,9 +29,7 @@ class CourseGpaChart extends Component {
     }).sort((a, b) => a.termCode - b.termCode);
 
     return (
-        <div style={{height: "300px"}}>
-          <GpaChart gradeDistributions={gradeDistributions}/>
-        </div>
+        <GpaChart gradeDistributions={gradeDistributions}/>
     );
   }
 }

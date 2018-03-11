@@ -107,9 +107,7 @@ class CourseChart extends Component {
           <Dimmer active={!isLoaded} inverted>
             <Loader active={!isLoaded} inverted>Loading Data</Loader>
           </Dimmer>
-          <div style={{height: "400px"}}>
-            {chart}
-          </div>
+          {chart}
         </Dimmer.Dimmable>
     )
   }

@@ -6,6 +6,7 @@ import CourseFilterForm from "../components/CourseFilterForm";
 import CourseSearchResults from "../components/CourseSearchResults";
 import SearchResultCount from "../components/SearchResultCount";
 import CourseSortForm from "../components/CourseSortForm";
+import {Col, Row} from "react-flexbox-grid";
 
 const extractParams = (location) => {
   const params = parse(location.search.substr(1));
@@ -42,32 +43,31 @@ const extractParams = (location) => {
 const Courses = ({ location }) => (
     <Container className="Search">
       <SetCourseFilterParams params={extractParams(location)}/>
-
-      <Grid columns={16}>
-        <Grid.Column computer={4} mobile={16} tablet={6}>
+      <Row columns={16}>
+        <Col xs={12} md={4} lg={3} style={{marginBottom: "20px"}}>
           <CourseFilterForm/>
-        </Grid.Column>
-        <Grid.Column computer={12} mobile={16} tablet={10}>
-          <Grid verticalAlign='middle'>
-            <Grid.Column width={6}>
+        </Col>
+        <Col xs={12} md={8} lg={9}>
+          <Row middle>
+            <Col xs>
               <Header as='h2'>
                 <Header.Content>
                   <SearchResultCount/> courses
                 </Header.Content>
               </Header>
-            </Grid.Column>
-              <Grid.Column width={10}>
+            </Col>
+            <Col xs>
               <Header as='h4' floated='right'>
                 Sort by:
                 {' '}
                 <CourseSortForm/>
               </Header>
-            </Grid.Column>
-          </Grid>
+            </Col>
+          </Row>
           <Divider/>
           <CourseSearchResults/>
-        </Grid.Column>
-      </Grid>
+        </Col>
+      </Row>
     </Container>
 );
 export default Courses;

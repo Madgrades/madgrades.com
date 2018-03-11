@@ -10,6 +10,7 @@ import thunk from 'redux-thunk';
 import utils from "./utils";
 import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css'
+import 'react-flexbox-grid/dist/react-flexbox-grid.css';
 // import logger from 'redux-logger'
 import initReactFastclick from 'react-fastclick';
 

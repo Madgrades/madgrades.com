@@ -32,14 +32,14 @@ export class GpaChart extends Component {
     });
 
     return (
-        <div style={{width: "100%", height: "100%", display: "flex", flexDirection: "column"}}>
+        <div style={{display: "flex", flexDirection: "column"}}>
           <div>
             <p style={{textAlign: "center"}}>
               {title}
             </p>
           </div>
           <div style={{flex: 1}}>
-            <ResponsiveContainer minWidth={200}>
+            <ResponsiveContainer width='100%' aspect={16.0/9.0}>
               <LineChart data={data} margin={{ top: 20, right: 20, left: -15, bottom: 50 }}>
                 <CartesianGrid stroke="#ccc"/>
                 <XAxis dataKey="termName" interval={0} angle={-45} textAnchor="end" type="category"/>

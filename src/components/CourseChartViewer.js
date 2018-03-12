@@ -7,7 +7,7 @@ import TermSelect from "../containers/TermSelect";
 import CourseChart from "./CourseChart";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
-import {Col, Grid, Row} from "react-flexbox-grid";
+import {Col, Row} from "react-flexbox-grid";
 
 class CourseChartViewer extends Component {
   static propTypes = {
@@ -95,13 +95,13 @@ class CourseChartViewer extends Component {
           key: i.id,
           value: i.id,
           text: i.name,
-          description: utils.grades.gpa(i.cumulative).toFixed(2)
+          description: utils.grades.gpa(i.cumulative, true)
         }
       }));
 
       data.courseOfferings.forEach(o => {
         termCodes.push(o.termCode);
-        termDescs[o.termCode] = utils.grades.gpa(o.cumulative).toFixed(2);
+        termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true);
       });
 
       // if instructor selected, filter term codes

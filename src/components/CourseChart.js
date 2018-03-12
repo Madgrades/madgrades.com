@@ -31,7 +31,7 @@ class CourseChart extends Component {
       isLoaded = true;
 
       primary = data.cumulative;
-      label = `Cumulative - ${utils.grades.gpa(data.cumulative).toFixed(2)} GPA`;
+      label = `Cumulative - ${utils.grades.gpa(data.cumulative, true)} GPA`;
 
       let termName = termCode && utils.termCodes.toName(termCode);
 
@@ -80,7 +80,7 @@ class CourseChart extends Component {
       }
 
       if (secondary) {
-        secondaryLabel += ' - ' + utils.grades.gpa(secondary).toFixed(2) + ' GPA';
+        secondaryLabel += ' - ' + utils.grades.gpa(secondary, true) + ' GPA';
       }
     }
 

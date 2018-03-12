@@ -26,8 +26,8 @@ const About = () => (
         <br/>
         <Divider horizontal>Help out!</Divider>
         <p>
-          Do you have issues, questions, or suggestions regarding the website? Send me an email
-          at <a href="mailto:keenan@cs.wisc.edu">keenan@cs.wisc.edu</a>.
+          Do you have issues, questions, or suggestions regarding the website? Click the "Provide Feedback" link
+          and we can get back to you soon.
         </p>
         <p>
           This project is <a href={githubLink}>open source</a>. Pull requests are welcome, as I am sure there are
@@ -36,19 +36,30 @@ const About = () => (
         <p>
           Hosting this website costs money. Help me keep this project going by clicking the cute button below!
         </p>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-          <input type="hidden" name="cmd" value="_donations"/>
-          <input type="hidden" name="business" value="keenan@keenant.com"/>
-          <input type="hidden" name="lc" value="US"/>
-          <input type="hidden" name="item_name" value="Madgrades"/>
-          <input type="hidden" name="no_note" value="0"/>
-          <input type="hidden" name="currency_code" value="USD"/>
-          <input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest"/>
-          <Button size="mini" color="red" type="submit">
-            <Icon name='heart'/>
-            Donate
-          </Button>
-        </form>
+
+        <p>
+        </p>
+
+        <center>
+          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_donations"/>
+            <input type="hidden" name="business" value="keenan@keenant.com"/>
+            <input type="hidden" name="lc" value="US"/>
+            <input type="hidden" name="item_name" value="Madgrades"/>
+            <input type="hidden" name="no_note" value="0"/>
+            <input type="hidden" name="currency_code" value="USD"/>
+            <input type="hidden" name="bn" value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest"/>
+            <Button primary href='https://form.jotform.com/80705132647151'>
+              <Icon name='thumbs up'/>
+              Provide Feedback
+            </Button>
+            <Button color="red" type="submit">
+              <Icon name='heart'/>
+              Donate
+            </Button>
+          </form>
+        </center>
+
       </Container>
     </div>
 );

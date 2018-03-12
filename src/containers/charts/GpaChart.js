@@ -47,7 +47,7 @@ export class GpaChart extends Component {
                   <Label value="Average GPA" position="insideLeft" dx={15} dy={25} angle={-90}/>
                 </YAxis>
                 <Line type="monotone" dataKey="gpa" isAnimationActive={false}/>
-                <Tooltip formatter={gpa => gpa.toFixed(2)}/>
+                <Tooltip formatter={gpa => utils.grades.formatGpa(gpa)}/>
               </LineChart>
             </ResponsiveContainer>
           </div>

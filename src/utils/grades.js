@@ -30,19 +30,36 @@ export const getGradeKeys = (includeMisc) => {
 
 export const keyToName = (key) => key.replace("Count", "").toUpperCase();
 
-export const gpa = (dist) => {
-  const numer = dist.aCount * 4.0 +
+export const gpaCount = (dist) =>
+    dist.aCount + dist.abCount + dist.bCount + dist.bcCount +
+    dist.cCount + dist.dCount + dist.fCount;
+
+export const formatGpa = (gpa) => {
+  if (isNaN(gpa))
+    return "N/A";
+  return gpa.toFixed(2);
+};
+
+export const gpa = (dist, format) => {
+  const count = gpaCount(dist);
+
+  if (count === 0) {
+    if (format)
+      return formatGpa(NaN);
+    return NaN;
+  }
+
+  const weighted = dist.aCount * 4.0 +
       dist.abCount * 3.5 +
       dist.bCount * 3.0 +
       dist.bcCount * 2.5 +
       dist.cCount * 2.0 +
       dist.dCount * 1.0;
-  const denom = Math.max(
-      1,
-      dist.aCount + dist.abCount + dist.bCount + dist.bcCount +
-      dist.cCount + dist.dCount + dist.fCount
-  );
-  return numer / denom;
+  const result = weighted / count;
+
+  if (format)
+    return formatGpa(result);
+  return result;
 };
 
 export const zero = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Container, Divider, Grid, Header} from "semantic-ui-react";
+import {Container, Divider, Header} from "semantic-ui-react";
 import {parse} from 'qs';
 import SetCourseFilterParams from "../components/SetCourseFilterParams";
 import CourseFilterForm from "../components/CourseFilterForm";
@@ -48,7 +48,7 @@ const Courses = ({ location }) => (
           <CourseFilterForm/>
         </Col>
         <Col xs={12} md={8} lg={9}>
-          <Row middle>
+          <Row middle='xs'>
             <Col xs>
               <Header as='h2'>
                 <Header.Content>

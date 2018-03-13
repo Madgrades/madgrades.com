@@ -14,7 +14,7 @@ const CourseSearchResultItem = ({ result }) => (
               fallback={"(Unknown Name)"}/>
           <Header.Subheader>
             <SubjectNameList
-              subjectCodes={result.subjects}/> {result.number}
+              subjectCodes={result.subjects.map(s => s.code)}/> {result.number}
           </Header.Subheader>
         </Header.Content>
       </Header>

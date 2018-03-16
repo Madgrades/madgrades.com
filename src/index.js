@@ -13,6 +13,7 @@ import './styles/index.css'
 import 'react-flexbox-grid/dist/react-flexbox-grid.css';
 // import logger from 'redux-logger'
 import initReactFastclick from 'react-fastclick';
+import 'babel-polyfill';
 
 const api = utils.api.create(
     process.env.REACT_APP_MADGRADES_API,

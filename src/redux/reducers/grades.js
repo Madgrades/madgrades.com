@@ -3,6 +3,9 @@ import * as actionTypes from "../actionTypes";
 const initialState = {
   courses: {
     data: {}
+  },
+  instructors: {
+    data: {}
   }
 };
 
@@ -28,6 +31,33 @@ export default function reducer(state = initialState, action) {
           data: {
             ...state.courses.data,
             [action.uuid]: {
+              isFetching: false,
+              ...action.data
+            }
+          }
+        }
+      }
+    }
+    case actionTypes.REQUEST_INSTRUCTOR_GRADES: {
+      return {
+        ...state,
+        instructors: {
+          data: {
+            ...state.instructors.data,
+            [action.id]: {
+              isFetching: true
+            }
+          }
+        }
+      }
+    }
+    case actionTypes.RECEIVE_INSTRUCTOR_GRADES: {
+      return {
+        ...state,
+        instructors: {
+          data: {
+            ...state.instructors.data,
+            [action.id]: {
               isFetching: false,
               ...action.data
             }

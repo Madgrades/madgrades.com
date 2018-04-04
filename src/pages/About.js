@@ -34,7 +34,7 @@ const About = () => (
           awesome features yet to add and plenty of bugs to fix.
         </p>
         <p>
-          Hosting this website costs money. Help me keep this project going by clicking the cute button below!
+          Hosting this website costs money. Help me keep this project going by clicking the button below.
         </p>
 
         <p>

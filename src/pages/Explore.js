@@ -51,7 +51,10 @@ class Explore extends Component {
   componentWillMount = this.setStateFromParams;
 
   componentDidUpdate = () => {
-    const { entity } = this.props.match.params;
+    let { entity } = this.props.match.params;
+
+    if (!entity)
+      entity = 'course';
 
     if (this.state.entityType === entity)
       return;

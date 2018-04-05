@@ -40,34 +40,38 @@ const extractParams = (location) => {
   }
 };
 
-const Courses = ({ location }) => (
-    <Container className="Search">
-      <SetCourseFilterParams params={extractParams(location)}/>
-      <Row columns={16}>
-        <Col xs={12} md={4} lg={3} style={{marginBottom: "20px"}}>
-          <CourseFilterForm/>
-        </Col>
-        <Col xs={12} md={8} lg={9}>
-          <Row middle='xs'>
-            <Col xs>
-              <Header as='h2'>
-                <Header.Content>
-                  <SearchResultCount/> courses
-                </Header.Content>
-              </Header>
-            </Col>
-            <Col xs>
-              <Header as='h4' floated='right'>
-                Sort by:
-                {' '}
-                <CourseSortForm/>
-              </Header>
-            </Col>
-          </Row>
-          <Divider/>
-          <CourseSearchResults/>
-        </Col>
-      </Row>
-    </Container>
-);
+const Courses = ({ location }) => {
+  document.title = "Search UW Madison Courses - Madgrades";
+
+  return (
+      <Container className="Search">
+        <SetCourseFilterParams params={extractParams(location)}/>
+        <Row columns={16}>
+          <Col xs={12} md={4} lg={3} style={{marginBottom: "20px"}}>
+            <CourseFilterForm/>
+          </Col>
+          <Col xs={12} md={8} lg={9}>
+            <Row middle='xs'>
+              <Col xs>
+                <Header as='h2'>
+                  <Header.Content>
+                    <SearchResultCount/> courses
+                  </Header.Content>
+                </Header>
+              </Col>
+              <Col xs>
+                <Header as='h4' floated='right'>
+                  Sort by:
+                  {' '}
+                  <CourseSortForm/>
+                </Header>
+              </Col>
+            </Row>
+            <Divider/>
+            <CourseSearchResults/>
+          </Col>
+        </Row>
+      </Container>
+  );
+};
 export default Courses;

@@ -54,6 +54,10 @@ class Explore extends Component {
 
   componentWillMount = this.setStateFromParams;
 
+  componentDidMount = () => {
+    document.title = "Explore UW Madison Courses - Madgrades"
+  };
+
   componentDidUpdate = () => {
     let { entity } = this.props.match.params;
 

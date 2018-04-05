@@ -6,6 +6,8 @@ import CourseGpaChart from "../components/CourseGpaChart";
 import {parse, stringify} from "qs";
 
 const Course = ({ match, location, history }) => {
+  document.title = " - Madgrades";
+
   const { uuid } = match.params;
   const params = parse(location.search.substr(1));
 
@@ -18,6 +20,10 @@ const Course = ({ match, location, history }) => {
     history.push(`/courses/${uuid}?${stringify(params)}`)
   };
 
+  const onNameLoad = (name) => {
+    document.title = name + " UW Madison Grade Distribution - Madgrades";
+  };
+
   return (
       <Container className="Course">
         <Header size='huge'>
@@ -28,7 +34,8 @@ const Course = ({ match, location, history }) => {
             <Header.Subheader style={{maxWidth: "100%"}}>
               <CourseName
                   uuid={uuid}
-                  asSubjectAndNumber={true}/>
+                  asSubjectAndNumber={true}
+                  onNameLoad={onNameLoad}/>
             </Header.Subheader>
           </Header.Content>
         </Header>

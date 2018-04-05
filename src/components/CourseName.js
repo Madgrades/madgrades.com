@@ -9,14 +9,23 @@ class CourseName extends Component {
     uuid: PropTypes.string.isRequired,
     fallback: PropTypes.string,
     data: PropTypes.object,
-    asSubjectAndNumber: PropTypes.bool
+    asSubjectAndNumber: PropTypes.bool,
+    onNameLoad: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onNameLoad: (name) => {}
   };
 
   componentWillMount = () => {
-    const { actions, uuid, data } = this.props;
+    const { actions, uuid, data, onNameLoad, name } = this.props;
 
     if (!data) {
       actions.fetchCourse(uuid);
+    }
+
+    if (name) {
+      onNameLoad(name);
     }
   };
 
@@ -32,8 +41,9 @@ class CourseName extends Component {
               <SubjectNameList subjectCodes={subjects.map(s => s.code)}/> {number}
             </span>
         );
-      else
+      else {
         return <span>{fallback} {number}</span>
+      }
     }
     else {
       return <span>{name || fallback}</span>;

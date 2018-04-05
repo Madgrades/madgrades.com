@@ -15,7 +15,7 @@ const extractParams = (location) => {
   let page = parseInt(params.page || '1', 10);
   let subjects = undefined;
   if (params.subjects && Array.isArray(params.subjects)) {
-    subjects = params.subjects.map(s => s);
+    subjects = params.subjects;
   }
   let instructors = undefined;
   if (Array.isArray(params.instructors)) {

@@ -35,12 +35,13 @@ class CourseName extends Component {
     const { name, subjects, number, fallback, asSubjectAndNumber } = this.props;
 
     if (asSubjectAndNumber) {
-      if (subjects)
+      if (subjects) {
         return (
             <span>
-              <SubjectNameList subjectCodes={subjects.map(s => s.code)}/> {number}
+              <SubjectNameList subjects={subjects}/> {number}
             </span>
         );
+      }
       else {
         return <span>{fallback} {number}</span>
       }

@@ -123,7 +123,7 @@ class Explore extends Component {
                 onSortOrderChange={this.onSortOrderChange}
             />
             <p>
-              * Some courses are omitted due to small class sizes.
+              * Some entries are omitted due to small class sizes.
             </p>
           </Container>
 

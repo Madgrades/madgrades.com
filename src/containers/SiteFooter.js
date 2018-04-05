@@ -26,8 +26,9 @@ class SiteFooter extends Component {
         <Row middle='xs'>
           <Col>
             <Link to="/">
-              <img alt="Madgrades Logo" className='logo' src={logo}/>
+              <img alt="Madgrades Logo" className='logo' src={logo} style={{verticalAlign: 'middle'}}/>
             </Link>
+            {' '} &nbsp;&nbsp;Made by <a href="https://keenant.com">Keenan Thompson</a>
           </Col>
           <Col xs>
             <List horizontal floated='right'>

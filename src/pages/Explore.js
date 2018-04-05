@@ -63,6 +63,7 @@ class Explore extends Component {
     if (this.state.entityType === entity)
       return;
 
+    this.setStateFromParams();
     this.setState({
       entityType: entity
     })

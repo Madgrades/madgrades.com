@@ -34,6 +34,9 @@ const Home = () => (
         <Button as={Link} to='/search' primary>
           Start your search
         </Button>
+        <Button as={Link} to='/explore' basic primary>
+          Explore...
+        </Button>
       </Container>
     </div>
 );

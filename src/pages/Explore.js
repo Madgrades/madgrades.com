@@ -34,17 +34,21 @@ class Explore extends Component {
     const { entity } = this.props.match.params;
     const params = forcedParams || parse(location.search.substr(1));
 
+    const entityType = entity || 'course';
+    let minAvg = entityType === 'subject' ? 1 : 25;
+    let minTotal = entityType === 'course' ? 1500 : 500;
+
     let filteredParams = {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
-      minCountAvg: parseInt(params.min_count_avg || 1, 10),
-      minGpaTotal: parseInt(params.min_gpa_total || 500, 10)
+      minCountAvg: minAvg,
+      minGpaTotal: minTotal,
     };
 
     this.setState({
       params: filteredParams,
-      entityType: entity || 'course'
+      entityType
     });
   };
 

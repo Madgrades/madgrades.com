@@ -29,10 +29,10 @@ class Explore extends Component {
     entityType: undefined
   };
 
-  componentWillMount = () => {
+  setStateFromParams = (forcedParams) => {
     const { location } = this.props;
     const { entity } = this.props.match.params;
-    const params = parse(location.search.substr(1));
+    const params = forcedParams || parse(location.search.substr(1));
 
     let filteredParams = {
       page: parseInt(params.page || 1),
@@ -48,13 +48,23 @@ class Explore extends Component {
     });
   };
 
+  componentWillMount = this.setStateFromParams;
+
+  componentDidUpdate = () => {
+    const { entity } = this.props.match.params;
+
+    if (this.state.entityType === entity)
+      return;
+
+    this.setState({
+      entityType: entity
+    })
+  };
+
   onEntityChange = (event, data) => {
     const { history } = this.props;
-    this.setState({
-      entityType: data.value
-    });
-
     history.push('/explore/' + data.value);
+    this.setStateFromParams({});
   };
 
   onPageChange = (page) => {

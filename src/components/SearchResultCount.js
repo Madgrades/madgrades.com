@@ -6,15 +6,16 @@ class SearchResultCount extends Component {
   render = () => {
     const { count } = this.props;
 
-    return <span>{count === 50 ? "50+" : utils.numberWithCommas(count)}</span>
+    return <span>{utils.numberWithCommas(count)}</span>
   }
 }
 
 function mapStateToProps(state, ownProps) {
   const { search } = state.courses;
 
-  let count = search && search.pages && search.pages[1]
-    && search.pages[1].results && search.pages[1].results.length;
+  const { page } = state.app.courseFilterParams || 1;
+
+  let count = search && search.pages && search.pages[page] && search.pages[page].totalCount;
 
   if (count) {
     return {

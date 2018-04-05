@@ -46,15 +46,6 @@ class Api {
     return res.json();
   }
 
-  async searchCourses(query, page) {
-    let res = await this._fetchPath('courses', {
-      query: query,
-      page: page,
-      per_page: 50
-    });
-    return res.json();
-  }
-
   /**
    * Performs a complex course search/filter with optional sorting.
    */
@@ -66,7 +57,7 @@ class Api {
 
     let queryString = {
       page: page,
-      per_page: 50
+      per_page: 25
     };
 
     if (subjectParam) {

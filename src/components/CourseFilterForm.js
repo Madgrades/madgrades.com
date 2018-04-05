@@ -53,7 +53,8 @@ class CourseFilterForm extends Component {
   onSubmit = () => {
     const allParams = {
       ...this.props.courseFilterParams,
-      ...this.state
+      ...this.state,
+      page: 1
     };
 
     let params = _.omitBy(allParams, _.isNil);

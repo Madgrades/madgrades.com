@@ -13,7 +13,6 @@ const SubjectNameList = ({subjectCodes, subjects}) => {
 
   for (let i = 0; i < count; i++) {
     const curr = (subjectCodes || subjects)[i];
-    console.log("Curr:", curr);
 
     let divider = i < count - 1 && '/';
     result.push(

@@ -112,8 +112,18 @@ class Api {
     return res.json();
   }
 
-  async getInstructorGrades(id) {
-    let res = await this._fetchPath('instructors/' + id + '/grades');
+  async exploreCourses(params) {
+    let res = await this._fetchPath('explore/courses', params);
+    return res.json();
+  }
+
+  async exploreInstructors(params) {
+    let res = await this._fetchPath('explore/instructors', params);
+    return res.json();
+  }
+
+  async exploreSubjects(params) {
+    let res = await this._fetchPath('explore/subjects', params);
     return res.json();
   }
 }

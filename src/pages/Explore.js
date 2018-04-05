@@ -35,11 +35,11 @@ class Explore extends Component {
     const params = forcedParams || parse(location.search.substr(1));
 
     let filteredParams = {
-      page: parseInt(params.page || 1),
+      page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
-      minCountAvg: parseInt(params.min_count_avg || 1),
-      minGpaTotal: parseInt(params.min_gpa_total || 500)
+      minCountAvg: parseInt(params.min_count_avg || 1, 10),
+      minGpaTotal: parseInt(params.min_gpa_total || 500, 10)
     };
 
     this.setState({

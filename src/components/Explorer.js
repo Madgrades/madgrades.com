@@ -2,7 +2,15 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types"
-import {Header, Icon, Pagination, Popup, Table} from "semantic-ui-react";
+import {
+  Dimmer,
+  Header,
+  Icon,
+  Loader,
+  Pagination,
+  Popup,
+  Table
+} from "semantic-ui-react";
 import _ from "lodash";
 import CourseName from "./CourseName";
 import {Link} from "react-router-dom";
@@ -51,6 +59,8 @@ class Explorer extends Component {
         break;
       case 'subject':
         actions.fetchExploreSubjects(params);
+        break;
+      default:
         break;
     }
   };
@@ -135,6 +145,8 @@ class Explorer extends Component {
               </Header.Content>
             </Header>
         );
+      default:
+        break;
     }
   };
 
@@ -180,10 +192,20 @@ class Explorer extends Component {
     let activePage = page;
     let totalPages = 1;
     let results;
+    let entries = [
+      <Table.Row key={1}>
+        <Dimmer.Dimmable as={Table.Cell} colSpan={4} style={{height: "100px"}}>
+          <Dimmer active={true} inverted>
+            <Loader active={true} inverted/>
+          </Dimmer>
+        </Dimmer.Dimmable>
+      </Table.Row>
+    ];
 
     if (data && !data.isFetching) {
       totalPages = data.totalPages;
       results = data.results;
+      entries = this.renderEntries(results);
     }
 
     return (
@@ -232,12 +254,12 @@ class Explorer extends Component {
           </Table.Header>
 
           <Table.Body>
-            {this.renderEntries(results)}
+            {entries}
           </Table.Body>
 
           <Table.Footer>
             <Table.Row>
-              <Table.HeaderCell colSpan='4'>
+              <Table.HeaderCell colSpan={4}>
                 <Pagination
                     floated='right'
                     onPageChange={this.onPageChange}
@@ -273,6 +295,8 @@ function mapStateToProps(state, ownProps) {
       break;
     case 'subject':
       data = state.explore.subjects.data;
+      break;
+    default:
       break;
   }
 

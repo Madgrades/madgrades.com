@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types"
-import {Header, Icon, Pagination, Table} from "semantic-ui-react";
+import {Header, Icon, Pagination, Popup, Table} from "semantic-ui-react";
 import _ from "lodash";
 import CourseName from "./CourseName";
 import {Link} from "react-router-dom";
@@ -149,12 +149,21 @@ class Explorer extends Component {
               {this.renderEntryName(entry)}
             </Table.Cell>
             <Table.Cell>
+              <strong className="mobile only">
+                Avg. # Grades: {' '}
+              </strong>
               {utils.numberWithCommas(parseFloat(entry.countAvg.toFixed(1)))}
             </Table.Cell>
             <Table.Cell>
+              <strong className="mobile only">
+                Total # Grades: {' '}
+              </strong>
               {utils.numberWithCommas(entry.gpaTotal)}
             </Table.Cell>
             <Table.Cell>
+              <strong className="mobile only">
+                Avg. GPA: {' '}
+              </strong>
               {entry.gpa.toFixed(3)}
             </Table.Cell>
           </Table.Row>
@@ -178,7 +187,7 @@ class Explorer extends Component {
     }
 
     return (
-        <Table celled sortable fixed unstackable>
+        <Table celled sortable fixed>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>
@@ -187,17 +196,37 @@ class Explorer extends Component {
               <Table.HeaderCell
                   onClick={this.onSortChange('count_avg')}
                   sorted={sort === 'count_avg' ? orderFull : null}>
-                Avg # Grades
+                Avg. # Grades {' '}
+                <Popup
+                    trigger={<Icon color='grey' name='question circle' />}>
+                  <Popup.Content>
+                    The average number of students per grade
+                    distribution entry. This is often equivalent to the average
+                    number of students per course section.
+                  </Popup.Content>
+                </Popup>
               </Table.HeaderCell>
               <Table.HeaderCell
                   onClick={this.onSortChange('gpa_total')}
                   sorted={sort === 'gpa_total' ? orderFull : null}>
-                Total # Grades
+                Total # Grades {' '}
+                <Popup
+                    trigger={<Icon color='grey' name='question circle' />}>
+                  <Popup.Content>
+                    The total number of students with grades reported.
+                  </Popup.Content>
+                </Popup>
               </Table.HeaderCell>
               <Table.HeaderCell
                   onClick={this.onSortChange('gpa')}
                   sorted={sort === 'gpa' ? orderFull : null}>
-                Avg GPA
+                Avg. GPA {' '}
+                <Popup
+                    trigger={<Icon color='grey' name='question circle' />}>
+                  <Popup.Content>
+                    The average GPA given to students.
+                  </Popup.Content>
+                </Popup>
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -214,11 +243,13 @@ class Explorer extends Component {
                     onPageChange={this.onPageChange}
                     activePage={activePage}
                     ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
-                    firstItem={{ content: <Icon name='angle double left' />, icon: true }}
-                    lastItem={{ content: <Icon name='angle double right' />, icon: true }}
+                    firstItem={null}
+                    lastItem={null}
                     prevItem={{ content: <Icon name='angle left' />, icon: true }}
                     nextItem={{ content: <Icon name='angle right' />, icon: true }}
                     totalPages={totalPages}
+                    size='mini'
+                    siblingRange={1}
                 />
               </Table.HeaderCell>
             </Table.Row>

@@ -5,7 +5,7 @@ import utils from "../utils";
 
 class SubjectName extends Component {
   static propTypes = {
-    code: PropTypes.string.isRequired,
+    code: PropTypes.string,
     abbreviate: PropTypes.bool,
     fallback: PropTypes.string,
     data: PropTypes.object

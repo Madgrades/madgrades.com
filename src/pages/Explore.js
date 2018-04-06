@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import {Container, Dropdown, Header} from "semantic-ui-react";
 import Explorer from "../components/Explorer";
 import {parse, stringify} from "qs";
+import {withRouter} from "react-router";
+import _ from "lodash";
 
 const entityOptions = [
   {
@@ -29,10 +31,10 @@ class Explore extends Component {
     entityType: undefined
   };
 
-  setStateFromParams = (forcedParams) => {
+  setStateFromQueryString = (forcedQueryParams) => {
     const { location } = this.props;
     const { entity } = this.props.match.params;
-    const params = forcedParams || parse(location.search.substr(1));
+    const params = forcedQueryParams || parse(location.search.substr(1));
 
     const entityType = entity || 'course';
     let minAvg = entityType === 'subject' ? 1 : 25;
@@ -46,37 +48,32 @@ class Explore extends Component {
       minGpaTotal: minTotal,
     };
 
+    // if we dont have new data, ignore state update
+    if (_.isEqual(filteredParams, this.state.params) && entityType === this.state.entityType)
+      return;
+
     this.setState({
       params: filteredParams,
       entityType
     });
   };
 
-  componentWillMount = this.setStateFromParams;
+  componentWillMount = this.setStateFromQueryString;
 
   componentDidMount = () => {
     document.title = "Explore UW Madison Courses - Madgrades"
   };
 
-  componentDidUpdate = () => {
-    let { entity } = this.props.match.params;
-
-    if (!entity)
-      entity = 'course';
-
-    if (this.state.entityType === entity)
-      return;
-
-    this.setStateFromParams();
-    this.setState({
-      entityType: entity
-    })
-  };
+  componentDidUpdate = () => this.setStateFromQueryString();
 
   onEntityChange = (event, data) => {
     const { history } = this.props;
+
+    // go to the entity page
     history.push('/explore/' + data.value);
-    this.setStateFromParams({});
+
+    // on entity change, update params to nothing
+    this.setStateFromQueryString({});
   };
 
   onPageChange = (page) => {
@@ -153,4 +150,4 @@ class Explore extends Component {
     )
   }
 }
-export default Explore;
+export default withRouter(Explore);

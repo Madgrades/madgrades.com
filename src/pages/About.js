@@ -14,22 +14,11 @@ const About = () => {
         <br/>
         <Divider horizontal>About</Divider>
         <p>
-          It's not fun, nor is it easy to go through
-          the various <a href={gradeDistLink} target="_blank">PDF files</a> provided by the Office
-          of the Registrar to find a simple
-          statistic such as the average GPA of a certain class taught in a
-          particular semester. Why can't they provide a simple web interface that
-          allows students and
-          faculty to easily make sense of this data?
-        </p>
-        <p>
-          Madgrades solves this problem by
-          using <strong>coding</strong> and <strong>algorithms</strong>.
-          We take the various PDF files, extract the tables from them, and then
-          organize the data.
-          This website allows you to browse that data. You can find various charts
-          and statistics
-          on UW Madison courses, instructors, and semesters as far back as 2006.
+          Madgrades is a small, open source project created by a UW Madison
+          student with the goal of making understanding course grade distributions
+          easier. The office of the registrar publishes PDF files
+          which document GPA and grade reports for almost every course from each
+          semester since 2006, and this website makes sense of that data.
         </p>
         <br/>
         <Divider horizontal>Help out!</Divider>
@@ -62,7 +51,7 @@ const About = () => {
             <input type="hidden" name="currency_code" value="USD"/>
             <input type="hidden" name="bn"
                    value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest"/>
-            <Button primary href='https://form.jotform.com/80705132647151'>
+            <Button primary href='https://form.jotform.com/80705132647151' target='_blank'>
               <Icon name='thumbs up'/>
               Provide Feedback
             </Button>

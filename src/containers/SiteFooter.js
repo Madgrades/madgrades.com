@@ -25,11 +25,17 @@ class SiteFooter extends Component {
         <Divider/>
         <Container>
           <Row middle='xs'>
-            <Col>
+            <Col style={{display: "flex"}}>
               <Link to="/">
                 <img alt="Madgrades Logo" className='logo' src={logo} style={{verticalAlign: 'middle'}}/>
               </Link>
-              {' '} &nbsp;&nbsp;Made by <a href="https://keenant.com" target="_blank">Keenan Thompson</a>
+              <span style={{marginLeft: "10px"}}>
+                Made by <a href="https://keenant.com" target="_blank">Keenan Thompson</a><br/>
+                <small>
+                  Madgrades unaffiliated with UW Madison. All data is provided by the
+                  <a href="https://registrar.wisc.edu/grade-reports/" target="_blank">registrar office</a>.
+                </small>
+              </span>
             </Col>
             <Col xs>
               <List horizontal floated='right'>

@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import {Dropdown} from "semantic-ui-react";
-import {withRouter} from "react-router";
-import {stringify} from "qs";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import {Dropdown} from 'semantic-ui-react';
+import {withRouter} from 'react-router';
+import {stringify} from 'qs';
 
 const sortOptions = [
   {

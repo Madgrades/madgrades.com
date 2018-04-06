@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types"
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types'
 import {
   Dimmer,
   Header,
@@ -10,12 +10,12 @@ import {
   Pagination,
   Popup,
   Table
-} from "semantic-ui-react";
-import _ from "lodash";
-import CourseName from "./CourseName";
-import {Link} from "react-router-dom";
-import {stringify} from "qs";
-import {Col, Row} from "react-flexbox-grid";
+} from 'semantic-ui-react';
+import _ from 'lodash';
+import CourseName from './CourseName';
+import {Link} from 'react-router-dom';
+import {stringify} from 'qs';
+import {Col, Row} from 'react-flexbox-grid';
 
 class Explorer extends Component {
   static propTypes = {
@@ -162,19 +162,19 @@ class Explorer extends Component {
               {this.renderEntryName(entry)}
             </Table.Cell>
             <Table.Cell>
-              <strong className="mobile only">
+              <strong className='mobile only'>
                 Avg. # Grades: {' '}
               </strong>
               {utils.numberWithCommas(parseFloat(entry.countAvg.toFixed(1)))}
             </Table.Cell>
             <Table.Cell>
-              <strong className="mobile only">
+              <strong className='mobile only'>
                 Total # Grades: {' '}
               </strong>
               {utils.numberWithCommas(entry.gpaTotal)}
             </Table.Cell>
             <Table.Cell>
-              <strong className="mobile only">
+              <strong className='mobile only'>
                 Avg. GPA: {' '}
               </strong>
               {entry.gpa.toFixed(3)}
@@ -195,7 +195,7 @@ class Explorer extends Component {
     let results;
     let entries = [
       <Table.Row key={1}>
-        <Dimmer.Dimmable as={Table.Cell} colSpan={4} style={{height: "100px"}}>
+        <Dimmer.Dimmable as={Table.Cell} colSpan={4} style={{height: '100px'}}>
           <Dimmer active={true} inverted>
             <Loader active={true} inverted/>
           </Dimmer>
@@ -263,7 +263,7 @@ class Explorer extends Component {
               <Table.HeaderCell colSpan={4}>
                 <Row>
                   <Col xs={12}>
-                    <Row center="xs">
+                    <Row center='xs'>
                       <Pagination
                           onPageChange={this.onPageChange}
                           activePage={activePage}

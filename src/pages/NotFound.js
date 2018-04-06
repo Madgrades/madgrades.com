@@ -1,8 +1,8 @@
-import React from "react";
-import {Container} from "semantic-ui-react";
+import React from 'react';
+import {Container} from 'semantic-ui-react';
 
 const NotFound = () => {
-  document.title = "Not Found - Madgrades";
+  document.title = 'Not Found - Madgrades';
 
   return (
       <Container text textAlign='center'>

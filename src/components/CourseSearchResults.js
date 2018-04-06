@@ -1,14 +1,14 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import {Dimmer, Icon, Loader, Pagination} from "semantic-ui-react";
-import CourseSearchResultItem from "../containers/CourseSearchResultItem";
-import Div from "../containers/Div";
-import PropTypes from "prop-types";
-import * as _ from "lodash";
-import {Col, Row} from "react-flexbox-grid";
-import {withRouter} from "react-router";
-import {stringify} from "qs";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import {Dimmer, Icon, Loader, Pagination} from 'semantic-ui-react';
+import CourseSearchResultItem from '../containers/CourseSearchResultItem';
+import Div from '../containers/Div';
+import PropTypes from 'prop-types';
+import * as _ from 'lodash';
+import {Col, Row} from 'react-flexbox-grid';
+import {withRouter} from 'react-router';
+import {stringify} from 'qs';
 
 class CourseSearchResults extends Component {
   static propTypes = {
@@ -36,7 +36,7 @@ class CourseSearchResults extends Component {
 
   renderResults = (results) => results.map(result => {
     return (
-        <div key={result.uuid} style={{marginBottom: "10px"}}>
+        <div key={result.uuid} style={{marginBottom: '10px'}}>
           <CourseSearchResultItem result={result}/>
         </div>
     )
@@ -58,7 +58,7 @@ class CourseSearchResults extends Component {
             {results && results.length > 0 &&
               <Row>
                 <Col xs={12}>
-                  <Row center="xs">
+                  <Row center='xs'>
                     <Pagination
                         onPageChange={this.onPageChange}
                         activePage={page}

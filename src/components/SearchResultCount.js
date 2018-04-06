@@ -1,6 +1,6 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
 
 class SearchResultCount extends Component {
   render = () => {

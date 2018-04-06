@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Router} from "react-router-dom";
-import SiteHeader from "./containers/SiteHeader";
-import SiteFooter from "./containers/SiteFooter";
-import {createBrowserHistory} from "history";
-import Routes from "./Routes";
+import React, {Component} from 'react';
+import {Router} from 'react-router-dom';
+import SiteHeader from './containers/SiteHeader';
+import SiteFooter from './containers/SiteFooter';
+import {createBrowserHistory} from 'history';
+import Routes from './Routes';
 import Cookies from 'universal-cookie';
 
 const history = createBrowserHistory();
@@ -45,9 +45,9 @@ class App extends Component {
   render = () => {
     return (
         <Router history={history}>
-          <div className="App">
+          <div className='App'>
             <SiteHeader/>
-            <div className="app-content">
+            <div className='app-content'>
               <Routes/>
             </div>
             <SiteFooter/>

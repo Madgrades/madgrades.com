@@ -19,7 +19,7 @@ class Api {
       queryString = '?' + this._queryString(params);
     }
 
-    return await fetch(this.url + path + queryString, {
+    return await fetch(this.url + 'v1/' + path + queryString, {
       method: 'get',
       headers: {
         'Authorization': 'Token token=' + this.apiToken

@@ -1,8 +1,8 @@
 
 const SEASON_IDS = {
-  4: "Spring",
-  6: "Summer",
-  2: "Fall"
+  4: 'Spring',
+  6: 'Summer',
+  2: 'Fall'
 };
 
 export const toName = (termCode) => {

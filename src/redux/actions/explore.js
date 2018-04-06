@@ -1,5 +1,5 @@
-import * as actionTypes from "../actionTypes";
-import _ from "lodash";
+import * as actionTypes from '../actionTypes';
+import _ from 'lodash';
 
 const requestExploreCourses = (params) => {
   return {

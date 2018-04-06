@@ -1,12 +1,12 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import {Input} from "semantic-ui-react";
-import {withRouter} from "react-router";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import {Input} from 'semantic-ui-react';
+import {withRouter} from 'react-router';
 
 class SearchBox extends Component {
   state = {
-    searchValue: ""
+    searchValue: ''
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -44,7 +44,7 @@ class SearchBox extends Component {
     return (
         <Input
             className='SearchBox'
-            style={{minWidth: "250px"}}
+            style={{minWidth: '250px'}}
             value={searchValue}
             onChange={this.onInputChange}
             onKeyPress={this.onKeyPress}
@@ -52,7 +52,7 @@ class SearchBox extends Component {
               name: 'search',
               link: true,
               onClick: this.performSearch,
-              title: "Perform Search"
+              title: 'Perform Search'
             }}
             placeholder='Search...'
             fluid

@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types"
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types'
 
 class Template extends Component {
   static propTypes = {

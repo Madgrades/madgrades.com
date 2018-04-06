@@ -1,8 +1,8 @@
-import React from "react";
-import {Header, Segment} from "semantic-ui-react";
-import CourseName from "../components/CourseName";
-import {Link} from "react-router-dom";
-import SubjectNameList from "./SubjectNameList";
+import React from 'react';
+import {Header, Segment} from 'semantic-ui-react';
+import CourseName from '../components/CourseName';
+import {Link} from 'react-router-dom';
+import SubjectNameList from './SubjectNameList';
 
 const CourseSearchResultItem = ({ result }) => (
     <Segment color='blue'>
@@ -11,7 +11,7 @@ const CourseSearchResultItem = ({ result }) => (
           <CourseName
               data={result}
               uuid={result.uuid}
-              fallback={"(Unknown Name)"}/>
+              fallback={'(Unknown Name)'}/>
           <Header.Subheader>
             <SubjectNameList
               subjects={result.subjects}/> {result.number}

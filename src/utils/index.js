@@ -1,8 +1,8 @@
-import * as api from "./api";
-import * as grades from "./grades";
-import * as termCodes from "./termCodes";
-import {bindActionCreators} from "redux";
-import actions from "../redux/actions";
+import * as api from './api';
+import * as grades from './grades';
+import * as termCodes from './termCodes';
+import {bindActionCreators} from 'redux';
+import actions from '../redux/actions';
 
 const utils = {
   api,
@@ -14,7 +14,7 @@ const utils = {
     }
   },
   numberWithCommas: (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 };
 export default utils;

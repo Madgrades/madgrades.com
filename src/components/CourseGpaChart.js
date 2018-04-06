@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types"
-import {GpaChart} from "../containers/charts/GpaChart";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types'
+import {GpaChart} from '../containers/charts/GpaChart';
 
 class CourseGpaChart extends Component {
   static propTypes = {

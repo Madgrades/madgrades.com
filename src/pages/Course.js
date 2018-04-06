@@ -1,12 +1,12 @@
-import React from "react";
-import CourseName from "../components/CourseName";
-import {Container, Divider, Header} from "semantic-ui-react";
-import CourseChartViewer from "../components/CourseChartViewer";
-import CourseGpaChart from "../components/CourseGpaChart";
-import {parse, stringify} from "qs";
+import React from 'react';
+import CourseName from '../components/CourseName';
+import {Container, Divider, Header} from 'semantic-ui-react';
+import CourseChartViewer from '../components/CourseChartViewer';
+import CourseGpaChart from '../components/CourseGpaChart';
+import {parse, stringify} from 'qs';
 
 const Course = ({ match, location, history }) => {
-  document.title = " - Madgrades";
+  document.title = ' - Madgrades';
 
   const { uuid } = match.params;
   const params = parse(location.search.substr(1));
@@ -21,17 +21,17 @@ const Course = ({ match, location, history }) => {
   };
 
   const onNameLoad = (name) => {
-    document.title = name + " UW Madison Grade Distribution - Madgrades";
+    document.title = name + ' UW Madison Grade Distribution - Madgrades';
   };
 
   return (
-      <Container className="Course">
+      <Container className='Course'>
         <Header size='huge'>
-          <Header.Content style={{maxWidth: "100%"}}>
+          <Header.Content style={{maxWidth: '100%'}}>
             <CourseName
                 uuid={uuid}
-                fallback={"(Unknown Name)"}/>
-            <Header.Subheader style={{maxWidth: "100%"}}>
+                fallback={'(Unknown Name)'}/>
+            <Header.Subheader style={{maxWidth: '100%'}}>
               <CourseName
                   uuid={uuid}
                   asSubjectAndNumber={true}

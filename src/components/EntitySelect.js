@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types"
-import {Dropdown} from "semantic-ui-react";
-import _ from "lodash";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types'
+import {Dropdown} from 'semantic-ui-react';
+import _ from 'lodash';
 
 /**
  * A dropdown/search box for selecting a particular entity from madgrades.
@@ -22,7 +22,7 @@ class EntitySelect extends Component {
   };
 
   state = {
-    query: "",
+    query: '',
     options: [],
     isTyping: false,
     isFetching: false
@@ -95,7 +95,7 @@ class EntitySelect extends Component {
 
   onChange = (event, { value }) => {
     this.setState({
-      query: ""
+      query: ''
     });
     this.props.onChange(value);
   };

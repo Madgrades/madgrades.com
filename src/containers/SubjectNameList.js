@@ -1,5 +1,5 @@
-import React from "react";
-import SubjectName from "../components/SubjectName";
+import React from 'react';
+import SubjectName from '../components/SubjectName';
 
 const SubjectNameList = ({subjectCodes, subjects}) => {
   const result = [];
@@ -20,7 +20,7 @@ const SubjectNameList = ({subjectCodes, subjects}) => {
           <SubjectName
               code={subjectCodes && curr}
               abbreviate={true}
-              fallback="???"
+              fallback='???'
               data={subjects && curr}/>
           {divider}
         </span>

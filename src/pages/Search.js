@@ -1,12 +1,12 @@
-import React from "react";
-import {Container, Divider, Header} from "semantic-ui-react";
+import React from 'react';
+import {Container, Divider, Header} from 'semantic-ui-react';
 import {parse} from 'qs';
-import SetCourseFilterParams from "../components/SetCourseFilterParams";
-import CourseFilterForm from "../components/CourseFilterForm";
-import CourseSearchResults from "../components/CourseSearchResults";
-import SearchResultCount from "../components/SearchResultCount";
-import CourseSortForm from "../components/CourseSortForm";
-import {Col, Row} from "react-flexbox-grid";
+import SetCourseFilterParams from '../components/SetCourseFilterParams';
+import CourseFilterForm from '../components/CourseFilterForm';
+import CourseSearchResults from '../components/CourseSearchResults';
+import SearchResultCount from '../components/SearchResultCount';
+import CourseSortForm from '../components/CourseSortForm';
+import {Col, Row} from 'react-flexbox-grid';
 
 const extractParams = (location) => {
   const params = parse(location.search.substr(1));
@@ -41,13 +41,13 @@ const extractParams = (location) => {
 };
 
 const Courses = ({ location }) => {
-  document.title = "Search UW Madison Courses - Madgrades";
+  document.title = 'Search UW Madison Courses - Madgrades';
 
   return (
-      <Container className="Search">
+      <Container className='Search'>
         <SetCourseFilterParams params={extractParams(location)}/>
         <Row columns={16}>
-          <Col xs={12} md={4} lg={3} style={{marginBottom: "20px"}}>
+          <Col xs={12} md={4} lg={3} style={{marginBottom: '20px'}}>
             <CourseFilterForm/>
           </Col>
           <Col xs={12} md={8} lg={9}>

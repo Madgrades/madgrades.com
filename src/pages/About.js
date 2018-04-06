@@ -1,13 +1,13 @@
-import React from "react";
-import {Button, Container, Divider, Icon} from "semantic-ui-react";
+import React from 'react';
+import {Button, Container, Divider, Icon} from 'semantic-ui-react';
 
-const githubLink = "https://github.com/Madgrades";
+const githubLink = 'https://github.com/Madgrades';
 
 const About = () => {
-  document.title = "About - Madgrades";
+  document.title = 'About - Madgrades';
 
   return (
-    <div className="About">
+    <div className='About'>
       <Container text>
         <p></p>
         <br/>
@@ -24,11 +24,11 @@ const About = () => {
         <Divider horizontal>Help out!</Divider>
         <p>
           Do you have issues, questions, or suggestions regarding the website?
-          Click the "Provide Feedback" link
+          Click the 'Provide Feedback' link
           and we can get back to you soon.
         </p>
         <p>
-          This project is <a href={githubLink} target="_blank">open source</a>.
+          This project is <a href={githubLink} target='_blank'>open source</a>.
           Pull requests are
           welcome, as I am sure there are
           awesome features yet to add and plenty of bugs to fix.
@@ -42,22 +42,24 @@ const About = () => {
         </p>
 
         <center>
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post"
-                target="_top">
-            <input type="hidden" name="cmd" value="_donations"/>
-            <input type="hidden" name="business" value="keenan@keenant.com"/>
-            <input type="hidden" name="lc" value="US"/>
-            <input type="hidden" name="item_name" value="Madgrades"/>
-            <input type="hidden" name="no_note" value="0"/>
-            <input type="hidden" name="currency_code" value="USD"/>
-            <input type="hidden" name="bn"
-                   value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest"/>
-            <Button primary href='https://form.jotform.com/80705132647151'
+          <form action='https://www.paypal.com/cgi-bin/webscr' method='post'
+                target='_top'>
+            <input type='hidden' name='cmd' value='_donations'/>
+            <input type='hidden' name='business' value='keenan@keenant.com'/>
+            <input type='hidden' name='lc' value='US'/>
+            <input type='hidden' name='item_name' value='Madgrades'/>
+            <input type='hidden' name='no_note' value='0'/>
+            <input type='hidden' name='currency_code' value='USD'/>
+            <input type='hidden' name='bn'
+                   value='PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest'/>
+            <Button primary
+                    href='https://form.jotform.com/80705132647151'
+                    rel='noopener noreferrer'
                     target='_blank'>
               <Icon name='thumbs up'/>
               Provide Feedback
             </Button>
-            <Button color="red" type="submit">
+            <Button color='red' type='submit'>
               <Icon name='heart'/>
               Donate
             </Button>

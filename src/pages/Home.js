@@ -1,15 +1,15 @@
-import React from "react";
-import {Button, Container, Divider, Header, Image} from "semantic-ui-react";
-import {Link} from "react-router-dom";
-import {Col, Row} from "react-flexbox-grid";
-import exampleExplore from "../assets/example-explore.png"
-import exampleChart from "../assets/example-chart.png"
+import React from 'react';
+import {Button, Container, Divider, Header, Image} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
+import {Col, Row} from 'react-flexbox-grid';
+import exampleExplore from '../assets/example-explore.png'
+import exampleChart from '../assets/example-chart.png'
 
 const Home = () => {
-  document.title = "UW Madison Grade Distributions - Madgrades";
+  document.title = 'UW Madison Grade Distributions - Madgrades';
 
   return (
-      <div className="Home">
+      <div className='Home'>
         <Container text>
           <Header as='h1'>
             <Header.Content>
@@ -32,10 +32,19 @@ const Home = () => {
             Note that this website is not necessarily complete and may contain
             bugs, misleading information, or errors in the data reported. Please
             help out by {' '}
-            <a href="https://form.jotform.com/80705132647151" target="_blank">reporting issues</a>
+            <a
+              href='https://form.jotform.com/80705132647151'
+              target='_blank'
+              rel='noopener noreferrer'>
+              reporting issues
+            </a>
             {' '} or {' '}
-            <a href="https://github.com/Madgrades/madgrades.com" target="_blank">contributing
-              fixes</a>.
+            <a
+              href='https://github.com/Madgrades/madgrades.com'
+              target='_blank'
+              rel='noopener noreferrer'>
+              contributing fixes
+            </a>.
           </p>
         </Container>
 

@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import {Button, Divider, Form, Input} from "semantic-ui-react";
-import EntitySelect from "./EntitySelect";
-import {withRouter} from "react-router";
-import {stringify} from "qs";
-import * as _ from "lodash";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import {Button, Divider, Form, Input} from 'semantic-ui-react';
+import EntitySelect from './EntitySelect';
+import {withRouter} from 'react-router';
+import {stringify} from 'qs';
+import * as _ from 'lodash';
 
 class CourseFilterForm extends Component {
   state = {
@@ -70,7 +70,7 @@ class CourseFilterForm extends Component {
             <label>Search</label>
             <Input
                 placeholder='i.e. Math 222, Music in Performance'
-                value={query || ""}
+                value={query || ''}
                 onChange={this.onQueryChange}/>
           </Form.Field>
           <Divider horizontal content='Filter' className='divider-small'/>

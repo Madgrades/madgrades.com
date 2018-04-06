@@ -1,13 +1,13 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types"
-import {Button, Dropdown, Form} from "semantic-ui-react";
-import TermSelect from "../containers/TermSelect";
-import CourseChart from "./CourseChart";
-import domtoimage from "dom-to-image";
-import FileSaver from "file-saver";
-import {Col, Row} from "react-flexbox-grid";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types'
+import {Button, Dropdown, Form} from 'semantic-ui-react';
+import TermSelect from '../containers/TermSelect';
+import CourseChart from './CourseChart';
+import domtoimage from 'dom-to-image';
+import FileSaver from 'file-saver';
+import {Col, Row} from 'react-flexbox-grid';
 
 class CourseChartViewer extends Component {
   static propTypes = {
@@ -60,7 +60,7 @@ class CourseChartViewer extends Component {
       isExporting: true
     });
 
-    domtoimage.toBlob(this.chart, {bgcolor: "#fff"})
+    domtoimage.toBlob(this.chart, {bgcolor: '#fff'})
       .then(blob => {
         FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);
         this.setState({

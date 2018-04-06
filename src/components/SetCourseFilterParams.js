@@ -1,7 +1,7 @@
-import {Component} from "react";
-import {connect} from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types";
+import {Component} from 'react';
+import {connect} from 'react-redux';
+import utils from '../utils';
+import PropTypes from 'prop-types';
 
 class SetCourseFilterParams extends Component {
   static propTypes = {

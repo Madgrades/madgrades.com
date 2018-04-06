@@ -1,7 +1,7 @@
-import * as actionTypes from "../actionTypes";
+import * as actionTypes from '../actionTypes';
 
 const initialState = {
-  searchQuery: "",
+  searchQuery: '',
   courseFilterParams: {
     subjects: undefined,
     instructors: undefined,
@@ -15,7 +15,7 @@ export default function reducer(state = initialState, action) {
     case actionTypes.SET_SEARCH_QUERY:
       return {
         ...state,
-        searchQuery: action.query || ""
+        searchQuery: action.query || ''
       };
     case actionTypes.SET_COURSE_FILTER_PARAMS:
       return {

@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import utils from '../utils';
 
 class SubjectName extends Component {
   static propTypes = {

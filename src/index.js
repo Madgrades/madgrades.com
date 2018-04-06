@@ -6,7 +6,7 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {Provider} from 'react-redux'
 import reducers from './redux/reducers'
 import thunk from 'redux-thunk';
-import utils from "./utils";
+import utils from './utils';
 import 'semantic-ui-css/semantic.min.css';
 import './styles/index.css'
 import 'react-flexbox-grid/dist/react-flexbox-grid.css';

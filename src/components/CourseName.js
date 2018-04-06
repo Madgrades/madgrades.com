@@ -1,8 +1,8 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
-import SubjectNameList from "../containers/SubjectNameList";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import utils from '../utils';
+import SubjectNameList from '../containers/SubjectNameList';
 
 class CourseName extends Component {
   static propTypes = {

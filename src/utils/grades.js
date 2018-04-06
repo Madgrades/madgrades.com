@@ -28,7 +28,7 @@ export const getGradeKeys = (includeMisc) => {
   return GPA_KEYS;
 };
 
-export const keyToName = (key) => key.replace("Count", "").toUpperCase();
+export const keyToName = (key) => key.replace('Count', '').toUpperCase();
 
 export const gpaCount = (dist) =>
     dist.aCount + dist.abCount + dist.bCount + dist.bcCount +
@@ -36,7 +36,7 @@ export const gpaCount = (dist) =>
 
 export const formatGpa = (gpa) => {
   if (isNaN(gpa))
-    return "N/A";
+    return 'N/A';
   return gpa.toFixed(2);
 };
 

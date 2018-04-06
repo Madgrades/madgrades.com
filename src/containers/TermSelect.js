@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import {Dropdown} from "semantic-ui-react";
-import utils from "../utils/index";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {Dropdown} from 'semantic-ui-react';
+import utils from '../utils/index';
 
 class TermSelect extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ class TermSelect extends Component {
 
   static defaultProps = {
     includeCumulative: false,
-    cumulativeText: "Cumulative",
+    cumulativeText: 'Cumulative',
     onChange: (termCode) => {},
     descriptions: {}
   };

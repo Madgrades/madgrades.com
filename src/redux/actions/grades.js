@@ -1,5 +1,5 @@
-import * as actionTypes from "../actionTypes";
-import utils from "../../utils";
+import * as actionTypes from '../actionTypes';
+import utils from '../../utils';
 
 const requestCourseGrades = (uuid) => {
   return {

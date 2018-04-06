@@ -1,9 +1,9 @@
-import React, {Component} from "react";
-import {Container, Dropdown, Header} from "semantic-ui-react";
-import Explorer from "../components/Explorer";
-import {parse, stringify} from "qs";
-import {withRouter} from "react-router";
-import _ from "lodash";
+import React, {Component} from 'react';
+import {Container, Dropdown, Header} from 'semantic-ui-react';
+import Explorer from '../components/Explorer';
+import {parse, stringify} from 'qs';
+import {withRouter} from 'react-router';
+import _ from 'lodash';
 
 const entityOptions = [
   {
@@ -61,7 +61,7 @@ class Explore extends Component {
   componentWillMount = this.setStateFromQueryString;
 
   componentDidMount = () => {
-    document.title = "Explore UW Madison Courses - Madgrades"
+    document.title = 'Explore UW Madison Courses - Madgrades'
   };
 
   componentDidUpdate = () => this.setStateFromQueryString();
@@ -116,7 +116,7 @@ class Explore extends Component {
     const { entityType } = this.state;
 
     return (
-        <div className="Explore">
+        <div className='Explore'>
           <Container>
             <Header as='h1'>
               <Header.Content>

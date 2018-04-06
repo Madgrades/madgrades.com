@@ -1,10 +1,10 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
-import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
-import {Dimmer, Loader} from "semantic-ui-react";
-import Div from "../containers/Div";
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import utils from '../utils';
+import GradeDistributionChart from '../containers/charts/GradeDistributionChart';
+import {Dimmer, Loader} from 'semantic-ui-react';
+import Div from '../containers/Div';
 
 class CourseChart extends Component {
   static propTypes = {
@@ -98,7 +98,7 @@ class CourseChart extends Component {
     else {
       chart = (
           <GradeDistributionChart
-              title="Cumulative Grade Distribution"/>
+              title='Cumulative Grade Distribution'/>
       )
     }
 

@@ -15,11 +15,16 @@ It's easy to run your own madgrades interface, it's just a React app.
 
 1. Get the required dependencies, `npm install`.
 2. Get a Madgrades API token from [api.madgrades.com](https://api.madgrades.com).
-3. Create a `.env.development` file with the line:
+3. Create a `.env.development` file with the following:
 
       ```
-      REACT_APP_MADGRADES_API_TOKEN=<your api token>
+      REACT_APP_MADGRADES_API='https://api.madgrades.com/'
+      REACT_APP_URL='https://madgrades.com'
+      REACT_APP_MADGRADES_API_TOKEN='<your api token>'
+      REACT_APP_GA_TRACKING_ID=''
       ```
+      
+   Make sure to set your api token to your own.
       
 4. Run the development server with `npm start`.
 

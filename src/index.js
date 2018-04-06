@@ -15,7 +15,7 @@ import initReactFastclick from 'react-fastclick';
 import 'babel-polyfill';
 
 const api = utils.api.create(
-    process.env.REACT_APP_MADGRADES_API,
+    process.env.REACT_APP_MADGRADES_API || 'https://api.madgrades.com/',
     process.env.REACT_APP_MADGRADES_API_TOKEN
 );
 

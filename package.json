@@ -41,6 +41,7 @@
     "build": "npm-run-all git-info build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && mv build/index.html build/200.html && surge build"
+    "deploy-test": "npm run build && mv build/index.html build/200.html && surge build",
+    "deploy-live": "npm run build && mv build/index.html build/200.html && surge build madgrades.com"
   }
 }

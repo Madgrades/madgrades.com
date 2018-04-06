@@ -1,5 +1,12 @@
 
 export function create(url, apiToken) {
+  if (!url || !apiToken)
+    throw new Error(
+      'Madgrades API url or API token not provided! This ' +
+      'probably means you did not create a .env file as ' +
+      'documented at https://github.com/Madgrades/madgrades.com'
+    );
+
   return new Api(url, apiToken);
 }
 

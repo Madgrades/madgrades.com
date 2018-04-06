@@ -41,7 +41,7 @@ class SiteFooter extends Component {
                 </a>
                 <br/>
                 <small>
-                  Madgrades unaffiliated with UW Madison. All data is provided by the {' '}
+                  Madgrades is unaffiliated with UW Madison. All data is provided by the {' '}
                   <a
                     href='https://registrar.wisc.edu/grade-reports/'
                     target='_blank'

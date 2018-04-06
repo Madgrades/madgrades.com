@@ -19,16 +19,26 @@ const setGaDevDimension = () => {
   }
 };
 
-// google analytics
-history.listen(location => {
+const updateGa = () => {
   if (window.ga) {
+    const { location } = window;
+
+    // record if they are a dev before sending the page view
     setGaDevDimension();
+
+    // set the page, send pageview
     window.ga('set', 'page', location.pathname + location.search);
-    window.ga('send', 'pageview');
+    window.ga('send', 'pageview', location.pathname);
   }
+};
+
+// google analytics
+history.listen(() => {
+  updateGa();
 });
 
-setGaDevDimension();
+// send page view on page load
+updateGa();
 
 class App extends Component {
   render = () => {

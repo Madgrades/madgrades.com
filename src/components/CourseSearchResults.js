@@ -25,7 +25,7 @@ class CourseSearchResults extends Component {
 
   onPageChange = (event, data) => {
     const { activePage } = data;
-    const { actions, courseFilterParams, history } = this.props;
+    const { courseFilterParams, history } = this.props;
     const params = {
       ...courseFilterParams,
       page: activePage

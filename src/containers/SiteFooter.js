@@ -32,7 +32,7 @@ class SiteFooter extends Component {
               <span style={{marginLeft: "10px"}}>
                 Made by <a href="https://keenant.com" target="_blank">Keenan Thompson</a><br/>
                 <small>
-                  Madgrades unaffiliated with UW Madison. All data is provided by the
+                  Madgrades unaffiliated with UW Madison. All data is provided by the {' '}
                   <a href="https://registrar.wisc.edu/grade-reports/" target="_blank">registrar office</a>.
                 </small>
               </span>

@@ -60,10 +60,6 @@ class CourseChartViewer extends Component {
       isExporting: true
     });
 
-    if (window.ga) {
-      window.ga('set', 'dimension2', )
-    }
-
     domtoimage.toBlob(this.chart, {bgcolor: "#fff"})
       .then(blob => {
         FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);

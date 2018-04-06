@@ -42,7 +42,7 @@ class SiteFooter extends Component {
                 <List.Item>
                 </List.Item>
                 <List.Item>
-                  <a href="https://api.madgrades.com" target="_blank">
+                  <a href={process.env.REACT_APP_MADGRADES_API} target="_blank">
                     API
                   </a>
                 </List.Item>

@@ -2,7 +2,6 @@ import React from "react";
 import {Button, Container, Divider, Icon} from "semantic-ui-react";
 
 const githubLink = "https://github.com/Madgrades";
-const gradeDistLink = "https://registrar.wisc.edu/wp-content/uploads/sites/36/2017/09/report-gradedistribution-2010-2011spring.pdf";
 
 const About = () => {
   document.title = "About - Madgrades";
@@ -15,9 +14,10 @@ const About = () => {
         <Divider horizontal>About</Divider>
         <p>
           Madgrades is a small, open source project created by a UW Madison
-          student with the goal of making understanding course grade distributions
-          easier. The office of the registrar publishes PDF files
-          which document GPA and grade reports for almost every course from each
+          student with the goal of making it easier to understand course
+          grade distributions. The office of the registrar publishes PDF files
+          which document GPA and grade reports for almost every course from
+          each
           semester since 2006, and this website makes sense of that data.
         </p>
         <br/>
@@ -28,7 +28,8 @@ const About = () => {
           and we can get back to you soon.
         </p>
         <p>
-          This project is <a href={githubLink} target="_blank">open source</a>. Pull requests are
+          This project is <a href={githubLink} target="_blank">open source</a>.
+          Pull requests are
           welcome, as I am sure there are
           awesome features yet to add and plenty of bugs to fix.
         </p>
@@ -51,7 +52,8 @@ const About = () => {
             <input type="hidden" name="currency_code" value="USD"/>
             <input type="hidden" name="bn"
                    value="PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest"/>
-            <Button primary href='https://form.jotform.com/80705132647151' target='_blank'>
+            <Button primary href='https://form.jotform.com/80705132647151'
+                    target='_blank'>
               <Icon name='thumbs up'/>
               Provide Feedback
             </Button>

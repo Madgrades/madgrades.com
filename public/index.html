@@ -15,6 +15,18 @@
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
       ga('create', '%REACT_APP_GA_TRACKING_ID%', 'auto');
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "%REACT_APP_URL%",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "%REACT_APP_URL%/search?query={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
   </head>
   <body>
     <noscript>

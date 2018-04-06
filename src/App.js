@@ -19,22 +19,23 @@ const setGaDevDimension = () => {
   }
 };
 
-const updateGa = () => {
+const updateGa = (location) => {
   if (window.ga) {
-    const { location } = window;
+    if (!location)
+      location = window.location;
 
     // record if they are a dev before sending the page view
     setGaDevDimension();
 
     // set the page, send pageview
     window.ga('set', 'page', location.pathname + location.search);
-    window.ga('send', 'pageview', location.pathname);
+    window.ga('send', 'pageview');
   }
 };
 
 // google analytics
-history.listen(() => {
-  updateGa();
+history.listen(location => {
+  updateGa(location);
 });
 
 // send page view on page load

@@ -15,7 +15,7 @@ const About = () => {
         <Divider horizontal>About</Divider>
         <p>
           It's not fun, nor is it easy to go through
-          the various <a href={gradeDistLink}>PDF files</a> provided by the Office
+          the various <a href={gradeDistLink} target="_blank">PDF files</a> provided by the Office
           of the Registrar to find a simple
           statistic such as the average GPA of a certain class taught in a
           particular semester. Why can't they provide a simple web interface that
@@ -39,7 +39,7 @@ const About = () => {
           and we can get back to you soon.
         </p>
         <p>
-          This project is <a href={githubLink}>open source</a>. Pull requests are
+          This project is <a href={githubLink} target="_blank">open source</a>. Pull requests are
           welcome, as I am sure there are
           awesome features yet to add and plenty of bugs to fix.
         </p>

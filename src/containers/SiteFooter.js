@@ -29,19 +29,19 @@ class SiteFooter extends Component {
               <Link to="/">
                 <img alt="Madgrades Logo" className='logo' src={logo} style={{verticalAlign: 'middle'}}/>
               </Link>
-              {' '} &nbsp;&nbsp;Made by <a href="https://keenant.com">Keenan Thompson</a>
+              {' '} &nbsp;&nbsp;Made by <a href="https://keenant.com" target="_blank">Keenan Thompson</a>
             </Col>
             <Col xs>
               <List horizontal floated='right'>
                 <List.Item>
                 </List.Item>
                 <List.Item>
-                  <a href="https://api.madgrades.com">
+                  <a href="https://api.madgrades.com" target="_blank">
                     API
                   </a>
                 </List.Item>
                 <List.Item>
-                  <a href={`https://github.com/thekeenant/madgrades.com/commit/${this.state.gitRev}`}>
+                  <a href={`https://github.com/thekeenant/madgrades.com/commit/${this.state.gitRev}`} target="_blank">
                     Rev: {this.state.gitRev || 'Source'}
                   </a>
                 </List.Item>

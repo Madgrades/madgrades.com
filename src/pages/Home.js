@@ -32,9 +32,9 @@ const Home = () => {
             Note that this website is not necessarily complete and may contain
             bugs, misleading information, or errors in the data reported. Please
             help out by {' '}
-            <a href="https://form.jotform.com/80705132647151">reporting issues</a>
+            <a href="https://form.jotform.com/80705132647151" target="_blank">reporting issues</a>
             {' '} or {' '}
-            <a href="https://github.com/Madgrades/madgrades.com">contributing
+            <a href="https://github.com/Madgrades/madgrades.com" target="_blank">contributing
               fixes</a>.
           </p>
         </Container>

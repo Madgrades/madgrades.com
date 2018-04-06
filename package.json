@@ -28,7 +28,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.3.0",
-    "semantic-ui-react": "^0.78.3"
+    "semantic-ui-react": "^0.78.3",
+    "universal-cookie": "^2.1.2"
   },
   "scripts": {
     "git-info": "git log -1 --oneline > src/assets/git-rev.txt",

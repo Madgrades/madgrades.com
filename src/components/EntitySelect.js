@@ -18,7 +18,8 @@ class EntitySelect extends Component {
   };
 
   static defaultProps = {
-    value: []
+    value: [],
+    onChange: (entityKey) => { console.log(entityKey) }
   };
 
   state = {
@@ -166,6 +167,8 @@ class EntitySelect extends Component {
       })
     }
   };
+
+  componentDidMount = this.componentDidUpdate;
 
   render = () => {
     const { options, isFetching, isTyping, query } = this.state;

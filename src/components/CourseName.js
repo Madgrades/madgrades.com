@@ -10,22 +10,13 @@ class CourseName extends Component {
     fallback: PropTypes.string,
     data: PropTypes.object,
     asSubjectAndNumber: PropTypes.bool,
-    onNameLoad: PropTypes.func,
-  };
-
-  static defaultProps = {
-    onNameLoad: (name) => {}
   };
 
   componentWillMount = () => {
-    const { actions, uuid, data, onNameLoad, name } = this.props;
+    const { actions, uuid, data } = this.props;
 
     if (!data) {
       actions.fetchCourse(uuid);
-    }
-
-    if (name) {
-      onNameLoad(name);
     }
   };
 

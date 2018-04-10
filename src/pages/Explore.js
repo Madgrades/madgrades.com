@@ -46,10 +46,14 @@ class Explore extends Component {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
-      minCountAvg: minAvg,
-      minGpaTotal: minTotal,
-      subjects: params.subjects
+      subjects: params.subjects,
+      instructors: params.instructors && params.instructors.map(s => parseInt(s, 10))
     };
+
+    if (!params.instructors) {
+      filteredParams.minCountAvg = minAvg;
+      filteredParams.minGpaTotal = minTotal;
+    }
 
     // if we dont have new data, ignore state update
     if (_.isEqual(filteredParams, this.state.params) && entityType === this.state.entityType)
@@ -110,7 +114,6 @@ class Explore extends Component {
     this.updateParams(params);
   };
 
-
   onSubjectChange = (value) => {
     const params = {
       ...this.state.params,
@@ -120,8 +123,17 @@ class Explore extends Component {
     this.updateParams(params);
   }
 
+  onInstructorChange = (value) => {
+    const params = {
+      ...this.state.params,
+      instructors: value
+    };
+
+    this.updateParams(params);
+  }
+
   render = () => {
-    const { page, sort, order, minCountAvg, minGpaTotal, subjects } = this.state.params;
+    const { page, sort, order, minCountAvg, minGpaTotal, subjects, instructors } = this.state.params;
 
     const { entityType } = this.state;
 
@@ -129,6 +141,10 @@ class Explore extends Component {
     
     if (entityType !== 'subject' && subjects) {
       filterParams.subjects = subjects.join(',');
+    }
+    
+    if (entityType !== 'subject' && instructors) {
+      filterParams.instructors = instructors.join(',');
     }
 
     return (
@@ -148,23 +164,37 @@ class Explore extends Component {
               </Header.Subheader>
             </Header>
 
-            
+            <Row>
             {entityType !== 'subject' &&
-              <Row>
-                <Col xs={12} md={6}>
-                  <p/>
-                  <Form>
-                    <Form.Field>
-                      <label>Filter subjects</label>
-                      <EntitySelect
-                        entityType='subject'
-                        value={subjects}
-                        onChange={this.onSubjectChange}/>
-                    </Form.Field>
-                  </Form>
-                </Col>
-              </Row>
+              <Col xs={12} md={6}>
+                <p/>
+                <Form>
+                  <Form.Field>
+                    <label>Filter subjects</label>
+                    <EntitySelect
+                      entityType='subject'
+                      value={subjects}
+                      onChange={this.onSubjectChange}/>
+                  </Form.Field>
+                </Form>
+              </Col>
             }
+
+            {entityType !== 'subject' &&
+              <Col xs={12} md={6}>
+                <p/>
+                <Form>
+                  <Form.Field>
+                    <label>Filter instructors</label>
+                    <EntitySelect
+                      entityType='instructor'
+                      value={instructors}
+                      onChange={this.onInstructorChange}/>
+                  </Form.Field>
+                </Form>
+              </Col>
+            }
+            </Row>
 
             <Explorer
                 entityType={entityType}

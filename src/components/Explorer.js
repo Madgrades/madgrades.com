@@ -26,7 +26,8 @@ class Explorer extends Component {
     onPageChange: PropTypes.func,
     page: PropTypes.number,
     minCountAvg: PropTypes.number,
-    minGpaTotal: PropTypes.number
+    minGpaTotal: PropTypes.number,
+    filterParams: PropTypes.object
   };
 
   static defaultProps = {
@@ -36,11 +37,21 @@ class Explorer extends Component {
     onPageChange: (page) => {},
     page: 1,
     minCountAvg: 0,
-    minGpaTotal: 0
+    minGpaTotal: 0,
+    filterParams: {},
   };
 
   componentWillMount = () => {
-    const { entityType, actions, page, sort, order, minCountAvg, minGpaTotal } = this.props;
+    const { 
+      entityType,
+      actions, 
+      page,
+      sort,
+      order,
+      minCountAvg,
+      minGpaTotal,
+      filterParams
+    } = this.props;
 
     const params = {
       page,
@@ -48,7 +59,8 @@ class Explorer extends Component {
       order,
       min_count_avg: minCountAvg,
       min_gpa_total: minGpaTotal,
-      per_page: 15
+      per_page: 15,
+      ...filterParams
     };
 
     switch (entityType) {

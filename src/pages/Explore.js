@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Container, Dropdown, Header} from 'semantic-ui-react';
+import {Col, Row} from 'react-flexbox-grid';
+import {Container, Dropdown, Header, Divider, Form} from 'semantic-ui-react';
 import Explorer from '../components/Explorer';
+import EntitySelect from '../components/EntitySelect';
 import {parse, stringify} from 'qs';
 import {withRouter} from 'react-router';
 import _ from 'lodash';
@@ -28,7 +30,7 @@ class Explore extends Component {
     params: {
 
     },
-    entityType: undefined
+    entityType: undefined,
   };
 
   setStateFromQueryString = (forcedQueryParams) => {
@@ -44,9 +46,14 @@ class Explore extends Component {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
-      minCountAvg: minAvg,
-      minGpaTotal: minTotal,
+      subjects: params.subjects,
+      instructors: params.instructors && params.instructors.map(s => parseInt(s, 10))
     };
+
+    if (!params.instructors) {
+      filteredParams.minCountAvg = minAvg;
+      filteredParams.minGpaTotal = minTotal;
+    }
 
     // if we dont have new data, ignore state update
     if (_.isEqual(filteredParams, this.state.params) && entityType === this.state.entityType)
@@ -76,44 +83,69 @@ class Explore extends Component {
     this.setStateFromQueryString({});
   };
 
-  onPageChange = (page) => {
+  updateParams = (params) => {
     const { history } = this.props;
     const { pathname } = this.props.location;
-
-    let params = {
-      ...this.state.params,
-      page
-    };
-
+    
     this.setState({
       params
     });
 
     history.push(pathname + '?' + stringify(params));
+  }
+
+  onPageChange = (page) => {
+    const params = {
+      ...this.state.params,
+      page
+    };
+
+    this.updateParams(params);
   };
 
   onSortOrderChange = (sort, order) => {
-    const { history } = this.props;
-    const { pathname } = this.props.location;
-
-    let params = {
+    const params = {
       ...this.state.params,
       sort,
       order,
       page: 1
     };
 
-    this.setState({
-      params
-    });
-
-    history.push(pathname + '?' + stringify(params));
+    this.updateParams(params);
   };
 
+  onSubjectChange = (value) => {
+    const params = {
+      ...this.state.params,
+      subjects: value
+    };
+
+    this.updateParams(params);
+  }
+
+  onInstructorChange = (value) => {
+    const params = {
+      ...this.state.params,
+      instructors: value
+    };
+
+    this.updateParams(params);
+  }
+
   render = () => {
-    const { page, sort, order, minCountAvg, minGpaTotal } = this.state.params;
+    const { page, sort, order, minCountAvg, minGpaTotal, subjects, instructors } = this.state.params;
 
     const { entityType } = this.state;
+
+    const filterParams = {};
+    
+    if (entityType !== 'subject' && subjects) {
+      filterParams.subjects = subjects.join(',');
+    }
+    
+    if (entityType !== 'subject' && instructors) {
+      filterParams.instructors = instructors.join(',');
+    }
 
     return (
         <div className='Explore'>
@@ -131,6 +163,39 @@ class Explore extends Component {
                 Find GPA stats on courses, instructors, subjects.*
               </Header.Subheader>
             </Header>
+
+            <Row>
+            {entityType !== 'subject' &&
+              <Col xs={12} md={6}>
+                <p/>
+                <Form>
+                  <Form.Field>
+                    <label>Filter subjects</label>
+                    <EntitySelect
+                      entityType='subject'
+                      value={subjects}
+                      onChange={this.onSubjectChange}/>
+                  </Form.Field>
+                </Form>
+              </Col>
+            }
+
+            {entityType !== 'subject' &&
+              <Col xs={12} md={6}>
+                <p/>
+                <Form>
+                  <Form.Field>
+                    <label>Filter instructors</label>
+                    <EntitySelect
+                      entityType='instructor'
+                      value={instructors}
+                      onChange={this.onInstructorChange}/>
+                  </Form.Field>
+                </Form>
+              </Col>
+            }
+            </Row>
+
             <Explorer
                 entityType={entityType}
                 page={page}
@@ -140,6 +205,7 @@ class Explore extends Component {
                 minGpaTotal={minGpaTotal}
                 onPageChange={this.onPageChange}
                 onSortOrderChange={this.onSortOrderChange}
+                filterParams={filterParams}
             />
             <p>
               * Some entries are omitted due to small class sizes.

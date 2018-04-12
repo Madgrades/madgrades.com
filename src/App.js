@@ -35,11 +35,11 @@ const updateGa = (location) => {
 
 // google analytics
 history.listen(location => {
-  updateGa(location);
+  setTimeout(() => updateGa(location), 500);
 });
 
 // send page view on page load
-updateGa();
+setTimeout(() => updateGa(), 500);
 
 class App extends Component {
   render = () => {

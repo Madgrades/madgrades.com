@@ -54,6 +54,7 @@ class SiteFooter extends Component {
             <Col xs>
               <List horizontal floated='right'>
                 <List.Item>
+                  Latest: <strong>Spring 2018</strong>
                 </List.Item>
                 <List.Item>
                   <a
@@ -68,7 +69,7 @@ class SiteFooter extends Component {
                      target='_blank'
                      rel='noopener noreferrer'>
                     Rev: {this.state.gitRev || 'Source'}
-                  </a>
+                  </a><br/>
                 </List.Item>
               </List>
             </Col>

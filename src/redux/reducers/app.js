@@ -7,7 +7,8 @@ const initialState = {
     instructors: undefined,
     sort: undefined,
     order: undefined
-  }
+  },
+  terms: undefined
 };
 
 export default function reducer(state = initialState, action) {
@@ -24,6 +25,11 @@ export default function reducer(state = initialState, action) {
           ...state.courseFilterParams,
           ...action.params
         }
+      };
+    case actionTypes.RECEIVE_TERMS:
+      return {
+        ...state,
+        terms: action.terms
       };
     default: {
       return state

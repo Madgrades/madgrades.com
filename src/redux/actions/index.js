@@ -1,4 +1,4 @@
-import {setCourseFilterParams} from './app';
+import {setCourseFilterParams, fetchTerms} from './app';
 import {fetchCourse, fetchCourseSearch} from './courses';
 import {fetchCourseGrades, fetchInstructorGrades} from './grades';
 import {fetchInstructor, fetchInstructorSearch} from './instructors';
@@ -11,6 +11,7 @@ import {
 
 export default {
   setCourseFilterParams,
+  fetchTerms,
   fetchSubject,
   fetchSubjectSearch,
   fetchCourse,

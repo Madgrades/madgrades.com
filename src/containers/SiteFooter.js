@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import logo from '../assets/logo-black.svg'
 import {Col, Row} from 'react-flexbox-grid';
 import gitRevFile from '../assets/git-rev.txt';
+import LatestTerm from '../components/LatestTerm';
 
 const commitUrl = 'https://github.com/Madgrades/madgrades.com/commit/';
 
@@ -54,7 +55,7 @@ class SiteFooter extends Component {
             <Col xs>
               <List horizontal floated='right'>
                 <List.Item>
-                  Latest: <strong>Spring 2018</strong>
+                  Latest: <LatestTerm/>
                 </List.Item>
                 <List.Item>
                   <a

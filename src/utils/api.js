@@ -48,6 +48,11 @@ class Api {
     return res.json();
   }
 
+  async getTerms() {
+    let res = await this._fetchPath('terms');
+    return res.json();
+  }
+
   async getCourse(uuid)  {
     let res = await this._fetchPath(`courses/${uuid}`);
     return res.json();

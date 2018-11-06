@@ -19,7 +19,7 @@ class EntitySelect extends Component {
 
   static defaultProps = {
     value: [],
-    onChange: (entityKey) => { console.log(entityKey) }
+    onChange: (entityKey) => { }
   };
 
   state = {
@@ -149,6 +149,8 @@ class EntitySelect extends Component {
       }
     }
 
+    let isFetching = searchData && searchData.isFetching;
+
     // if we are searching, only show options found in the search
     if (searchData && !searchData.isFetching) {
       let keys = searchData.results.map(e => this.entityToKey(e, entityType));
@@ -163,8 +165,15 @@ class EntitySelect extends Component {
     // only update if options are new, we don't want infinite loop
     if (!_.isEqual(this.state.options, options)) {
       this.setState({
-        options
-      })
+        options,
+        isFetching
+      });
+    }
+
+    if (this.state.isFetching !== isFetching) {
+      this.setState({
+        isFetching
+      });
     }
   };
 
@@ -177,7 +186,7 @@ class EntitySelect extends Component {
     let message = 'No results found';
     if (query.length < 2)
       message = 'Start typing to see results';
-    else if (isTyping)
+    else if (isTyping || isFetching)
       message = 'Searching...';
 
     return (

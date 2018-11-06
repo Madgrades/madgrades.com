@@ -172,7 +172,7 @@ class CourseChartViewer extends Component {
               </Form.Field>
               <Form.Field>
                 <label>Export</label>
-                <Button icon='download' loading={isExporting} basic size='small' content='Save PNG' onClick={this.onSaveChart}/>
+                <Button icon='download' loading={isExporting} basic size='small' content='Save Image' onClick={this.onSaveChart}/>
               </Form.Field>
             </Form>
             <br/>

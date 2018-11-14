@@ -16,6 +16,7 @@
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^16.2.0",
+    "react-adsense": "0.0.6",
     "react-dom": "^16.2.0",
     "react-fastclick": "^3.0.2",
     "react-flexbox-grid": "^2.0.0",

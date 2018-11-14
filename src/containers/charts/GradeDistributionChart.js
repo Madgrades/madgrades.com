@@ -87,7 +87,7 @@ class GradeDistributionChart extends Component {
           </div>
           <div style={{flex: 1}}>
             <ResponsiveContainer width='100%' aspect={16.0/9.0}>
-              <BarChart data={data} margin={{ top: 15, right: 5, left: -15, bottom: 20 }}>
+              <BarChart data={data} margin={{ top: 35, right: 5, left: 0, bottom: 20 }}>
                 <XAxis dataKey='name'>
                 </XAxis>
                 <YAxis domain={[0, 100]} tickCount={11}>

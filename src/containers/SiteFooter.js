@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Divider, List, Label, Item} from 'semantic-ui-react';
+import {Container, Divider, List, Label, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import logo from '../assets/logo-black.svg'
 import {Col, Row} from 'react-flexbox-grid';
@@ -54,10 +54,11 @@ class SiteFooter extends Component {
             </Col>
             <Col auto='xs'>
               <Label color='teal' horizontal as='a' href={process.env.REACT_APP_MADGRADES_API}>
+                <Icon name='code'/>
                 API
               </Label>
               <Label color='black' horizontal as='a' href={`${commitUrl}${this.state.gitRev}`}>
-                rev {this.state.gitRev || 'Source'}
+                <Icon name='code branch'/> rev {this.state.gitRev || 'Source'}
               </Label>
               <ApiStatusPill/>
             </Col>

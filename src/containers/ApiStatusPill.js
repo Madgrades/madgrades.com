@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Label } from 'semantic-ui-react';
+import {Label, Icon} from 'semantic-ui-react';
 import fetchStatus from '../utils/fetchStatus';
 
 const apiLink = 'https://status.madgrades.com/'
@@ -27,6 +27,7 @@ class ApiStatusPill extends Component {
 
     const uptimePercent = uptime === undefined ? 'N/A' : (uptime >= 100 ? 100 : uptime.toFixed(2))
 
+    var icon = 'thumbs down';
     var text = `${uptimePercent}% Uptime`
     var color;
 
@@ -50,14 +51,16 @@ class ApiStatusPill extends Component {
     }
     else if (uptime < 99) {
       color = 'yellow';
+      icon = 'thumbs up';
     }
     else {
       color = 'green';
+      icon = 'thumbs up';
     }
     
     return (
       <Label horizontal color={color} as='a' href={apiLink}>
-        {text}
+        <Icon name={icon}/> {text}
       </Label>
     )
   }

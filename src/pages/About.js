@@ -28,7 +28,7 @@ const About = () => {
           and we can get back to you soon.
         </p>
         <p>
-          This project is <a href={githubLink} target='_blank'>open source</a>.
+          This project is <a href={githubLink} target='_blank' rel='noopener noreferrer'>open source</a>.
           Pull requests are
           welcome, as I am sure there are
           awesome features yet to add and plenty of bugs to fix.

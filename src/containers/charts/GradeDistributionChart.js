@@ -67,7 +67,7 @@ class GradeDistributionChart extends Component {
         const gradeCount = secondary[key];
         const outOf = secondary.total || 1; // we don't want to divide by 0
         percentSecondary = (gradeCount / outOf) * 100;
-        labelSecondary = utils.numberWithCommas(gradeCount)  + '\n' + percent.toFixed(1) + '%'
+        labelSecondary = utils.numberWithCommas(gradeCount)  + '\n' + percentSecondary.toFixed(1) + '%'
       }
 
       return {

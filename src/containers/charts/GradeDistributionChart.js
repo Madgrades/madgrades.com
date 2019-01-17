@@ -16,8 +16,9 @@ const renderBarLabel = (props) => {
   const { x, y, width, value } = props;
 
   return (
-      <text x={x + width / 2} y={y - 10} textAnchor='middle' dominantBaseline='middle' fontSize='75%'>
-        {value}
+      <text textAnchor='middle' dominantBaseline='middle'>
+        <tspan x={x + width / 2} y={y - 24} fontSize='80%' fontWeight='bold'>{value.split('\n')[0]}</tspan>
+        <tspan x={x + width / 2} y={y - 10} fontSize='70%'>{value.split('\n')[1]}</tspan>
       </text>
   )
 };
@@ -59,14 +60,14 @@ class GradeDistributionChart extends Component {
         const gradeCount = primary[key];
         const outOf = primary.total || 1; // we don't want to divide by 0
         percent = (gradeCount / outOf) * 100;
-        label = utils.numberWithCommas(gradeCount);
+        label = utils.numberWithCommas(gradeCount) + '\n' + percent.toFixed(1) + '%'
       }
 
       if (secondary) {
         const gradeCount = secondary[key];
         const outOf = secondary.total || 1; // we don't want to divide by 0
         percentSecondary = (gradeCount / outOf) * 100;
-        labelSecondary = utils.numberWithCommas(gradeCount);
+        labelSecondary = utils.numberWithCommas(gradeCount)  + '\n' + percent.toFixed(1) + '%'
       }
 
       return {

@@ -60,14 +60,14 @@ class GradeDistributionChart extends Component {
         const gradeCount = primary[key];
         const outOf = primary.total || 1; // we don't want to divide by 0
         percent = (gradeCount / outOf) * 100;
-        label = utils.numberWithCommas(gradeCount) + '\n' + percent.toFixed(2) + '%'
+        label = utils.numberWithCommas(gradeCount) + '\n' + percent.toFixed(1) + '%'
       }
 
       if (secondary) {
         const gradeCount = secondary[key];
         const outOf = secondary.total || 1; // we don't want to divide by 0
         percentSecondary = (gradeCount / outOf) * 100;
-        labelSecondary = utils.numberWithCommas(gradeCount)  + '\n' + percent.toFixed(2) + '%'
+        labelSecondary = utils.numberWithCommas(gradeCount)  + '\n' + percent.toFixed(1) + '%'
       }
 
       return {

@@ -50,7 +50,14 @@ const Courses = ({ location }) => {
         <Row columns={16}>
           <Col xs={12} md={4} lg={3} style={{marginBottom: '20px'}}>
             <CourseFilterForm/>
-            <AdSlot slot={process.env.REACT_APP_ADSENSE_SIDEBAR_SLOT}/>
+            <br style={{clear: 'both'}}/>
+            <Divider/>
+            <center>
+              <AdSlot
+                slot={process.env.REACT_APP_ADSENSE_SIDEBAR_SLOT}
+                adWidth={'250px'}
+                adHeight={'250px'}/>
+            </center>
           </Col>
           <Col xs={12} md={8} lg={9}>
             <Row middle='xs'>

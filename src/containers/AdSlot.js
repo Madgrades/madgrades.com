@@ -3,21 +3,20 @@ import PropTypes from 'prop-types';
 
 class AdSlot extends Component {
   static propTypes = {
-    slot: PropTypes.string
+    slot: PropTypes.string.isRequired,
+    adWidth: PropTypes.number,
+    adHeight: PropTypes.number
   };
 
   componentDidMount = () => {
-		(window.adsbygoogle = window.adsbygoogle || []).push({})
+    (window.adsbygoogle = window.adsbygoogle || []).push({})
   };
 
   render = () => (
     <ins className="adsbygoogle"
-        style={{display: 'block'}}
+        style={{display: 'inline-block', width: this.props.adWidth || 'auto', height: this.props.adHeight || 'auto'}}
         data-ad-client={process.env.REACT_APP_ADSENSE_CLIENT}
-        data-ad-slot={this.props.slot}
-        data-adtest="on"
-        data-ad-format="auto"
-        data-full-width-responsive={true}>
+        data-ad-slot={this.props.slot}>
     </ins>
   );
 }

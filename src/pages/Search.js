@@ -7,6 +7,7 @@ import CourseSearchResults from '../components/CourseSearchResults';
 import SearchResultCount from '../components/SearchResultCount';
 import CourseSortForm from '../components/CourseSortForm';
 import {Col, Row} from 'react-flexbox-grid';
+import AdSlot from '../containers/AdSlot';
 
 const extractParams = (location) => {
   const params = parse(location.search.substr(1));
@@ -49,6 +50,7 @@ const Courses = ({ location }) => {
         <Row columns={16}>
           <Col xs={12} md={4} lg={3} style={{marginBottom: '20px'}}>
             <CourseFilterForm/>
+            <AdSlot slot={process.env.REACT_APP_ADSENSE_SIDEBAR_SLOT}/>
           </Col>
           <Col xs={12} md={8} lg={9}>
             <Row middle='xs'>

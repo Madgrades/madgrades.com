@@ -18,8 +18,8 @@ const Home = () => {
             <p>
               Madgrades has recently experienced more traffic than usual which increases the cost to run the service.
               In order to support this growth, we are experimenting with running minimal ads on some 
-              pages of the website. Our hope is that this will help to keep Madgrades running smoothly. As always,
-              we welcome all comments and feedback!
+              pages of the website. Our hope is that this will help to keep Madgrades running smoothly and free for our
+              users. As always, we welcome all comments and feedback!
             </p>
           </Message>
           <Header as='h1'>

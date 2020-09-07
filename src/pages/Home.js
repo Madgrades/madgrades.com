@@ -1,9 +1,5 @@
 import React from 'react';
-import {Button, Container, Divider, Header, Image, Message} from 'semantic-ui-react';
-import {Link} from 'react-router-dom';
-import {Col, Row} from 'react-flexbox-grid';
-import exampleExplore from '../assets/example-explore.png'
-import exampleChart from '../assets/example-chart.png'
+import {Container, Header} from 'semantic-ui-react';
 
 const Home = () => {
   document.title = 'UW Madison Grade Distributions - Madgrades';
@@ -11,17 +7,6 @@ const Home = () => {
   return (
       <div className='Home'>
         <Container>
-          <Message size='small' warning>
-            <Message.Header>
-              Ads Support Madgrades
-            </Message.Header>
-            <p>
-              Madgrades has recently experienced more traffic than usual which increases the cost to run the service.
-              In order to support this growth, we are experimenting with running minimal ads on some 
-              pages of the website. Our hope is that this will help to keep Madgrades running smoothly and free for our
-              users. As always, we welcome all comments and feedback!
-            </p>
-          </Message>
           <Header as='h1'>
             <Header.Content>
               Madgrades
@@ -57,84 +42,6 @@ const Home = () => {
               contributing fixes
             </a>.
           </p>
-        </Container>
-
-        <br/>
-        <Divider/>
-        <br/>
-
-        <Container>
-          <Row>
-            <Col xs={12} lg={6}>
-              <p/>
-              <Header as='h2'>
-                <Header.Content>
-                  Visualize course grades.
-                </Header.Content>
-              </Header>
-
-              <p>
-                Before you take a class, it can be helpful to know how
-                challenging it is for other students, and how it may factor
-                into your GPA. Use Madgrades to get a better idea of the
-                course before you click the enroll button in the student center.
-              </p>
-
-              <p>
-                Use the search page to find a course that you are interesting
-                in taking or learning more about. Open a course page to
-                view its cumulative grade distribution and to compare how
-                certain instructors have taught the class.
-              </p>
-
-              <Button as={Link} to='/search' primary>
-                View courses
-              </Button>
-              <p/><br/>
-            </Col>
-            <Col xs={12} lg={6}>
-              <Image src={exampleChart} className='img-example'/>
-            </Col>
-          </Row>
-        </Container>
-
-        <br/>
-        <Divider/>
-        <br/>
-
-        <Container>
-          <Row>
-            <Col xs={12} lg={6}>
-              <p/>
-              <Header as='h2'>
-                <Header.Content>
-                  Explore courses, instructors, and subjects!
-                </Header.Content>
-              </Header>
-
-              <p>
-                Use the explore page to discover interesting statistics on
-                UW Madison courses, instructors, and subjects.
-              </p>
-
-              <p>
-                For example, it's easy to find out, on average,
-                {' '}
-                <Link to='/explore/course?sort=gpa&order=asc'>courses that have been the most challenging for students</Link>, or
-                {' '}
-                <Link to='/explore/instructor?sort=gpa&order=desc'>the instructors who have given the highest grades</Link>.
-                Try it yourself!
-              </p>
-
-              <Button as={Link} to='/explore' primary>
-                Start exploring
-              </Button>
-              <p/><br/>
-            </Col>
-            <Col xs={12} lg={6}>
-              <Image src={exampleExplore} className='img-example'/>
-            </Col>
-          </Row>
         </Container>
       </div>
   );

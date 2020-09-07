@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Container, Divider, Header, Image} from 'semantic-ui-react';
+import {Button, Container, Divider, Header, Image, Message} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import {Col, Row} from 'react-flexbox-grid';
 import exampleExplore from '../assets/example-explore.png'
@@ -10,7 +10,18 @@ const Home = () => {
 
   return (
       <div className='Home'>
-        <Container text>
+        <Container>
+          <Message size='small' warning>
+            <Message.Header>
+              Ads Support Madgrades
+            </Message.Header>
+            <p>
+              Madgrades has recently experienced more traffic than usual which increases the cost to run the service.
+              In order to support this growth, we are experimenting with running minimal ads on some 
+              pages of the website. Our hope is that this will help to keep Madgrades running smoothly and free for our
+              users. As always, we welcome all comments and feedback!
+            </p>
+          </Message>
           <Header as='h1'>
             <Header.Content>
               Madgrades

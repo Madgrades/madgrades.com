@@ -21,7 +21,7 @@ jobs:
           CI: false
           SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
           SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
-        run: npm run deploy-staging
+        run: npm run deploy-prod
       - uses: actions/upload-artifact@v3
         with:
           name: build

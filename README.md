@@ -1,4 +1,4 @@
-# madgrades.com
+# madgrades.com [![Build and deploy to prod](https://github.com/Madgrades/madgrades.com/actions/workflows/prod.yml/badge.svg?branch=prod&event=push)](https://github.com/Madgrades/madgrades.com/actions/workflows/prod.yml)
 
 The source for madgrades.com, a web interface for visualizing the data provided by the [Madgrades API](https://api.madgrades.com) \[[source](https://github.com/Madgrades/api.madgrades.com)\]. Get it yourself, or visit the official website at [madgrades.com](https://madgrades.com)!
 

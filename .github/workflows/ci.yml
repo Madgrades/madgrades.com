@@ -16,7 +16,7 @@ jobs:
         run: npm install
       - name: Deploy
         env:
-          CI: 'false'
+          CI: false
           SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
           SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
-        run: CI=false npm run deploy-staging
+        run: npm run deploy-staging

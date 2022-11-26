@@ -1,5 +1,7 @@
 name: Build and deploy to staging
-on: push
+on:
+  push:
+    branches: staging
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,3 +22,7 @@ jobs:
           SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
           SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
         run: npm run deploy-staging
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build

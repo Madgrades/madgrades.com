@@ -8,14 +8,19 @@ import Routes from './Routes';
 const history = createBrowserHistory();
 
 const updateGa = (location) => {
-  if (window.ga) {
-    if (!location)
-      location = window.location;
+  if (!location) {
+    location = window.location;
+  }
+  if (window.gtag) {
     window.gtag("event", "page_view", {
       page_path: location.pathname + location.search + location.hash,
       page_search: location.search,
       page_hash: location.hash,
     });
+  }
+  if (window.ga) {
+    window.ga('set', 'page', location.pathname + location.search);
+    window.ga('send', 'pageview');
   }
 };
 

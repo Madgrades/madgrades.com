@@ -42,14 +42,17 @@
     "build": "npm-run-all git-info build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && mv build/index.html build/200.html && surge build",
-    "deploy-test": "npm run build && mv build/index.html build/200.html && surge build test.madgrades.com",
-    "deploy-live": "npm run build && mv build/index.html build/200.html && surge build madgrades.com"
+    "deploy": "npm run build && mv build/index.html build/200.html && node_modules/.bin/surge build",
+    "deploy-staging": "npm run build && mv build/index.html build/200.html && node_modules/.bin/surge build staging.madgrades.com",
+    "deploy-prod": "npm run build && mv build/index.html build/200.html && node_modules/.bin/surge build madgrades.com"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "surge": "^0.23.1"
+  }
 }

@@ -1,0 +1,28 @@
+name: Build and deploy to prod
+on:
+  push:
+    branches: main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+      - name: Install dependencies
+        run: npm install
+      - name: Deploy
+        env:
+          CI: false
+          SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
+          SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
+        run: npm run deploy-prod
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build

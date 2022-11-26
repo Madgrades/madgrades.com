@@ -14,8 +14,9 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
         run: npm install
-      - name: Export surge environment variables
-        run: |
-          export SURGE_LOGIN=${{ secrets.SURGE_LOGIN }} SURGE_TOKEN=${{ secrets.SURGE_TOKEN }}
       - name: Deploy
-        run: npm run deploy-staging
+        env:
+          CI: 'false'
+          SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
+          SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
+        run: CI=false npm run deploy-staging

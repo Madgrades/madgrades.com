@@ -13,17 +13,15 @@ const errorCodes = {
 
 async function fetchStatus() {
   const now = new Date();
-  const before = new Date(); 
+  const before = new Date();
   before.setDate(now.getDate() - 7);
-  
-  
 
   return await fetch(API_URL, {
     method: 'post',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: `api_key=${API_KEY}&format=json&custom_uptime_ranges=${before/1E3|0}_${now/1E3|0}`
+    body: `api_key=${API_KEY}&format=json&custom_uptime_ranges=${before / 1E3 | 0}_${now / 1E3 | 0}`
   })
     .then(async res => {
       const json = await res.json();
@@ -35,7 +33,13 @@ async function fetchStatus() {
         "uptime": parseFloat(monitor["custom_uptime_ranges"], 100),
         "status": errorCodes[monitor["status"]]
       }
-    })
+    }).catch(err => {
+      console.error('Failed to fetch uptime', err);
+      return {
+        "uptime": 0.0,
+        "status": "NOT_CHECKED",
+      };
+    });
 }
 
 export default fetchStatus;

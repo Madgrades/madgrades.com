@@ -1,10 +1,10 @@
 name: Build and deploy to prod
 on:
   push:
-    branches: prod
+    branches: main
   pull_request_review:
     types: [submitted]
-    branches: prod
+    branches: main
 jobs:
   build:
     if: github.event_name == 'push' || github.event.review.state == 'approved'

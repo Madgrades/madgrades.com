@@ -8,12 +8,14 @@ jobs:
         uses: actions/checkout@master
       - uses: actions/setup-node@v3
         with:
-          node-version: 17
+          node-version: 16
       - name: 'Create env file'
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
         run: npm install
+      - name: Export surge environment variables
+        run: |
+          export SURGE_LOGIN=${{ secrets.SURGE_LOGIN }} SURGE_TOKEN=${{ secrets.SURGE_TOKEN }}
       - name: Deploy
         run: npm run deploy-staging
-

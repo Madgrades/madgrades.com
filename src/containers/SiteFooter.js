@@ -64,6 +64,13 @@ class SiteFooter extends Component {
             </Col>
           </Row>
         </Container>
+
+        <img
+          alt="Banner for enRollBadge"
+          src="assets/enrollbadge.jpg"
+          style={{ width: '100%', maxHeight: '400px', margin: '20px 0' }}
+        />
+
       </div>
   );
 }

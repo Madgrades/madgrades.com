@@ -7,6 +7,7 @@ public/ads.txt
 
 # we use sass
 *.css
+*.css.map
 
 # dependencies
 /node_modules

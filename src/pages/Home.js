@@ -1,5 +1,6 @@
 import React from 'react';
 import {Container, Header} from 'semantic-ui-react';
+import EnrollBadgeBanner from '../assets/enroll-badge.png';
 
 const Home = () => {
   document.title = 'UW Madison Grade Distributions - Madgrades';
@@ -42,6 +43,19 @@ const Home = () => {
               contributing fixes
             </a>.
           </p>
+
+          <Header as='h1'>
+            <Header.Content>
+              Also check out Enroll Badge!
+            </Header.Content>
+          </Header>
+          <a href="http://enrollbadge.com" target="_blank">
+            <img
+              alt="Banner for enRollBadge"
+              src={EnrollBadgeBanner}
+              style={{ maxHeight: '350px', margin: '20px 0' }}
+            />
+          </a>
         </Container>
       </div>
   );

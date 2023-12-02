@@ -45,7 +45,7 @@ const About = () => {
         <br/>
         <Divider horizontal>Advertisements</Divier>
         <p>
-          Hosting this website costs money: server costs, domain feeds, and engineering efforts.
+          Hosting this website costs money: server costs, domain fees, and engineering efforts.
           There is a single ad on the search page that helps fund the project. We do not sell
           any other ad slots, but we are happy to link out to support other student projects.
           Feel free to reach out!

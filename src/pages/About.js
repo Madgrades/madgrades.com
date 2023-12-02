@@ -42,28 +42,13 @@ const About = () => {
         </p>
 
         <center>
-          <form action='https://www.paypal.com/cgi-bin/webscr' method='post'
-                target='_top'>
-            <input type='hidden' name='cmd' value='_donations'/>
-            <input type='hidden' name='business' value='keenan@keenant.com'/>
-            <input type='hidden' name='lc' value='US'/>
-            <input type='hidden' name='item_name' value='Madgrades'/>
-            <input type='hidden' name='no_note' value='0'/>
-            <input type='hidden' name='currency_code' value='USD'/>
-            <input type='hidden' name='bn'
-                   value='PP-DonationsBF:btn_donate_SM.gif:NonHostedGuest'/>
-            <Button primary
-                    href='https://form.jotform.com/80705132647151'
-                    rel='noopener noreferrer'
-                    target='_blank'>
-              <Icon name='thumbs up'/>
-              Provide Feedback
-            </Button>
-            <Button color='red' type='submit'>
-              <Icon name='heart'/>
-              Donate
-            </Button>
-          </form>
+          <Button primary
+                  href='https://form.jotform.com/80705132647151'
+                  rel='noopener noreferrer'
+                  target='_blank'>
+            <Icon name='thumbs up'/>
+            Provide Feedback
+          </Button>
         </center>
 
       </Container>

@@ -33,14 +33,6 @@ const About = () => {
           welcome, as I am sure there are
           awesome features yet to add and plenty of bugs to fix.
         </p>
-        <p>
-          Hosting this website costs money. Help me keep this project going by
-          clicking the button below.
-        </p>
-
-        <p>
-        </p>
-
         <center>
           <Button primary
                   href='https://form.jotform.com/80705132647151'
@@ -50,7 +42,16 @@ const About = () => {
             Provide Feedback
           </Button>
         </center>
-
+        <br/>
+        <Divider horizontal>Advertisements</Divier>
+        <p>
+          Hosting this website costs money: server costs, domain feeds, and engineering efforts.
+          There is a single ad on the search page that helps fund the project. We do not sell
+          any other ad slots, but we are happy to link out to support other student projects.
+          Feel free to reach out!
+        </p>
+        <p>
+        </p>
       </Container>
     </div>
   );

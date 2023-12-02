@@ -3,20 +3,13 @@ events {
 }
 
 http {
-    include mime.types;
-    sendfile on;
     server {
         listen ${PORT};
         listen [::]:${PORT};
-
-        resolver 127.0.0.11;
-        autoindex off;
-
-        server_name _;
-        server_tokens off;
-
         root /app/build;
-        error_page 404 /index.html;
-        gzip_static on;
+        index index.html
+        location / {
+            try_files $uri $uri/ /index.html =404;
+        }
     }
 }

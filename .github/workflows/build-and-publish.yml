@@ -1,0 +1,26 @@
+name: Build and Publish
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  build-and-push-docker-image:
+    name: Build Docker image and publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.PUBLISHING_GITHUB_USERNAME }}
+          password: ${{ secrets.PUBLISHING_GITHUB_TOKEN }}
+      - name: Build image and push
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          tags: |
+            ghcr.io/madgrades/madgrades.com:latest
+          push: ${{ github.ref == 'refs/heads/main' }}

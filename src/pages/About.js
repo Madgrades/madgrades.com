@@ -43,7 +43,7 @@ const About = () => {
           </Button>
         </center>
         <br/>
-        <Divider horizontal>Advertisements</Divier>
+        <Divider horizontal>Advertisements</Divider>
         <p>
           Hosting this website costs money: server costs, domain fees, and engineering efforts.
           There is a single ad on the search page that helps fund the project. We do not sell

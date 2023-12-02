@@ -8,7 +8,7 @@ The source for madgrades.com, a web interface for visualizing the data provided 
 2. Build the Docker container
 
 ```bash
-$ docker run -p 8080:8080 ghcr.io/madgrades/madgrades.com
+$ docker run -p 8080:8080 -it ghcr.io/madgrades/madgrades.com
 ```
 
 Alternatively, you can clone this repository and build the Docker image yourself:

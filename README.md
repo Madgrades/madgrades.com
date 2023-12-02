@@ -2,34 +2,48 @@
 
 The source for madgrades.com, a web interface for visualizing the data provided by the [Madgrades API](https://api.madgrades.com) \[[source](https://github.com/Madgrades/api.madgrades.com)\]. Get it yourself, or visit the official website at [madgrades.com](https://madgrades.com)!
 
-## Usage
+## Docker instructions
 
-It's easy to run your own madgrades interface, it's just a React app.
+1. Create a `.env` file based on the provided `.env.example`.
+2. Build the Docker container
 
-**Requirements**:
+```bash
+$ docker run -p 8080:8080 ghcr.io/madgrades/madgrades.com
+```
 
-* Node (npm)
-* That's it.
+Alternatively, you can clone this repository and build the Docker image yourself:
 
-**Steps:**
+```bash
+$ docker build . -t madgrades.com
+$ docker run -p 8080:8080 madgrades.com
+```
 
-1. Get the required dependencies, `npm install`.
-2. Get a Madgrades API token from [api.madgrades.com](https://api.madgrades.com).
-3. Create a `.env.development` file with the following:
+## Native instructions
 
-      ```
-      REACT_APP_MADGRADES_API='https://api.madgrades.com/'
-      REACT_APP_URL='https://madgrades.com'
-      REACT_APP_MADGRADES_API_TOKEN='<your api token>'
-      REACT_APP_GA_TRACKING_ID=''
-      ```
-      
-   Make sure to set your api token to your own.
-      
-4. Run the development server with `npm start`.
+### Requirements
 
-Create a production-ready app with `npm run build`. Instead of a `.env.development` file, you will need `.env.production` with the same contents, assuming you are using the same key for production and development.
+* Nodejs >= 10 (?)
+* NPM
+* Git
 
+### Steps
+
+1. Install the required dependencies.
+   ```bash
+   $ npm install
+   ```
+3. Get a Madgrades API token from [api.madgrades.com](https://api.madgrades.com), or start up your own backend (see [dockerfiles](https://github.com/madgrades/dockerfiles)).
+4. Create a `.env` file based on the provided `.env.example`.      
+5. Run the development server.
+   ```bash
+   $ npm start
+   ```
+
+Create a production-ready app with:
+
+```bash
+$ npm run build
+```
 
 ## Example Page
 

@@ -7,7 +7,7 @@ http {
         listen ${PORT};
         listen [::]:${PORT};
         root /app/build;
-        index index.html
+        index index.html;
         location / {
             try_files $uri $uri/ /index.html =404;
         }

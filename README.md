@@ -8,7 +8,7 @@ The source for madgrades.com, a web interface for visualizing the data provided 
 2. Build the Docker container
 
 ```bash
-$ docker run -p 3000:80 -it ghcr.io/madgrades/madgrades.com
+$ docker run --env-file .env -p 3000:3000 -it ghcr.io/madgrades/madgrades.com
 ```
 
 You can now access the frontend from `http://localhost:3000`.
@@ -17,7 +17,7 @@ Alternatively, you can clone this repository and build the Docker image yourself
 
 ```bash
 $ docker build . -t madgrades.com
-$ docker run -p 8080:8080 madgrades.com
+$ docker run --env-file .env -p 3000:3000 madgrades.com
 ```
 
 ## Native instructions

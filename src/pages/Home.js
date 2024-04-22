@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Header} from 'semantic-ui-react';
 import EnrollBadgeBanner from '../assets/enroll-badge.png';
+import MadhousingFlyer from '../assets/madhousing.png';
 
 const Home = () => {
   document.title = 'UW Madison Grade Distributions - Madgrades';
@@ -54,6 +55,19 @@ const Home = () => {
               alt="Banner for enRollBadge"
               src={EnrollBadgeBanner}
               style={{ maxHeight: '350px', margin: '20px 0' }}
+            />
+          </a>
+
+          <Header as='h1'>
+            <Header.Content>
+              Share your dorm experience at MadHousing!
+            </Header.Content>
+          </Header>
+          <a href="http://madhousing.com" target="_blank">
+            <img
+                alt="Flyer for MadHousing"
+                src={MadhousingFlyer}
+                style={{ maxHeight: '550px', margin: '20px 0' }}
             />
           </a>
         </Container>

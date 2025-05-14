@@ -57,6 +57,11 @@ class CourseFilterForm extends Component {
       page: 1
     };
 
+    // Preserve compareWith parameter if it exists
+    if (this.props.courseFilterParams.compareWith) {
+      allParams.compareWith = this.props.courseFilterParams.compareWith;
+    }
+
     let params = _.omitBy(allParams, _.isNil);
     this.props.history.push('/search?' + stringify(params));
   };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid, Segment, Header, Button, Divider } from 'semantic-ui-react';
+import { Container, Grid, Segment, Header, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import CourseName from './CourseName';
 import CourseChartViewer from './CourseChartViewer';

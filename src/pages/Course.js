@@ -4,7 +4,6 @@ import CourseName from '../components/CourseName';
 import CourseChartViewer from '../components/CourseChartViewer';
 import CourseGpaChart from '../components/CourseGpaChart';
 import CourseComparison from '../components/CourseComparison';
-import CourseRedditInsights from '../components/CourseRedditInsights';
 import { parse, stringify } from 'qs';
 import CourseData from "../components/CourseData";
 
@@ -90,8 +89,6 @@ const Course = ({ match, location, history }) => {
           uuid={uuid}/>
       <Divider/>
       <CourseGpaChart uuid={uuid}/>
-      <Divider/>
-      <CourseRedditInsights uuid={uuid} />
     </Container>
   );
 };

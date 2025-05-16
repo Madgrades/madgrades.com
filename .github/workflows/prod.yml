@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
@@ -24,10 +24,10 @@ jobs:
         name: Deploy
         env:
           CI: false
-          SURGE_LOGIN: '${{ secrets.SURGE_LOGIN }}'
-          SURGE_TOKEN: '${{ secrets.SURGE_TOKEN }}'
+          SURGE_LOGIN: "${{ secrets.SURGE_LOGIN }}"
+          SURGE_TOKEN: "${{ secrets.SURGE_TOKEN }}"
         run: npm run deploy-prod
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: build
           path: build

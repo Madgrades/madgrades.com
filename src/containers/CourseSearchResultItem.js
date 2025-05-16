@@ -9,13 +9,7 @@ const CourseSearchResultItem = ({result, location, history}) => {
   const compareWith = params.get('compareWith');
 
   const handleCompare = () => {
-    if (compareWith) {
-      // If we're already in comparison mode, navigate to the comparison view
-      history.push(`/courses/${compareWith}?compareWith=${result.uuid}`);
-    } else {
-      // Otherwise, add the current course as the comparison target
-      history.push(`/search?compareWith=${result.uuid}`);
-    }
+    history.push(`/courses/${compareWith}?compareWith=${result.uuid}`);
   };
 
   return (
@@ -32,14 +26,16 @@ const CourseSearchResultItem = ({result, location, history}) => {
           </Header.Subheader>
         </Header.Content>
       </Header>
-      <Button 
-        primary 
-        size='small' 
-        onClick={handleCompare}
-        style={{ marginTop: '1em' }}
-      >
-        {compareWith ? 'Compare with this course' : 'Compare'}
-      </Button>
+      {compareWith && (
+        <Button 
+          primary 
+          size='small' 
+          onClick={handleCompare}
+          style={{ marginTop: '1em' }}
+        >
+          Compare with this course
+        </Button>
+      )}
     </Segment>
   );
 };

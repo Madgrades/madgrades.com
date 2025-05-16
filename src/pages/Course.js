@@ -1,9 +1,10 @@
 import React from 'react';
+import { Container, Divider, Header, Button } from 'semantic-ui-react';
 import CourseName from '../components/CourseName';
-import {Container, Divider, Header} from 'semantic-ui-react';
 import CourseChartViewer from '../components/CourseChartViewer';
 import CourseGpaChart from '../components/CourseGpaChart';
-import {parse, stringify} from 'qs';
+import CourseComparison from '../components/CourseComparison';
+import { parse, stringify } from 'qs';
 import CourseData from "../components/CourseData";
 
 const Course = ({ match, location, history }) => {
@@ -11,6 +12,7 @@ const Course = ({ match, location, history }) => {
 
   const { uuid } = match.params;
   const params = parse(location.search.substr(1));
+  const { compareWith } = params;
 
   let { instructorId, termCode } = params;
 
@@ -34,32 +36,61 @@ const Course = ({ match, location, history }) => {
     document.querySelector('meta[name="description"]').setAttribute('content', desc);
   };
 
+  const handleCompare = () => {
+    // Navigate to search page with current course pre-selected
+    history.push(`/search?compareWith=${uuid}`);
+  };
+
+  const removeComparison = () => {
+    history.push(`/courses/${uuid}`);
+  };
+
+  if (compareWith) {
+    return (
+      <CourseComparison
+        course1Uuid={uuid}
+        course2Uuid={compareWith}
+        onRemoveComparison={removeComparison}
+        location={location}
+        history={history}
+      />
+    );
+  }
+
   return (
-      <Container className='Course'>
-        <CourseData
-          uuid={uuid}
-          onDataLoad={onCourseDataLoad}/>
-        <Header size='huge'>
-          <Header.Content style={{maxWidth: '100%'}}>
+    <Container className='Course'>
+      <CourseData
+        uuid={uuid}
+        onDataLoad={onCourseDataLoad}/>
+      <Header size='huge'>
+        <Header.Content style={{maxWidth: '100%'}}>
+          <CourseName
+              uuid={uuid}
+              fallback={'(Unknown Name)'}/>
+          <Header.Subheader style={{maxWidth: '100%'}}>
             <CourseName
                 uuid={uuid}
-                fallback={'(Unknown Name)'}/>
-            <Header.Subheader style={{maxWidth: '100%'}}>
-              <CourseName
-                  uuid={uuid}
-                  asSubjectAndNumber={true}/>
-            </Header.Subheader>
-          </Header.Content>
-        </Header>
-        <Divider/>
-        <CourseChartViewer
-            instructorId={instructorId}
-            termCode={termCode}
-            onChange={onChange}
-            uuid={uuid}/>
-        <Divider/>
-        <CourseGpaChart uuid={uuid}/>
-      </Container>
-  )
+                asSubjectAndNumber={true}/>
+          </Header.Subheader>
+        </Header.Content>
+      </Header>
+      <Button 
+        primary 
+        onClick={handleCompare}
+        style={{ marginBottom: '1em' }}
+      >
+        Compare with Another Course
+      </Button>
+      <Divider/>
+      <CourseChartViewer
+          instructorId={instructorId}
+          termCode={termCode}
+          onChange={onChange}
+          uuid={uuid}/>
+      <Divider/>
+      <CourseGpaChart uuid={uuid}/>
+    </Container>
+  );
 };
+
 export default Course;

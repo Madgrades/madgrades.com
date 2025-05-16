@@ -149,7 +149,7 @@ class CourseChartViewer extends Component {
     return (
         <Row>
           <Col xs={12} md={12} lg={4}>
-            <Form>
+            <Form style={{ marginBottom: '1em' }}>
               <Form.Field>
                 <label>Instructors</label>
                 <Dropdown
@@ -175,14 +175,13 @@ class CourseChartViewer extends Component {
                 <Button icon='download' loading={isExporting} basic size='small' content='Save Image' onClick={this.onSaveChart}/>
               </Form.Field>
             </Form>
-            <br/>
           </Col>
           <Col xs={12} lg={8}>
-            <div ref={ref => this.chart = ref}>
-            <CourseChart
-                uuid={uuid}
-                instructorId={instructorChosen}
-                termCode={termChosen}/>
+            <div ref={ref => this.chart = ref} style={{ marginBottom: '1em' }}>
+              <CourseChart
+                  uuid={uuid}
+                  instructorId={instructorChosen}
+                  termCode={termChosen}/>
             </div>
           </Col>
         </Row>
@@ -198,5 +197,4 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseChartViewer)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseChartViewer);

@@ -31,6 +31,11 @@ class CourseSearchResults extends Component {
       page: activePage
     };
 
+    // Preserve compareWith parameter if it exists
+    if (courseFilterParams.compareWith) {
+      params.compareWith = courseFilterParams.compareWith;
+    }
+
     history.push('/search?' + stringify(params));
   };
 

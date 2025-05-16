@@ -43,10 +43,6 @@ class CourseComparison extends Component {
     history.push(`/courses/${course1Uuid}?${stringify(newParams)}`);
   };
 
-  handleBack = () => {
-    this.props.history.goBack();
-  };
-
   handleReplaceCourse1 = () => {
     const { course2Uuid, history } = this.props;
     // Navigate to search with course2 as the comparison target
@@ -72,15 +68,8 @@ class CourseComparison extends Component {
       <Container fluid style={{ padding: '20px 40px' }}>
         <div style={{ display: 'flex', gap: '1em', marginBottom: '2em' }}>
           <Button 
-            icon='arrow left'
-            content='Back'
-            onClick={this.handleBack}
-            size='large'
-          />
-          <Button 
             negative 
             onClick={onRemoveComparison}
-            size='large'
           >
             Remove Comparison
           </Button>

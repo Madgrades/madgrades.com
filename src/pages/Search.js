@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Divider, Header, Message} from 'semantic-ui-react';
+import {Button, Container, Divider, Header, Message} from 'semantic-ui-react';
 import {parse} from 'qs';
 import SetCourseFilterParams from '../components/SetCourseFilterParams';
 import CourseFilterForm from '../components/CourseFilterForm';
@@ -55,6 +55,17 @@ const Courses = ({ location }) => {
         <Message info>
           <Message.Header>Comparison Mode</Message.Header>
           <p>Select a course to compare with the previously selected course.</p>
+          <Message.Content>
+            <Button
+              onClick={() => {
+                const params = new URLSearchParams(location.search);
+                params.delete('compareWith');
+                window.location.search = params.toString();
+              }}
+            >
+              Leave Comparison Mode
+            </Button>
+          </Message.Content>
         </Message>
       )}
       <Row columns={16}>

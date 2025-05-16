@@ -31,7 +31,6 @@ const CourseSearchResultItem = ({result, location, history}) => {
           primary 
           size='small' 
           onClick={handleCompare}
-          style={{ marginTop: '1em' }}
         >
           Compare with this course
         </Button>

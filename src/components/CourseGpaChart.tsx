@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState } from '../types';
+import { RootState, CourseOfferingData, CourseTermData } from '../types';
 import { GpaChart } from '../containers/charts/GpaChart';
 
 interface OwnProps {
@@ -18,14 +18,14 @@ function CourseGpaChart({ uuid, actions, data }: Props) {
 
   if (!data || data.isFetching) return <GpaChart gradeDistributions={[]} />;
 
-  const gradeDistributions = data.courseOfferings
-    .map((o: any) => {
+  const gradeDistributions: CourseTermData[] = (data.courseOfferings || [])
+    .map((o: CourseOfferingData) => {
       return {
         ...o.cumulative,
         termCode: o.termCode,
-      };
+      } as CourseTermData;
     })
-    .sort((a: any, b: any) => a.termCode - b.termCode);
+    .sort((a: CourseTermData, b: CourseTermData) => a.termCode - b.termCode);
 
   return <GpaChart gradeDistributions={gradeDistributions} />;
 }

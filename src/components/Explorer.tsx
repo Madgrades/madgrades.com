@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState } from '../types';
+import { RootState, ExploreParams, CourseExploreEntry, InstructorExploreEntry, SubjectExploreEntry, PaginationData } from '../types';
 import { Dimmer, Header, Icon, Loader, Pagination, Popup, Table } from 'semantic-ui-react';
 import _ from 'lodash';
 import CourseName from './CourseName';
@@ -10,6 +10,7 @@ import { stringify } from 'qs';
 import { Row, Col } from '../components/Grid';
 
 type EntityType = 'instructor' | 'course' | 'subject';
+type ExploreEntry = CourseExploreEntry | InstructorExploreEntry | SubjectExploreEntry;
 
 interface OwnProps {
   entityType: EntityType;
@@ -20,7 +21,7 @@ interface OwnProps {
   page?: number;
   minCountAvg?: number;
   minGpaTotal?: number;
-  filterParams?: any;
+  filterParams?: Partial<ExploreParams>;
 }
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -65,7 +66,7 @@ function Explorer({
     }
   }, [entityType, page, sort, order, minCountAvg, minGpaTotal, filterParams, actions]);
 
-  const handlePageChange = (event: any, data: any) => {
+  const handlePageChange = (_event: React.MouseEvent, data: PaginationData) => {
     const { activePage } = data;
     onPageChange(activePage);
   };
@@ -82,66 +83,59 @@ function Explorer({
     onSortOrderChange(newSort, newOrder);
   };
 
-  const entryKey = (entry: any) => {
-    switch (entityType) {
-      case 'course':
-        return entry.course.uuid;
-      case 'instructor':
-        return entry.instructor.id;
-      case 'subject':
-        return entry.subject.code;
-      default:
-        return null;
+  const entryKey = (entry: ExploreEntry): string | number | null => {
+    if ('course' in entry) {
+      return entry.course.uuid;
+    } else if ('instructor' in entry) {
+      return entry.instructor.id;
+    } else if ('subject' in entry) {
+      return entry.subject.code;
     }
+    return null;
   };
 
-  const renderEntryName = (entry: any) => {
+  const renderEntryName = (entry: ExploreEntry) => {
     let link;
 
-    switch (entityType) {
-      case 'course': {
-        const { course } = entry;
-        return (
-          <Header as="h4">
-            <Header.Content>
-              <Link to={`/courses/${course.uuid}`}>
-                <CourseName uuid={course.uuid} data={course} />
-              </Link>
-            </Header.Content>
-            <Header.Subheader>
-              <CourseName asSubjectAndNumber={true} uuid={course.uuid} data={course} />
-            </Header.Subheader>
-          </Header>
-        );
-      }
-      case 'instructor': {
-        const { instructor } = entry;
-        link = '/search?' + stringify({ instructors: [instructor.id] });
-        return (
-          <Header as="h4">
-            <Header.Content>
-              <Link to={link}>{instructor.name}</Link>
-            </Header.Content>
-          </Header>
-        );
-      }
-      case 'subject': {
-        const { subject } = entry;
-        link = '/search?' + stringify({ subjects: [subject.code] });
-        return (
-          <Header as="h4">
-            <Header.Content>
-              <Link to={link}>{subject.name}</Link>
-            </Header.Content>
-          </Header>
-        );
-      }
-      default:
-        break;
+    if ('course' in entry) {
+      const { course } = entry;
+      return (
+        <Header as="h4">
+          <Header.Content>
+            <Link to={`/courses/${course.uuid}`}>
+              <CourseName uuid={course.uuid} data={course} />
+            </Link>
+          </Header.Content>
+          <Header.Subheader>
+            <CourseName asSubjectAndNumber={true} uuid={course.uuid} data={course} />
+          </Header.Subheader>
+        </Header>
+      );
+    } else if ('instructor' in entry) {
+      const { instructor } = entry;
+      link = '/search?' + stringify({ instructors: [instructor.id] });
+      return (
+        <Header as="h4">
+          <Header.Content>
+            <Link to={link}>{instructor.name}</Link>
+          </Header.Content>
+        </Header>
+      );
+    } else if ('subject' in entry) {
+      const { subject } = entry;
+      link = '/search?' + stringify({ subjects: [subject.code] });
+      return (
+        <Header as="h4">
+          <Header.Content>
+            <Link to={link}>{subject.name}</Link>
+          </Header.Content>
+        </Header>
+      );
     }
+    return null;
   };
 
-  const renderEntries = (results: any[]) => {
+  const renderEntries = (results: ExploreEntry[]) => {
     if (!results) return null;
 
     return results.map((entry) => {
@@ -150,15 +144,15 @@ function Explorer({
           <Table.Cell>{renderEntryName(entry)}</Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. # Grades: </strong>
-            {utils.numberWithCommas(parseFloat(entry.countAvg.toFixed(1)))}
+            {utils.numberWithCommas(parseFloat(entry.count_average.toFixed(1)))}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Total # Grades: </strong>
-            {utils.numberWithCommas(entry.gpaTotal)}
+            {utils.numberWithCommas(entry.count_total)}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. GPA: </strong>
-            {entry.gpa.toFixed(3)}
+            {entry.gpa_average.toFixed(3)}
           </Table.Cell>
         </Table.Row>
       );

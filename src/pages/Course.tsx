@@ -18,10 +18,14 @@ const Course = () => {
   const params = parse(location.search.substr(1));
   const { compareWith } = params;
 
-  let { instructorId, termCode } = params;
+  const instructorIdParam = params.instructorId;
+  const termCodeParam = params.termCode;
 
-  instructorId = parseInt(instructorId || "0", 10);
-  termCode = parseInt(termCode || "0", 10);
+  const instructorId = parseInt(
+    typeof instructorIdParam === 'string' ? instructorIdParam : '0',
+    10
+  );
+  const termCode = parseInt(typeof termCodeParam === 'string' ? termCodeParam : '0', 10);
 
   const onChange = (params) => {
     navigate(`/courses/${uuid}?${stringify(params)}`);

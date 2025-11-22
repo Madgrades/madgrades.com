@@ -2,7 +2,7 @@
 const API_URL = 'https://api.uptimerobot.com/v2/getMonitors';
 const API_KEY = import.meta.env.VITE_UPTIME_ROBOT_API_KEY;
 
-const errorCodes = {
+const errorCodes: Record<number, string> = {
   0: "PAUSED",
   1: "NOT_CHECKED",
   2: "UP",
@@ -10,8 +10,19 @@ const errorCodes = {
   9: "DOWN"
 }
 
+interface UptimeResponse {
+  monitors?: Array<{
+    custom_uptime_ranges: string;
+    status: number;
+  }>;
+}
 
-async function fetchStatus() {
+interface MonitorStatus {
+  uptime: number;
+  status: string;
+}
+
+async function fetchStatus(): Promise<MonitorStatus | undefined> {
   const now = new Date();
   const before = new Date();
   before.setDate(now.getDate() - 7);
@@ -21,17 +32,17 @@ async function fetchStatus() {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: `api_key=${API_KEY}&format=json&custom_uptime_ranges=${before / 1E3 | 0}_${now / 1E3 | 0}`
+    body: `api_key=${API_KEY}&format=json&custom_uptime_ranges=${before.getTime() / 1E3 | 0}_${now.getTime() / 1E3 | 0}`
   })
     .then(async res => {
-      const json = await res.json();
-      if (!json || !json["monitors"]) {
+      const json: UptimeResponse = await res.json();
+      if (!json || !json.monitors || json.monitors.length === 0) {
         return undefined;
       }
-      const monitor = json["monitors"][0];
+      const monitor = json.monitors[0];
       return {
-        "uptime": parseFloat(monitor["custom_uptime_ranges"], 100),
-        "status": errorCodes[monitor["status"]]
+        "uptime": parseFloat(monitor.custom_uptime_ranges),
+        "status": errorCodes[monitor.status] || "NOT_CHECKED"
       }
     }).catch(err => {
       console.error('Failed to fetch uptime', err);

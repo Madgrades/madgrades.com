@@ -6,7 +6,7 @@ import EntitySelect from './EntitySelect';
 import { useNavigate } from 'react-router-dom';
 import { stringify } from 'qs';
 import * as _ from 'lodash';
-import { RootState } from '../types';
+import { RootState, CourseFilterParams } from '../types';
 
 interface OwnProps {
   navigate: (path: string) => void;
@@ -16,7 +16,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
 function CourseFilterForm({ courseFilterParams, navigate }: Props) {
-  const [subjects, setSubjects] = useState<number[]>([]);
+  const [subjects, setSubjects] = useState<string[]>([]);
   const [instructors, setInstructors] = useState<number[]>([]);
   const [query, setQuery] = useState<string | undefined>(undefined);
 
@@ -27,15 +27,15 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
     setQuery(q);
   }, [courseFilterParams]);
 
-  const onSubjectChange = (newSubjects: number[]) => {
-    setSubjects(newSubjects);
+  const onSubjectChange = (newSubjects: string[] | number[]) => {
+    setSubjects(newSubjects as string[]);
   };
 
-  const onInstructorChange = (newInstructors: number[]) => {
-    setInstructors(newInstructors);
+  const onInstructorChange = (newInstructors: string[] | number[]) => {
+    setInstructors(newInstructors as number[]);
   };
 
-  const onQueryChange = (event: any, { value }: { value: string }) => {
+  const onQueryChange = (_event: React.ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
     setQuery(value);
   };
 
@@ -47,7 +47,7 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
   };
 
   const onSubmit = () => {
-    const allParams = {
+    const allParams: CourseFilterParams = {
       ...courseFilterParams,
       subjects,
       instructors,
@@ -60,7 +60,7 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
       allParams.compareWith = courseFilterParams.compareWith;
     }
 
-    const params = _.omitBy(allParams, _.isNil);
+    const params = _.omitBy(allParams, (value) => _.isNil(value)) as Record<string, string | string[] | number | number[]>;
     navigate('/search?' + stringify(params));
   };
 
@@ -104,8 +104,8 @@ function mapStateToProps(state: RootState) {
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component: React.ComponentType<any>) {
-  return function ComponentWithNavigate(props: any) {
+function withNavigate<P extends object>(Component: React.ComponentType<P>) {
+  return function ComponentWithNavigate(props: P) {
     const navigate = useNavigate();
     return <Component {...props} navigate={navigate} />;
   };

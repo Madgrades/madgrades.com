@@ -1,13 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState } from '../types';
-import { Button, Dropdown, Form } from 'semantic-ui-react';
+import { RootState, ProcessedInstructor } from '../types';
+import { Button, Dropdown, Form, DropdownProps } from 'semantic-ui-react';
 import { Row, Col } from './Grid';
 import TermSelect from '../containers/TermSelect';
 import CourseChart from './CourseChart';
 import domtoimage from 'dom-to-image';
 import FileSaver from 'file-saver';
+
+interface InstructorOption {
+  key: number;
+  value: number;
+  text: string;
+  description?: string;
+}
 
 interface OwnProps {
   uuid: string;
@@ -38,8 +45,8 @@ function CourseChartViewer({
     onChange({ termCode: newTermCode, instructorId });
   };
 
-  const onInstructorChange = (event: any, { value }: { value: number }) => {
-    onChange({ termCode, instructorId: value });
+  const onInstructorChange = (_event: unknown, { value }: DropdownProps) => {
+    onChange({ termCode, instructorId: value as number });
   };
 
   const onSaveChart = () => {
@@ -53,25 +60,25 @@ function CourseChartViewer({
         FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);
         setIsExporting(false);
       })
-      .catch((error) => {
+      .catch((_error: unknown) => {
         setIsExporting(false);
       });
   };
 
-  let instructorOptions: any[] = [],
-    termCodes: number[] = [];
+  let instructorOptions: InstructorOption[] = [];
+  const termCodes: number[] = [];
   const termDescs: { [key: number]: string } = {};
-  let instructorText = 'All instructors',
-    termText = 'All semesters';
+  let instructorText = 'All instructors';
+  let termText = 'All semesters';
 
-  if (data && !data.isFetching) {
+  if (data && !data.isFetching && data.instructors && data.courseOfferings) {
     instructorOptions.push({
       key: 0,
       value: 0,
       text: instructorText,
     });
     instructorOptions = instructorOptions.concat(
-      data.instructors.map((i: any) => {
+      data.instructors.map((i: ProcessedInstructor) => {
         return {
           key: i.id,
           value: i.id,
@@ -81,26 +88,30 @@ function CourseChartViewer({
       })
     );
 
-    data.courseOfferings.forEach((o: any) => {
+    data.courseOfferings.forEach((o) => {
       termCodes.push(o.termCode);
-      termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true);
+      if (o.cumulative) {
+        termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true);
+      }
     });
 
     // if instructor selected, filter term codes
     if (instructorId) {
       let instructorName = 'N/A';
 
-      termCodes = termCodes.filter((code) => {
+      const filteredTermCodes = termCodes.filter((code) => {
         if (code === 0) return true;
 
-        const instructor = data.instructors.filter((i: any) => i.id === instructorId)[0];
+        const instructor = data.instructors?.filter((i) => i.id === instructorId)[0];
 
         if (!instructor) return true;
 
         instructorName = instructor.name;
-        return instructor.terms.map((term: any) => term.termCode).includes(code);
+        return instructor.terms.map((term) => term.termCode).includes(code);
       });
 
+      termCodes.length = 0;
+      termCodes.push(...filteredTermCodes);
       termText += ` (${instructorName})`;
     }
 
@@ -114,8 +125,8 @@ function CourseChartViewer({
 
         if (id === 0) return true;
 
-        const instructor = data.instructors.filter((i: any) => i.id === id)[0];
-        return instructor.terms.map((term: any) => term.termCode).includes(termCode);
+        const instructor = data.instructors?.filter((i) => i.id === id)[0];
+        return instructor && instructor.terms.map((term) => term.termCode).includes(termCode);
       });
     }
 

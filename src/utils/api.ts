@@ -1,5 +1,6 @@
+import { Term } from '../types';
 
-export function create(url, apiToken) {
+export function create(url: string, apiToken: string) {
   if (!url || !apiToken)
     throw new Error(
       'Madgrades API url or API token not provided! This ' +
@@ -10,17 +11,20 @@ export function create(url, apiToken) {
   return new Api(url, apiToken);
 }
 
-class Api {
-  constructor(url, apiToken) {
+export class Api {
+  url: string;
+  apiToken: string;
+
+  constructor(url: string, apiToken: string) {
     this.url = url;
     this.apiToken = apiToken;
   }
 
-  _queryString = (params) => Object.keys(params)
+  _queryString = (params: Record<string, string | number | boolean>) => Object.keys(params)
     .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
     .join('&');
 
-  async _fetchPath(path, params) {
+  async _fetchPath(path: string, params?: Record<string, string | number | boolean>) {
     let queryString = '';
     if (params) {
       queryString = '?' + this._queryString(params);
@@ -48,7 +52,7 @@ class Api {
     return res.json();
   }
 
-  async getTerms() {
+  async getTerms(): Promise<Term[]> {
     const res = await this._fetchPath('terms');
     return res.json();
   }
@@ -115,17 +119,17 @@ class Api {
     return res.json();
   }
 
-  async exploreCourses(params) {
+  async exploreCourses(params: Record<string, string | number | boolean>) {
     const res = await this._fetchPath('explore/courses', params);
     return res.json();
   }
 
-  async exploreInstructors(params) {
+  async exploreInstructors(params: Record<string, string | number | boolean>) {
     const res = await this._fetchPath('explore/instructors', params);
     return res.json();
   }
 
-  async exploreSubjects(params) {
+  async exploreSubjects(params: Record<string, string | number | boolean>) {
     const res = await this._fetchPath('explore/subjects', params);
     return res.json();
   }

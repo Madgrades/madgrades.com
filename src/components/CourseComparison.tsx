@@ -2,7 +2,7 @@ import { Container, Grid, Segment, Header, Button } from 'semantic-ui-react';
 import CourseName from './CourseName';
 import CourseChartViewer from './CourseChartViewer';
 import CourseGpaChart from './CourseGpaChart';
-import { parse, stringify } from 'qs';
+import { parse, stringify, ParsedQs } from 'qs';
 
 interface CourseComparisonProps {
   course1Uuid: string;
@@ -10,6 +10,21 @@ interface CourseComparisonProps {
   onRemoveComparison: () => void;
   location: { search: string };
   navigate: (path: string) => void;
+}
+
+interface CourseComparisonParams {
+  instructorId?: string;
+  termCode?: string;
+  course2InstructorId?: string;
+  course2TermCode?: string;
+  compareWith?: string;
+}
+
+function getStringParam(params: ParsedQs, key: string, defaultValue = '0'): string {
+  const value = params[key];
+  if (typeof value === 'string') return value;
+  if (Array.isArray(value) && value.length > 0 && typeof value[0] === 'string') return value[0];
+  return defaultValue;
 }
 
 function CourseComparison({
@@ -22,11 +37,11 @@ function CourseComparison({
   const handleCourse1Change = (params: { instructorId?: number; termCode?: number }) => {
     const currentParams = parse(location.search.substr(1));
 
-    const newParams = {
-      instructorId: params.instructorId || '0',
-      termCode: params.termCode || '0',
-      course2InstructorId: currentParams.course2InstructorId || '0',
-      course2TermCode: currentParams.course2TermCode || '0',
+    const newParams: CourseComparisonParams = {
+      instructorId: params.instructorId?.toString() || '0',
+      termCode: params.termCode?.toString() || '0',
+      course2InstructorId: getStringParam(currentParams, 'course2InstructorId', '0'),
+      course2TermCode: getStringParam(currentParams, 'course2TermCode', '0'),
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
@@ -35,11 +50,11 @@ function CourseComparison({
   const handleCourse2Change = (params: { instructorId?: number; termCode?: number }) => {
     const currentParams = parse(location.search.substr(1));
 
-    const newParams = {
-      instructorId: currentParams.instructorId || '0',
-      termCode: currentParams.termCode || '0',
-      course2InstructorId: params.instructorId || '0',
-      course2TermCode: params.termCode || '0',
+    const newParams: CourseComparisonParams = {
+      instructorId: getStringParam(currentParams, 'instructorId', '0'),
+      termCode: getStringParam(currentParams, 'termCode', '0'),
+      course2InstructorId: params.instructorId?.toString() || '0',
+      course2TermCode: params.termCode?.toString() || '0',
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
@@ -55,10 +70,10 @@ function CourseComparison({
 
   const params = parse(location.search.substr(1));
 
-  const course1InstructorId = parseInt(params.instructorId || '0', 10);
-  const course1TermCode = parseInt(params.termCode || '0', 10);
-  const course2InstructorId = parseInt(params.course2InstructorId || '0', 10);
-  const course2TermCode = parseInt(params.course2TermCode || '0', 10);
+  const course1InstructorId = parseInt(getStringParam(params, 'instructorId', '0'), 10);
+  const course1TermCode = parseInt(getStringParam(params, 'termCode', '0'), 10);
+  const course2InstructorId = parseInt(getStringParam(params, 'course2InstructorId', '0'), 10);
+  const course2TermCode = parseInt(getStringParam(params, 'course2TermCode', '0'), 10);
 
   return (
     <Container fluid style={{ padding: '20px 40px' }}>

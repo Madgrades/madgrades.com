@@ -52,7 +52,7 @@ function CourseSortForm({ courseFilterParams, navigate }: Props) {
     }
   }, [courseFilterParams, value]);
 
-  const handleChange = (event: any, { value: newValue }: { value: string }) => {
+  const handleChange = (_event: React.SyntheticEvent, { value: newValue }: { value: string }) => {
     setValue(newValue);
 
     let sort, order;
@@ -93,10 +93,10 @@ function mapStateToProps(state: RootState) {
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component: React.ComponentType<any>) {
-  return function ComponentWithNavigate(props: any) {
+function withNavigate<P extends OwnProps>(Component: React.ComponentType<P>) {
+  return function ComponentWithNavigate(props: Omit<P, keyof OwnProps>) {
     const navigate = useNavigate();
-    return <Component {...props} navigate={navigate} />;
+    return <Component {...(props as P)} navigate={navigate} />;
   };
 }
 

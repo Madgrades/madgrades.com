@@ -13,8 +13,10 @@ import { useLocation } from "react-router-dom";
 const extractParams = (location: { search: string }) => {
   const params = parse(location.search.substr(1));
 
-  const query = params.query || null;
-  const page = parseInt(params.page || "1", 10);
+  const queryParam = params.query;
+  const query = typeof queryParam === 'string' ? queryParam : null;
+  const pageParam = params.page;
+  const page = parseInt(typeof pageParam === 'string' ? pageParam : '1', 10);
   let subjects = undefined;
   if (params.subjects && Array.isArray(params.subjects)) {
     subjects = params.subjects;
@@ -23,11 +25,13 @@ const extractParams = (location: { search: string }) => {
   if (Array.isArray(params.instructors)) {
     instructors = params.instructors.map((i: string) => parseInt(i, 10));
   }
-  let order = (params.order || "").toLowerCase();
+  const orderParam = params.order;
+  let order: string | undefined = typeof orderParam === 'string' ? orderParam.toLowerCase() : '';
   if (!["asc", "desc"].includes(order)) {
     order = undefined;
   }
-  let sort = (params.sort || "").toLowerCase();
+  const sortParam = params.sort;
+  let sort: string | undefined = typeof sortParam === 'string' ? sortParam.toLowerCase() : '';
   if (
     ![
       "number",

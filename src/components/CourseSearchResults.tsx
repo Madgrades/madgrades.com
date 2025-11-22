@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState } from '../types';
+import { RootState, Course, PaginationData, SearchPageWithPagination } from '../types';
 import { Dimmer, Icon, Loader, Pagination } from 'semantic-ui-react';
 import { Row, Col } from './Grid';
 import CourseSearchResultItem from '../containers/CourseSearchResultItem';
 import Div from '../containers/Div';
-import * as _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import { stringify } from 'qs';
 
@@ -22,7 +21,7 @@ function CourseSearchResults({ courseFilterParams, navigate, actions, isFetching
     actions.fetchCourseSearch(courseFilterParams, courseFilterParams.page);
   }, [courseFilterParams, actions]);
 
-  const onPageChange = (event: any, data: { activePage: number }) => {
+  const onPageChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: PaginationData) => {
     const { activePage } = data;
     const params = {
       ...courseFilterParams,
@@ -37,7 +36,7 @@ function CourseSearchResults({ courseFilterParams, navigate, actions, isFetching
     navigate('/search?' + stringify(params));
   };
 
-  const renderResults = (results: any[]) =>
+  const renderResults = (results: Course[]) =>
     results.map((result) => {
       return (
         <div key={result.uuid} style={{ marginBottom: '10px' }}>
@@ -102,20 +101,29 @@ function mapStateToProps(state: RootState) {
   const { page } = courseFilterParams;
 
   const search = state.courses.search;
-  const searchData = search.pages && search.pages[page];
-  const isFetching = search.isFetching;
+  const searchPage = search.pages?.[page || 1];
+  const isFetching = search.isFetching || false;
+
+  const searchData: SearchPageWithPagination<Course> = searchPage ? {
+    ...searchPage,
+    totalPages: Math.ceil(searchPage.totalCount / 25)
+  } : {
+    results: [],
+    totalCount: 0,
+    totalPages: 0
+  };
 
   return {
     searchQuery,
     courseFilterParams,
     isFetching,
-    searchData: searchData || {},
+    searchData,
   };
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component: React.ComponentType<any>) {
-  return function ComponentWithNavigate(props: any) {
+function withNavigate<P extends object>(Component: React.ComponentType<P>) {
+  return function ComponentWithNavigate(props: P) {
     const navigate = useNavigate();
     return <Component {...props} navigate={navigate} />;
   };

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState } from '../types';
+import { RootState, CourseOfferingData, GradeDistribution } from '../types';
 import GradeDistributionChart from '../containers/charts/GradeDistributionChart';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import Div from '../containers/Div';
@@ -20,21 +20,27 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
     actions.fetchCourseGrades(uuid);
   }, [actions, uuid]);
 
-  let chart, primary, label, secondary, secondaryLabel, isLoaded;
+  let chart;
+  let primary: GradeDistribution | undefined;
+  let label: string | undefined;
+  let secondary: GradeDistribution | undefined;
+  let secondaryLabel: string | undefined;
+  let isLoaded = false;
 
   let title = course && course.name;
   title += ': Cumulative';
 
-  if (data && data.cumulative) {
+  if (data?.cumulative && !data.isFetching) {
     isLoaded = true;
+    const cumulative: GradeDistribution = data.cumulative;
 
-    primary = data.cumulative;
-    label = `Cumulative - ${utils.grades.gpa(data.cumulative, true)} GPA`;
+    primary = cumulative;
+    label = `Cumulative - ${utils.grades.gpa(cumulative, true)} GPA`;
 
     const termName = termCode && utils.termCodes.toName(termCode);
 
-    if (termCode && !instructorId) {
-      const offering = data.courseOfferings.filter((o: any) => o.termCode === termCode)[0];
+    if (termCode && !instructorId && data.courseOfferings) {
+      const offering = data.courseOfferings.find((o: CourseOfferingData) => o.termCode === termCode);
 
       if (offering) {
         secondary = offering.cumulative;
@@ -43,8 +49,8 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
       } else {
         console.error(`Invalid course/term combination: ${uuid}/${termCode}`);
       }
-    } else if (instructorId && !termCode) {
-      const instructor = data.instructors.filter((i: any) => i.id === instructorId)[0];
+    } else if (instructorId && !termCode && data.instructors) {
+      const instructor = data.instructors.find((i) => i.id === instructorId);
 
       if (instructor) {
         secondary = instructor.cumulative;
@@ -53,11 +59,11 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
       } else {
         console.error(`Invalid course/instructor combination: ${uuid}/${instructorId}`);
       }
-    } else if (instructorId && termCode) {
-      const instructor = data.instructors.filter((i: any) => i.id === instructorId)[0];
+    } else if (instructorId && termCode && data.instructors) {
+      const instructor = data.instructors.find((i) => i.id === instructorId);
 
       if (instructor) {
-        const offering = instructor.terms.filter((o: any) => o.termCode === termCode)[0];
+        const offering = instructor.terms.find((o) => o.termCode === termCode);
 
         if (offering) {
           secondary = offering;

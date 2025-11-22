@@ -1,19 +1,19 @@
 import * as api from './api';
 import * as grades from './grades';
 import * as termCodes from './termCodes';
-import {bindActionCreators} from 'redux';
+import {bindActionCreators, Dispatch} from 'redux';
 import actions from '../redux/actions';
 
 const utils = {
   api,
   termCodes,
   grades,
-  mapDispatchToProps: (dispatch) => {
+  mapDispatchToProps: (dispatch: Dispatch) => {
     return {
       actions: bindActionCreators(actions, dispatch)
     }
   },
-  numberWithCommas: (x) => {
+  numberWithCommas: (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 };

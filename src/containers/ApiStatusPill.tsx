@@ -19,9 +19,9 @@ function ApiStatusPill() {
 
   const uptimePercent = uptime === undefined ? 'N/A' : uptime >= 100 ? 100 : uptime.toFixed(2);
 
-  let icon: any = 'thumbs down';
+  let icon: 'thumbs down' | 'thumbs up' = 'thumbs down';
   let text = `${uptimePercent}% Uptime`;
-  let color: any;
+  let color: 'red' | 'orange' | 'yellow' | 'green' | undefined;
 
   if (status === 'N/A') {
     text = 'Unknown Status';

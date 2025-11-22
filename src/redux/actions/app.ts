@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes';
 import { CourseFilterParams, Term } from '../../types';
 import { Dispatch } from 'redux';
+import { Api } from '../../utils/api';
 
 export const setCourseFilterParams = (params: CourseFilterParams) => {
   return {
@@ -16,7 +17,7 @@ const receiveTerms = (termsData: Term[]) => {
   };
 };
 
-export const fetchTerms = () => async (dispatch: Dispatch, getState: any, api: any) => {
+export const fetchTerms = () => async (dispatch: Dispatch, getState: any, api: Api) => {
   const state = getState();
   const termsData = state.terms;
 

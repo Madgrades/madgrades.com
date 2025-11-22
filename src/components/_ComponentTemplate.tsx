@@ -1,25 +1,21 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import PropTypes from 'prop-types'
+import { RootState } from '../types';
 
-class Template extends Component {
-  static propTypes = {
-    example: PropTypes.number
-  };
-
-  componentDidMount = () => {
-    const { actions } = this.props;
-  };
-
-  render = () => {
-    return <div>Template</div>
-  }
+interface OwnProps {
+  example?: number;
 }
 
-function mapStateToProps(state, ownProps) {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
+
+function Template({ example }: Props) {
+  return <div>Template</div>;
+}
+
+function mapStateToProps(_state: RootState, _ownProps: OwnProps) {
   return {};
 }
 
-
-export default connect(mapStateToProps, utils.mapDispatchToProps)(Template)
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(Template);

@@ -50,18 +50,21 @@ function Explore() {
   }, []);
 
   useEffect(() => {
-    const queryParams: any = parse(location.search.substr(1));
+    const queryParams = parse(location.search.substr(1));
     const newEntityType = entity || 'course';
     const minAvg = newEntityType === 'subject' ? 1 : 25;
     const minTotal = newEntityType === 'course' ? 1500 : 500;
 
+    const pageParam = queryParams.page;
     const filteredParams: ExploreParams = {
-      page: parseInt(queryParams.page || 1, 10),
-      sort: queryParams.sort,
-      order: queryParams.order,
-      subjects: queryParams.subjects,
+      page: parseInt(typeof pageParam === 'string' ? pageParam : '1', 10),
+      sort: typeof queryParams.sort === 'string' ? queryParams.sort : undefined,
+      order: typeof queryParams.order === 'string' ? queryParams.order : undefined,
+      subjects: Array.isArray(queryParams.subjects) ? queryParams.subjects as string[] : undefined,
       instructors:
-        queryParams.instructors && queryParams.instructors.map((s: string) => parseInt(s, 10)),
+        Array.isArray(queryParams.instructors) 
+          ? (queryParams.instructors as string[]).map((s: string) => parseInt(s, 10))
+          : undefined,
     };
 
     if (!queryParams.instructors) {

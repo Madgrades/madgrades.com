@@ -38,11 +38,11 @@ export function GpaChart({ title, gradeDistributions }: GpaChartProps) {
           <LineChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 50 }}>
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="termName" interval={0} angle={-45} textAnchor="end" type="category" />
-            <YAxis domain={[(min) => Math.floor(Math.min(3.0, min)), (max) => 4.0]}>
+            <YAxis domain={[(min: number) => Math.floor(Math.min(3.0, min)), () => 4.0]}>
               <Label value="Average GPA" position="insideLeft" dx={15} dy={25} angle={-90} />
             </YAxis>
             <Line type="monotone" dataKey="gpa" isAnimationActive={false} />
-            <Tooltip formatter={(gpa) => utils.grades.formatGpa(gpa as number)} />
+            <Tooltip formatter={(gpa) => utils.grades.formatGpa(Number(gpa))} />
           </LineChart>
         </ResponsiveContainer>
       </div>

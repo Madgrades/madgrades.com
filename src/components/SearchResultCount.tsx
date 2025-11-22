@@ -13,10 +13,10 @@ const SearchResultCount: React.FC<PropsFromRedux> = ({ count }) => {
 
 function mapStateToProps(state: RootState): StateProps {
   const { search } = state.courses;
-  const { page } = state.app.courseFilterParams || 1;
+  const page = state.app.courseFilterParams?.page || 1;
 
   const count =
-    search && search.pages && search.pages[page] && search.pages[page].totalCount;
+    search?.pages?.[page]?.totalCount;
 
   return {
     count: count || 0,

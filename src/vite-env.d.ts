@@ -15,3 +15,23 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare module 'dom-to-image' {
+  export interface Options {
+    bgcolor?: string;
+    width?: number;
+    height?: number;
+    style?: Record<string, string>;
+    quality?: number;
+  }
+
+  export function toBlob(node: Node, options?: Options): Promise<Blob>;
+  export function toPng(node: Node, options?: Options): Promise<string>;
+  export function toJpeg(node: Node, options?: Options): Promise<string>;
+  export function toSvg(node: Node, options?: Options): Promise<string>;
+}
+
+declare module 'file-saver' {
+  export function saveAs(data: Blob | string, filename?: string, options?: { autoBom?: boolean }): void;
+  export default { saveAs };
+}

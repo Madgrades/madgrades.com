@@ -32,7 +32,7 @@
     "redux-thunk": "^2.2.0",
     "sass": "^1.80.0",
     "semantic-ui-css": "^2.3.0",
-    "semantic-ui-react": "^2.1.4",
+    "semantic-ui-react": "^3.0.0-beta.2",
     "universal-cookie": "^7.2.1"
   },
   "scripts": {

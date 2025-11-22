@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 class AdSlot extends Component {
   static propTypes = {
     slot: PropTypes.string.isRequired,
-    adWidth: PropTypes.number,
-    adHeight: PropTypes.number
+    adWidth: PropTypes.string,
+    adHeight: PropTypes.string
   };
 
   componentDidMount = () => {

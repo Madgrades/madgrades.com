@@ -1,13 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
 
-class AdSlot extends Component {
-  static propTypes = {
-    slot: PropTypes.string.isRequired,
-    adWidth: PropTypes.string,
-    adHeight: PropTypes.string,
-  };
+interface AdSlotProps {
+  slot: string;
+  adWidth?: string;
+  adHeight?: string;
+}
 
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
+
+class AdSlot extends Component<AdSlotProps> {
   componentDidMount = () => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   };
@@ -16,9 +21,9 @@ class AdSlot extends Component {
     <ins
       className="adsbygoogle"
       style={{
-        display: "inline-block",
-        width: this.props.adWidth || "auto",
-        height: this.props.adHeight || "auto",
+        display: 'inline-block',
+        width: this.props.adWidth || 'auto',
+        height: this.props.adHeight || 'auto',
       }}
       data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT}
       data-ad-slot={this.props.slot}

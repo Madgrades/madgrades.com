@@ -1,14 +1,17 @@
-import { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types";
-import _ from "lodash";
+import { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import _ from 'lodash';
+import { CourseFilterParams } from '../types';
 
-class SetCourseFilterParams extends Component {
-  static propTypes = {
-    params: PropTypes.object,
-  };
+interface OwnProps {
+  params: CourseFilterParams;
+}
 
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
+
+class SetCourseFilterParams extends Component<Props> {
   setCourseFilterParams = () => {
     const { params, actions } = this.props;
     const { page } = params;
@@ -18,7 +21,7 @@ class SetCourseFilterParams extends Component {
 
   componentDidMount = this.setCourseFilterParams;
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: Props) => {
     if (!_.isEqual(prevProps.params, this.props.params)) {
       this.setCourseFilterParams();
     }
@@ -27,4 +30,5 @@ class SetCourseFilterParams extends Component {
   render = () => null;
 }
 
-export default connect(null, utils.mapDispatchToProps)(SetCourseFilterParams);
+const connector = connect(null, utils.mapDispatchToProps);
+export default connector(SetCourseFilterParams);

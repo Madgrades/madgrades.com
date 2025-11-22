@@ -11,11 +11,9 @@ import "semantic-ui-css/semantic.min.css";
 import "./styles/index.css";
 import logger from "redux-logger";
 import initReactFastclick from "react-fastclick";
-import "babel-polyfill";
-
 const api = utils.api.create(
-  process.env.REACT_APP_MADGRADES_API || "https://api.madgrades.com/",
-  process.env.REACT_APP_MADGRADES_API_TOKEN
+  import.meta.env.VITE_MADGRADES_API || "https://api.madgrades.com/",
+  import.meta.env.VITE_MADGRADES_API_TOKEN
 );
 
 const store = createStore(

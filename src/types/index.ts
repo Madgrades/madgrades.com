@@ -23,11 +23,95 @@ export interface Term {
   name: string;
 }
 
+export interface GradeDistribution {
+  aCount: number;
+  abCount: number;
+  bCount: number;
+  bcCount: number;
+  cCount: number;
+  dCount: number;
+  fCount: number;
+  sCount?: number;
+  ubCount?: number;
+  crCount?: number;
+  nCount?: number;
+  pCount?: number;
+  iCount?: number;
+  nwCount?: number;
+  nrCount?: number;
+  otherCount?: number;
+  total?: number;
+}
+
+export interface CourseOffering {
+  uuid: string;
+  termCode: number;
+  sectionType?: string;
+  instructor?: Instructor;
+  grades?: GradeDistribution;
+}
+
+export interface SearchPage<T> {
+  totalCount: number;
+  results: T[];
+}
+
+export interface SearchState<T> {
+  pages: {
+    [page: number]: SearchPage<T>;
+  };
+  loading?: boolean;
+  error?: string;
+}
+
+export interface CourseFilterParams {
+  query?: string;
+  subjects?: string[];
+  instructors?: number[];
+  sort?: string;
+  order?: string;
+  page?: number;
+}
+
+export interface AppState {
+  searchQuery: string;
+  courseFilterParams: CourseFilterParams;
+  terms: Term[];
+}
+
+export interface CoursesState {
+  data: { [uuid: string]: Course };
+  search: SearchState<string>;
+  grades: { [uuid: string]: CourseOffering[] };
+}
+
+export interface InstructorsState {
+  data: { [id: number]: Instructor };
+  search: SearchState<number>;
+}
+
+export interface SubjectsState {
+  data: { [code: string]: Subject };
+  search: SearchState<string>;
+}
+
+export interface ExploreState {
+  courses: Course[];
+  instructors: Instructor[];
+  subjects: Subject[];
+}
+
 export interface RootState {
-  app: any;
-  courses: any;
-  instructors: any;
-  subjects: any;
-  explore: any;
-  grades: any;
+  app: AppState;
+  courses: CoursesState;
+  instructors: InstructorsState;
+  subjects: SubjectsState;
+  explore: ExploreState;
+  grades: any; // TODO: Type this properly
+}
+
+// Redux action types
+export interface ReduxAction<T = any> {
+  type: string;
+  payload?: T;
 }

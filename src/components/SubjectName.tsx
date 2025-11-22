@@ -1,20 +1,28 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState, Subject } from '../types';
 
-class SubjectName extends Component {
-  static propTypes = {
-    code: PropTypes.string,
-    abbreviate: PropTypes.bool,
-    fallback: PropTypes.string,
-    data: PropTypes.object,
-  };
+interface OwnProps {
+  code: string;
+  abbreviate?: boolean;
+  fallback?: string;
+  data?: Subject;
+}
 
+interface StateProps {
+  name?: string;
+  abbreviation?: string;
+}
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & StateProps & PropsFromRedux;
+
+class SubjectName extends Component<Props> {
   componentDidMount = () => {
     const { actions, code, data } = this.props;
 
-    if (!data) {
+    if (!data && code) {
       actions.fetchSubject(code);
     }
   };
@@ -27,7 +35,7 @@ class SubjectName extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
   const { code, data } = ownProps;
 
   if (data) {
@@ -46,4 +54,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(SubjectName);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(SubjectName);

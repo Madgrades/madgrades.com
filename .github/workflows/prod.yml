@@ -20,7 +20,15 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env.original
           echo "=== Original env file ===" && cat .env.original
           # Add VITE_ prefix to variables that don't already have it (for Vite migration)
-          awk '/^VITE_/ {print; next} /^[A-Z_]+=/ {print "VITE_" $0; next} {print}' .env.original > .env
+          # This handles lines like: MADGRADES_API=value -> VITE_MADGRADES_API=value
+          # But keeps: VITE_URL=value -> VITE_URL=value
+          # And skips: # comments, blank lines, PORT=3000
+          awk '
+            /^VITE_[A-Z_]+=/ { print; next }
+            /^[A-Z_]+=[^#]/ && !/^PORT=/ { print "VITE_" $0; next }
+            /^#/ || /^$/ { print; next }
+            { print }
+          ' .env.original > .env
           echo "=== Generated .env file ===" && cat .env
       - name: Install dependencies
         run: npm install

@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
       - if: github.event_name == 'push'
         name: Deploy
         env:

@@ -23,7 +23,7 @@ class CourseData extends Component {
     if (prevProps.uuid !== this.props.uuid) {
       this.fetchData();
     }
-    
+
     // Call onDataLoad when data changes and becomes available
     if (prevProps.data !== this.props.data) {
       this.notifyIfDataReady();

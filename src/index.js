@@ -5,7 +5,7 @@ import "normalize.css";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import reducers from "./redux/reducers";
-import thunk from "redux-thunk";
+import { thunk, withExtraArgument } from "redux-thunk";
 import utils from "./utils";
 import "semantic-ui-css/semantic.min.css";
 import "./styles/index.css";
@@ -21,7 +21,7 @@ const api = utils.api.create(
 const store = createStore(
   combineReducers(reducers),
   applyMiddleware(
-    thunk.withExtraArgument(api)
+    withExtraArgument(api)
     // logger
   )
 );

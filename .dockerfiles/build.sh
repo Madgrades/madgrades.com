@@ -23,7 +23,7 @@ node --version
 npm --version
 
 # Install npm dependencies
-npm install --legacy-peer-deps
+npm install
 
 # Build to verify build succeeds, but at runtime we may
 # build again to propagate runtime environment variables.

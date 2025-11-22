@@ -1,200 +1,260 @@
 import * as actionTypes from '../actionTypes';
 import utils from '../../utils';
+import { Dispatch } from 'redux';
+import { GradeDistribution } from '../../types';
 
-const requestCourseGrades = (uuid) => {
+interface CourseGradesResponse {
+  courseOfferings: Array<{
+    termCode: number;
+    sections: Array<{
+      instructors: Array<{
+        id: number;
+        name: string;
+      }>;
+    } & GradeDistribution>;
+  }>;
+}
+
+interface InstructorTermData extends GradeDistribution {
+  termCode: number;
+}
+
+interface InstructorGradesData {
+  terms: { [termCode: number]: InstructorTermData };
+  id: number;
+}
+
+interface ProcessedInstructor {
+  id: number;
+  name: string;
+  cumulative: GradeDistribution;
+  terms: InstructorTermData[];
+  latestTerm: number;
+}
+
+interface ProcessedCourseGrades extends CourseGradesResponse {
+  instructors: ProcessedInstructor[];
+}
+
+const requestCourseGrades = (uuid: string) => {
   return {
     type: actionTypes.REQUEST_COURSE_GRADES,
-    uuid
-  }
+    uuid,
+  };
 };
 
-const receiveCourseGrades = (uuid, data) => {
+const receiveCourseGrades = (uuid: string, data: ProcessedCourseGrades) => {
   return {
     type: actionTypes.RECEIVE_COURSE_GRADES,
     uuid,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchCourseGrades = (uuid) => async (dispatch, getState, api) => {
-  const state = getState();
-  let gradesData = state.grades.courses.data[uuid];
+export const fetchCourseGrades =
+  (uuid: string) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
+    let gradesData: CourseGradesResponse | undefined = state.grades.courses.data[uuid];
 
-  // don't fetch again
-  if (gradesData)
-    return;
+    // don't fetch again
+    if (gradesData) return;
 
-  // request action
-  dispatch(requestCourseGrades(uuid));
+    // request action
+    dispatch(requestCourseGrades(uuid));
 
-  // perform request
-  // we process this data bit so we can view by instructor
-  gradesData = await api.getCourseGrades(uuid);
+    // perform request
+    // we process this data bit so we can view by instructor
+    gradesData = await api.getCourseGrades(uuid);
 
+    const byInstructor: { [id: number]: InstructorGradesData } = {};
+    const instructorNames: { [id: number]: string } = {};
 
-  let byInstructor = {};
-  let instructorNames = {};
+    // iterate each offering
+    gradesData.courseOfferings.forEach((offering) => {
+      const { termCode } = offering;
 
-  // iterate each offering
-  gradesData.courseOfferings.forEach(offering => {
-    const { termCode } = offering;
+      // each section
+      offering.sections.forEach((section) => {
+        // each instructor for the section
+        section.instructors.forEach((instructor) => {
+          const { id, name } = instructor;
+          instructorNames[id] = name;
 
-    // each section
-    offering.sections.forEach(section => {
+          // add or put instructor in map
+          let instructorGrades = byInstructor[id];
+          if (!instructorGrades) {
+            instructorGrades = { terms: {}, id: id };
+            byInstructor[id] = instructorGrades;
+          }
 
-      // each instructor for the section
-      section.instructors.forEach(instructor => {
-        const { id, name } = instructor;
-        instructorNames[id] = name;
+          const { terms } = instructorGrades;
+          let base = utils.grades.zero();
 
-        // add or put instructor in map
-        let instructorGrades = byInstructor[id];
-        if (!instructorGrades) {
-          instructorGrades = {terms: {}, id: id};
-          byInstructor[id] = instructorGrades;
-        }
+          if (termCode in terms) base = terms[termCode];
 
-        let { terms } = instructorGrades;
-        let base = utils.grades.zero();
-
-        if (termCode in terms)
-          base = terms[termCode];
-
-        // combine existing with new section
-        terms[termCode] = utils.grades.combine(base, section);
-        terms[termCode].termCode = termCode;
+          // combine existing with new section
+          terms[termCode] = utils.grades.combine(base, section);
+          terms[termCode].termCode = termCode;
+        });
       });
-    })
-  });
-
-  // we arrange the data by instructor as well
-  gradesData.instructors = [];
-
-  // iterate each instructor key
-  Object.keys(byInstructor).forEach(instructorKey => {
-    let data = byInstructor[instructorKey];
-    let terms = [];
-    let latestTerm = 0;
-
-    // each term for the instructor gets added to array instead of map
-    Object.keys(data.terms).forEach(termKey => {
-      const termData = data.terms[termKey];
-      const { termCode } = termData;
-      terms.push(termData);
-
-      // track latest term taught
-      if (termCode > latestTerm)
-        latestTerm = termCode;
     });
 
-    // combine all terms
-    let cumulative = utils.grades.combineAll(terms);
+    // we arrange the data by instructor as well
+    const processedGradesData = gradesData as ProcessedCourseGrades;
+    processedGradesData.instructors = [];
 
-    // add instructor to data
-    gradesData.instructors.push({
-      id: data.id,
-      name: instructorNames[data.id],
-      cumulative,
-      terms,
-      latestTerm
-    })
-  });
+    // iterate each instructor key
+    Object.keys(byInstructor).forEach((instructorKey) => {
+      const data = byInstructor[parseInt(instructorKey)];
+      const terms: InstructorTermData[] = [];
+      let latestTerm = 0;
 
-  // sort instructors by most recent teachings first
-  gradesData.instructors.sort((a, b) => b.latestTerm - a.latestTerm);
+      // each term for the instructor gets added to array instead of map
+      Object.keys(data.terms).forEach((termKey) => {
+        const termData = data.terms[parseInt(termKey)];
+        const { termCode } = termData;
+        terms.push(termData);
 
-  // receive action
-  dispatch(receiveCourseGrades(uuid, gradesData));
-};
+        // track latest term taught
+        if (termCode > latestTerm) latestTerm = termCode;
+      });
 
-const requestInstructorGrades = (id) => {
+      // combine all terms
+      const cumulative = utils.grades.combineAll(terms);
+
+      // add instructor to data
+      processedGradesData.instructors.push({
+        id: data.id,
+        name: instructorNames[data.id],
+        cumulative,
+        terms,
+        latestTerm,
+      });
+    });
+
+    // sort instructors by most recent teachings first
+    processedGradesData.instructors.sort((a, b) => b.latestTerm - a.latestTerm);
+
+    // receive action
+    dispatch(receiveCourseGrades(uuid, processedGradesData));
+  };
+
+interface InstructorGradesResponse {
+  courseOfferings: Array<{
+    termCode: number;
+    courseUuid: string;
+    cumulative: GradeDistribution;
+  }>;
+}
+
+interface CourseTermData extends GradeDistribution {
+  termCode: number;
+}
+
+interface CourseGradesData {
+  terms: { [termCode: number]: CourseTermData };
+  uuid: string;
+}
+
+interface ProcessedCourse {
+  uuid: string;
+  cumulative: GradeDistribution;
+  terms: CourseTermData[];
+  latestTerm: number;
+}
+
+interface ProcessedInstructorGrades extends InstructorGradesResponse {
+  courses: ProcessedCourse[];
+}
+
+const requestInstructorGrades = (id: number) => {
   return {
     type: actionTypes.REQUEST_INSTRUCTOR_GRADES,
-    id
-  }
+    id,
+  };
 };
 
-const receiveInstructorGrades = (id, data) => {
+const receiveInstructorGrades = (id: number, data: ProcessedInstructorGrades) => {
   return {
     type: actionTypes.RECEIVE_INSTRUCTOR_GRADES,
     id,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchInstructorGrades = (id) => async (dispatch, getState, api) => {
-  const state = getState();
-  let gradesData = state.grades.instructors.data[id];
+export const fetchInstructorGrades =
+  (id: number) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
+    let gradesData: InstructorGradesResponse | undefined = state.grades.instructors.data[id];
 
-  // don't fetch again
-  if (gradesData)
-    return;
+    // don't fetch again
+    if (gradesData) return;
 
-  // request action
-  dispatch(requestInstructorGrades(id));
+    // request action
+    dispatch(requestInstructorGrades(id));
 
-  // get json
-  gradesData = await api.getInstructorGrades(id);
+    // get json
+    gradesData = await api.getInstructorGrades(id);
 
+    const byCourse: { [uuid: string]: CourseGradesData } = {};
 
-  let byCourse = {};
+    // iterate each offering
+    gradesData.courseOfferings.forEach((offering) => {
+      const { termCode, courseUuid } = offering;
 
-  // iterate each offering
-  gradesData.courseOfferings.forEach(offering => {
-    const { termCode, courseUuid } = offering;
+      let courseGrades = byCourse[courseUuid];
+      if (!courseGrades) {
+        courseGrades = { terms: {}, uuid: courseUuid };
+        byCourse[courseUuid] = courseGrades;
+      }
 
-    let courseGrades = byCourse[courseUuid];
-    if (!courseGrades) {
-      courseGrades = {terms: {}, uuid: courseUuid};
-      byCourse[courseUuid] = courseGrades;
-    }
+      const { terms } = courseGrades;
+      let base = utils.grades.zero();
 
-    let { terms } = courseGrades;
-    let base = utils.grades.zero();
+      if (termCode in terms) base = terms[termCode];
 
-    if (termCode in terms)
-      base = terms[termCode];
-
-    // combine existing with new offering
-    terms[termCode] = utils.grades.combine(base, offering.cumulative);
-    terms[termCode].termCode = termCode;
-  });
-
-  // we arrange the data by instructor as well
-  gradesData.courses = [];
-
-  // iterate each instructor key
-  Object.keys(byCourse).forEach(instructorKey => {
-    let data = byCourse[instructorKey];
-    let terms = [];
-    let latestTerm = 0;
-
-    // each term for the instructor gets added to array instead of map
-    Object.keys(data.terms).forEach(termKey => {
-      const termData = data.terms[termKey];
-      const { termCode } = termData;
-      terms.push(termData);
-
-      // track latest term taught
-      if (termCode > latestTerm)
-        latestTerm = termCode;
+      // combine existing with new offering
+      terms[termCode] = utils.grades.combine(base, offering.cumulative);
+      terms[termCode].termCode = termCode;
     });
 
-    // combine all terms
-    let cumulative = utils.grades.combineAll(terms);
+    // we arrange the data by course as well
+    const processedGradesData = gradesData as ProcessedInstructorGrades;
+    processedGradesData.courses = [];
 
-    // add instructor to data
-    gradesData.courses.push({
-      uuid: data.uuid,
-      cumulative,
-      terms,
-      latestTerm
-    })
-  });
+    // iterate each course key
+    Object.keys(byCourse).forEach((courseKey) => {
+      const data = byCourse[courseKey];
+      const terms: CourseTermData[] = [];
+      let latestTerm = 0;
 
-  // sort instructors by most recent teachings first
-  gradesData.courses.sort((a, b) => b.latestTerm - a.latestTerm);
+      // each term for the course gets added to array instead of map
+      Object.keys(data.terms).forEach((termKey) => {
+        const termData = data.terms[parseInt(termKey)];
+        const { termCode } = termData;
+        terms.push(termData);
 
-  // receive action
-  dispatch(receiveInstructorGrades(id, gradesData));
-};
+        // track latest term taught
+        if (termCode > latestTerm) latestTerm = termCode;
+      });
+
+      // combine all terms
+      const cumulative = utils.grades.combineAll(terms);
+
+      // add course to data
+      processedGradesData.courses.push({
+        uuid: data.uuid,
+        cumulative,
+        terms,
+        latestTerm,
+      });
+    });
+
+    // sort courses by most recent teachings first
+    processedGradesData.courses.sort((a, b) => b.latestTerm - a.latestTerm);
+
+    // receive action
+    dispatch(receiveInstructorGrades(id, processedGradesData));
+  };

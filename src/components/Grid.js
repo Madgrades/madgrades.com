@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/components/Grid.css";
 
 export const Row = ({ children, center, middle, between, ...props }) => {
   const classNames = ["grid-row"];

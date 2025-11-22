@@ -1,70 +1,68 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { Instructor, Subject } from '../types';
+import { RootState } from '../types';
 import { Dropdown } from 'semantic-ui-react';
 import _ from 'lodash';
 
 type EntityType = 'instructor' | 'subject';
 
-interface EntitySelectProps {
+interface OwnProps {
   entityType: EntityType;
   onChange?: (value: any) => void;
   value?: any[];
 }
 
-interface EntitySelectState {
-  query: string;
-  options: any[];
-  isTyping: boolean;
-  isFetching: boolean;
-}
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
 
-/**
- * A dropdown/search box for selecting a particular entity from madgrades.
- *
- * This is pretty fragile, easy to create infinite loops... :(
- */
-class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
-  static defaultProps = {
-    value: [],
-    onChange: (entityKey: any) => {},
-  };
+function EntitySelect({
+  entityType,
+  onChange = () => {},
+  value = [],
+  actions,
+  searches,
+  entityData,
+}: Props) {
+  const [query, setQuery] = useState('');
+  const [options, setOptions] = useState<any[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  state: EntitySelectState = {
-    query: '',
-    options: [],
-    isTyping: false,
-    isFetching: false,
-  };
+  const performSearch = useCallback(
+    (searchQuery: string) => {
+      switch (entityType) {
+        case 'instructor':
+          actions.fetchInstructorSearch(searchQuery, 1);
+          return;
+        case 'subject':
+          actions.fetchSubjectSearch(searchQuery, 1);
+          return;
+        default:
+          return;
+      }
+    },
+    [entityType, actions]
+  );
 
-  performSearch = (query) => {
-    switch (this.props.entityType) {
-      case 'instructor':
-        this.props.actions.fetchInstructorSearch(query, 1);
-        return;
-      case 'subject':
-        this.props.actions.fetchSubjectSearch(query, 1);
-        return;
-      default:
-        return;
-    }
-  };
+  const requestEntity = useCallback(
+    (key: any) => {
+      switch (entityType) {
+        case 'instructor':
+          actions.fetchInstructor(key);
+          return;
+        case 'subject':
+          actions.fetchSubject(key);
+          return;
+        default:
+          return;
+      }
+    },
+    [entityType, actions]
+  );
 
-  requestEntity = (key, entityType) => {
-    switch (entityType) {
-      case 'instructor':
-        this.props.actions.fetchInstructor(key);
-        return;
-      case 'subject':
-        this.props.actions.fetchSubject(key);
-        return;
-      default:
-        return;
-    }
-  };
-
-  entityToKey = (entity, entityType) => {
+  const entityToKey = (entity: any): any => {
     switch (entityType) {
       case 'instructor':
         return entity.id;
@@ -75,27 +73,26 @@ class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
     }
   };
 
-  entityToOption = (key, entity, entityType) => {
+  const entityToOption = (key: any, entity: any) => {
     if (entity.isFetching) {
       return {
         key: key,
         value: key,
-        text: `${key} (Loading...)`
-      }
-    }
-    else {
+        text: `${key} (Loading...)`,
+      };
+    } else {
       switch (entityType) {
         case 'instructor':
           return {
             key: entity.id,
             value: entity.id,
-            text: entity.name
+            text: entity.name,
           };
         case 'subject':
           return {
             key: entity.code,
             value: entity.code,
-            text: entity.name
+            text: entity.name,
           };
         default:
           return;
@@ -103,126 +100,114 @@ class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
     }
   };
 
-  onChange = (event, { value }) => {
-    this.setState({
-      query: ''
-    });
-    this.props.onChange(value);
+  const handleChange = (event: any, { value: newValue }: { value: any }) => {
+    setQuery('');
+    onChange(newValue);
   };
 
-  onSearchChange = (event, { searchQuery }) => {
-    this.setState({
-      query: searchQuery,
-      isTyping: true
-    });
+  const handleSearchChange = (event: any, { searchQuery }: { searchQuery: string }) => {
+    setQuery(searchQuery);
+    setIsTyping(true);
 
-    setTimeout(() => {
-      if (this.state.query === searchQuery) {
-        this.setState({
-          isTyping: false
-        });
-        this.performSearch(searchQuery);
-      }
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    searchTimeout.current = setTimeout(() => {
+      setIsTyping(false);
+      performSearch(searchQuery);
     }, 500);
   };
 
-  componentDidUpdate = () => {
-    const { entityType, entityData, searches, value } = this.props;
-    const { query } = this.state;
-
+  useEffect(() => {
     let searchData;
 
     if (query.length >= 2) {
       searchData = searches[query] && searches[query][1];
     }
 
-    let options = [];
+    let newOptions: any[] = [];
     const keys = new Set();
 
-    for (let keyStr of Object.keys(entityData)) {
+    for (const keyStr of Object.keys(entityData)) {
       const entity = entityData[keyStr];
-      let key = this.entityToKey(entity, entityType);
-      options.push(this.entityToOption(key, entity, entityType));
+      const key = entityToKey(entity);
+      newOptions.push(entityToOption(key, entity));
       keys.add(key);
     }
 
-    for (let key of value) {
+    for (const key of value) {
       if (!keys.has(key)) {
-        options.push({
+        newOptions.push({
           key: key,
           value: key,
-          text: `${key} (Loading...)`
+          text: `${key} (Loading...)`,
         });
-        this.requestEntity(key, entityType);
+        requestEntity(key);
         keys.add(key);
       }
     }
 
-    let isFetching = searchData && searchData.isFetching;
+    const newIsFetching = searchData && searchData.isFetching;
 
     // if we are searching, only show options found in the search
     if (searchData && !searchData.isFetching) {
-      const keys = searchData.results.map(e => this.entityToKey(e, entityType));
-      options = options.filter(o => keys.includes(o.key) || value.includes(o.key));
+      const searchKeys = searchData.results.map((e: any) => entityToKey(e));
+      newOptions = newOptions.filter((o) => searchKeys.includes(o.key) || value.includes(o.key));
     }
-
     // otherwise the only options are the already selected values
     else {
-      options = options.filter(o => value.includes(o.key));
+      newOptions = newOptions.filter((o) => value.includes(o.key));
     }
 
     // only update if options are new, we don't want infinite loop
-    if (!_.isEqual(this.state.options, options)) {
-      this.setState({
-        options,
-        isFetching
-      });
+    if (!_.isEqual(options, newOptions)) {
+      setOptions(newOptions);
+      setIsFetching(!!newIsFetching);
     }
 
-    if (this.state.isFetching !== isFetching) {
-      this.setState({
-        isFetching
-      });
+    if (isFetching !== newIsFetching) {
+      setIsFetching(!!newIsFetching);
     }
-  };
+  }, [entityType, entityData, searches, value, query, requestEntity]);
 
-  componentDidMount = this.componentDidUpdate;
+  useEffect(() => {
+    return () => {
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+    };
+  }, []);
 
-  render = () => {
-    const { options, isFetching, isTyping, query } = this.state;
-    const { value, entityType } = this.props;
+  let message = 'No results found';
+  if (query.length < 2) message = 'Start typing to see results';
+  else if (isTyping || isFetching) message = 'Searching...';
 
-    let message = 'No results found';
-    if (query.length < 2)
-      message = 'Start typing to see results';
-    else if (isTyping || isFetching)
-      message = 'Searching...';
-
-    return (
-        <Dropdown
-            placeholder={`Search ${entityType}s...`}
-            noResultsMessage={message}
-            fluid
-            minCharacters={0}
-            multiple
-            scrolling={false}
-            selection
-            closeOnChange={true}
-            loading={isFetching}
-            options={options}
-            value={value}
-            searchQuery={query}
-            onChange={this.onChange}
-            onSearchChange={this.onSearchChange}
-            search={options => options}/>
-    )
-  }
+  return (
+    <Dropdown
+      placeholder={`Search ${entityType}s...`}
+      noResultsMessage={message}
+      fluid
+      minCharacters={0}
+      multiple
+      scrolling={false}
+      selection
+      closeOnChange={true}
+      loading={isFetching}
+      options={options}
+      value={value}
+      searchQuery={query}
+      onChange={handleChange}
+      onSearchChange={handleSearchChange}
+      search={(options) => options}
+    />
+  );
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: OwnProps) {
   const { entityType } = ownProps;
 
-  let entityState;
+  let entityState: any;
 
   switch (entityType) {
     case 'instructor':
@@ -232,13 +217,14 @@ function mapStateToProps(state, ownProps) {
       entityState = state.subjects;
       break;
     default:
-      return;
+      return {};
   }
 
   return {
     searches: entityState.searches,
-    entityData: entityState.data
-  }
+    entityData: entityState.data,
+  };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(EntitySelect)
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(EntitySelect);

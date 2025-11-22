@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState } from '../types';
 import {
   Dimmer,
   Header,
@@ -17,24 +17,28 @@ import { Link } from "react-router-dom";
 import { stringify } from "qs";
 import { Row, Col } from "../components/Grid";
 
-class Explorer extends Component {
-  static propTypes = {
-    entityType: PropTypes.oneOf(["instructor", "course", "subject"]).isRequired,
-    sort: PropTypes.oneOf(["gpa_total", "count_avg", "gpa"]),
-    order: PropTypes.oneOf(["asc", "desc"]),
-    onSortOrderChange: PropTypes.func,
-    onPageChange: PropTypes.func,
-    page: PropTypes.number,
-    minCountAvg: PropTypes.number,
-    minGpaTotal: PropTypes.number,
-    filterParams: PropTypes.object,
-  };
+type EntityType = 'instructor' | 'course' | 'subject';
 
+interface ExplorerProps {
+  entityType: EntityType;
+  sort?: string;
+  order?: string;
+  onSortOrderChange?: (sort: string, order: string) => void;
+  onPageChange?: (page: number) => void;
+  page?: number;
+  minCountAvg?: number;
+  minGpaTotal?: number;
+  filterParams?: any;
+  data?: any;
+  actions?: any;
+}
+
+class Explorer extends Component<ExplorerProps> {
   static defaultProps = {
-    sort: "gpa_total",
-    order: "desc",
-    onSortOrderChange: (sort, order) => {},
-    onPageChange: (page) => {},
+    sort: 'gpa_total',
+    order: 'desc',
+    onSortOrderChange: (sort: string, order: string) => {},
+    onPageChange: (page: number) => {},
     page: 1,
     minCountAvg: 0,
     minGpaTotal: 0,
@@ -45,7 +49,7 @@ class Explorer extends Component {
     this.fetchData();
   };
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: ExplorerProps) => {
     // Refetch if any relevant props changed
     const {
       entityType,
@@ -323,7 +327,7 @@ class Explorer extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: any) {
   const { entityType } = ownProps;
 
   let data;
@@ -347,4 +351,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(Explorer);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(Explorer);

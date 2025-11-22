@@ -11,6 +11,16 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'build',
       sourcemap: mode !== 'production',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom'],
+            redux: ['redux', 'react-redux', 'redux-thunk', 'redux-logger'],
+            ui: ['semantic-ui-react', 'semantic-ui-css'],
+            charts: ['recharts'],
+          },
+        },
+      },
     },
     esbuild: {
       loader: 'tsx',

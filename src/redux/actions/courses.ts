@@ -1,70 +1,79 @@
 import * as actionTypes from '../actionTypes';
 import * as _ from 'lodash';
+import { Dispatch } from 'redux';
+import { Course, CourseFilterParams } from '../../types';
 
-const requestCourse = (uuid) => {
+const requestCourse = (uuid: string) => {
   return {
     type: actionTypes.REQUEST_COURSE,
-    uuid
-  }
+    uuid,
+  };
 };
 
-const receiveCourse = (uuid, data) => {
+const receiveCourse = (uuid: string, data: Course) => {
   return {
     type: actionTypes.RECEIVE_COURSE,
     uuid,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchCourse = (uuid) => async (dispatch, getState, api) => {
-  const state = getState();
-  let courseData = state.courses.data[uuid];
+export const fetchCourse =
+  (uuid: string) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
+    const courseData: Course | undefined = state.courses.data[uuid];
 
-  // don't fetch again
-  if (courseData)
-    return;
+    // don't fetch again
+    if (courseData) return;
 
-  // request action
-  dispatch(requestCourse(uuid));
+    // request action
+    dispatch(requestCourse(uuid));
 
-  // perform request
-  courseData = await api.getCourse(uuid);
+    // perform request
+    const newCourseData: Course = await api.getCourse(uuid);
 
-  // receive action
-  dispatch(receiveCourse(uuid, courseData));
-};
+    // receive action
+    dispatch(receiveCourse(uuid, newCourseData));
+  };
 
-const requestCourseSearch = (params, page) => {
+const requestCourseSearch = (params: CourseFilterParams, page: number) => {
   return {
     type: actionTypes.REQUEST_COURSE_SEARCH,
     params,
-    page
-  }
+    page,
+  };
 };
 
-const receiveCourseSearch = (params, page, data) => {
+interface CourseSearchResult {
+  totalCount: number;
+  results: string[];
+}
+
+const receiveCourseSearch = (params: CourseFilterParams, page: number, data: CourseSearchResult) => {
   return {
     type: actionTypes.RECEIVE_COURSE_SEARCH,
     params,
     page,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchCourseSearch = (params, page) => async (dispatch, getState, api) => {
-  const state = getState();
-  let searchData = state.courses.search;
+export const fetchCourseSearch =
+  (params: CourseFilterParams, page: number) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
+    const searchData = state.courses.search;
 
-  // if params are the same, we don't need to fetch
-  if (_.isEqual(searchData.params, params))
-    return;
+    // if params are the same, we don't need to fetch
+    if (_.isEqual(searchData.params, params)) return;
 
-  // request action
-  dispatch(requestCourseSearch(params, page));
+    // request action
+    dispatch(requestCourseSearch(params, page));
 
-  // perform request
-  searchData = await api.filterCourses(params, page);
+    // perform request
+    const newSearchData: CourseSearchResult = await api.filterCourses(params, page);
 
-  // receive action
-  dispatch(receiveCourseSearch(params, page, searchData));
-};
+    // receive action
+    dispatch(receiveCourseSearch(params, page, newSearchData));
+  };

@@ -1,64 +1,73 @@
 import * as actionTypes from '../actionTypes';
+import { Dispatch } from 'redux';
+import { Instructor } from '../../types';
 
-const requestInstructor = (id) => {
+const requestInstructor = (id: number) => {
   return {
     type: actionTypes.REQUEST_INSTRUCTOR,
-    id
-  }
+    id,
+  };
 };
 
-const receiveInstructor = (id, data) => {
+const receiveInstructor = (id: string, data: Instructor) => {
   return {
     type: actionTypes.RECEIVE_INSTRUCTOR,
     id,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchInstructor = (id) => async (dispatch, getState, api) => {
-  dispatch(requestInstructor(id));
-  let response = await api.getInstructor(id);
-  dispatch(receiveInstructor(id, response));
-};
+export const fetchInstructor =
+  (id: number) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    dispatch(requestInstructor(id));
+    const response: Instructor = await api.getInstructor(id);
+    dispatch(receiveInstructor(id.toString(), response));
+  };
 
-
-const requestInstructorSearch = (query, page) => {
+const requestInstructorSearch = (query: string, page: number) => {
   return {
     type: actionTypes.REQUEST_INSTRUCTOR_SEARCH,
     query,
-    page
-  }
+    page,
+  };
 };
 
-const receiveInstructorSearch = (query, page, data) => {
+interface InstructorSearchResult {
+  totalCount: number;
+  results: Instructor[];
+}
+
+const receiveInstructorSearch = (query: string, page: number, data: InstructorSearchResult) => {
   return {
     type: actionTypes.RECEIVE_INSTRUCTOR_SEARCH,
     query,
     page,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchInstructorSearch = (query, page) => async (dispatch, getState, api) => {
-  const state = getState();
-  let instructorSearchData = state.instructors.searches[query];
+export const fetchInstructorSearch =
+  (query: string, page: number) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
+    const instructorSearchData = state.instructors.searches[query];
 
-  // don't fetch again
-  if (instructorSearchData)
-    return;
+    // don't fetch again
+    if (instructorSearchData) return;
 
-  // request action
-  dispatch(requestInstructorSearch(query, page));
+    // request action
+    dispatch(requestInstructorSearch(query, page));
 
-  // perform request
-  instructorSearchData = await api.searchInstructors(query, page);
+    // perform request
+    const newInstructorSearchData: InstructorSearchResult = await api.searchInstructors(query, page);
 
-  // receive action
-  dispatch(receiveInstructorSearch(query, page, instructorSearchData));
+    // receive action
+    dispatch(receiveInstructorSearch(query, page, newInstructorSearchData));
 
-  const { results } = instructorSearchData;
+    const { results } = newInstructorSearchData;
 
-  results.forEach(instructor => {
-    dispatch(receiveInstructor(instructor.id.toString(), instructor));
-  });
-};
+    results.forEach((instructor) => {
+      dispatch(receiveInstructor(instructor.id.toString(), instructor));
+    });
+  };

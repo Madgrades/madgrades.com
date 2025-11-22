@@ -17,7 +17,9 @@ jobs:
           node-version: 24
       - name: "Create env file"
         run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+          echo "${{ secrets.ENV_FILE }}" > .env.original
+          # Add VITE_ prefix to variables that don't already have it (for Vite migration)
+          awk '/^VITE_/ {print; next} /^[A-Z]/ {print "VITE_" $0; next} {print}' .env.original > .env
       - name: Install dependencies
         run: npm install
       - if: github.event_name == 'push'

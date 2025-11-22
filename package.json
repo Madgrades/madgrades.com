@@ -32,7 +32,7 @@
     "sass": "^1.80.0",
     "semantic-ui-css": "^2.3.0",
     "semantic-ui-react": "^2.1.4",
-    "universal-cookie": "^2.1.2"
+    "universal-cookie": "^8.0.1"
   },
   "scripts": {
     "git-info": "git log -1 --oneline > src/assets/git-rev.txt",

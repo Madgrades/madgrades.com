@@ -1,11 +1,8 @@
-import React, { Component } from 'react';
-import { Router } from 'react-router-dom';
-import SiteHeader from './containers/SiteHeader';
-import SiteFooter from './containers/SiteFooter';
-import { createBrowserHistory } from 'history';
-import Routes from './Routes';
-
-const history = createBrowserHistory();
+import React, { Component, useEffect } from "react";
+import { BrowserRouter, useLocation } from "react-router-dom";
+import SiteHeader from "./containers/SiteHeader";
+import SiteFooter from "./containers/SiteFooter";
+import Routes from "./Routes";
 
 const updateGa = (location) => {
   if (!location) {
@@ -19,33 +16,37 @@ const updateGa = (location) => {
     });
   }
   if (window.ga) {
-    window.ga('set', 'page', location.pathname + location.search);
-    window.ga('send', 'pageview');
+    window.ga("set", "page", location.pathname + location.search);
+    window.ga("send", "pageview");
   }
 };
 
-// google analytics
-history.listen(location => {
-  setTimeout(() => updateGa(location), 500);
-});
+// Component to track route changes
+function AnalyticsTracker() {
+  const location = useLocation();
 
-// send page view on page load
-setTimeout(() => updateGa(), 500);
+  useEffect(() => {
+    setTimeout(() => updateGa(location), 500);
+  }, [location]);
+
+  return null;
+}
 
 class App extends Component {
   render = () => {
     return (
-      <Router history={history}>
-        <div className='App'>
+      <BrowserRouter>
+        <AnalyticsTracker />
+        <div className="App">
           <SiteHeader />
-          <div className='app-content'>
+          <div className="app-content">
             <Routes />
           </div>
           <SiteFooter />
         </div>
-      </Router>
+      </BrowserRouter>
     );
-  }
+  };
 }
 
 export default App;

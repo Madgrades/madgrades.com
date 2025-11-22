@@ -1,0 +1,68 @@
+.grid-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -0.5rem;
+
+  &.grid-row-center {
+    justify-content: center;
+  }
+
+  &.grid-row-middle {
+    align-items: center;
+  }
+
+  &.grid-row-between {
+    justify-content: space-between;
+  }
+}
+
+.grid-col {
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+
+  &.grid-col-auto {
+    flex: 1 1 auto;
+  }
+}
+
+/* Mobile first - xs (default) */
+@for $i from 1 through 12 {
+  .grid-col-xs-#{$i} {
+    flex: 0 0 percentage($i / 12);
+    max-width: percentage($i / 12);
+  }
+}
+
+/* Small devices (tablets, 48em and up) */
+@media (min-width: 48em) {
+  @for $i from 1 through 12 {
+    .grid-col-sm-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+  .grid-col-sm {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+}
+
+/* Medium devices (desktops, 62em and up) */
+@media (min-width: 62em) {
+  @for $i from 1 through 12 {
+    .grid-col-md-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+}
+
+/* Large devices (large desktops, 75em and up) */
+@media (min-width: 75em) {
+  @for $i from 1 through 12 {
+    .grid-col-lg-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+}

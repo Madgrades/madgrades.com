@@ -1,37 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import 'normalize.css'
-import {applyMiddleware, combineReducers, createStore} from 'redux'
-import {Provider} from 'react-redux'
-import reducers from './redux/reducers'
-import thunk from 'redux-thunk';
-import utils from './utils';
-import 'semantic-ui-css/semantic.min.css';
-import './styles/index.css'
-import 'react-flexbox-grid/dist/react-flexbox-grid.css';
-import logger from 'redux-logger'
-import initReactFastclick from 'react-fastclick';
-import 'babel-polyfill';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "normalize.css";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { Provider } from "react-redux";
+import reducers from "./redux/reducers";
+import { thunk, withExtraArgument } from "redux-thunk";
+import utils from "./utils";
+import "semantic-ui-css/semantic.min.css";
+import "./styles/index.css";
+import logger from "redux-logger";
+import initReactFastclick from "react-fastclick";
+import "babel-polyfill";
 
 const api = utils.api.create(
-    process.env.REACT_APP_MADGRADES_API || 'https://api.madgrades.com/',
-    process.env.REACT_APP_MADGRADES_API_TOKEN
+  process.env.REACT_APP_MADGRADES_API || "https://api.madgrades.com/",
+  process.env.REACT_APP_MADGRADES_API_TOKEN
 );
 
 const store = createStore(
-    combineReducers(reducers),
-    applyMiddleware(
-        thunk.withExtraArgument(api),
-        // logger
-    )
+  combineReducers(reducers),
+  applyMiddleware(
+    withExtraArgument(api)
+    // logger
+  )
 );
 
-ReactDOM.render(
-    <Provider store={store}>
-      <App/>
-    </Provider>,
-    document.getElementById('root')
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 initReactFastclick();

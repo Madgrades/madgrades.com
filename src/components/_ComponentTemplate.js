@@ -8,7 +8,7 @@ class Template extends Component {
     example: PropTypes.number
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const { actions } = this.props;
   };
 

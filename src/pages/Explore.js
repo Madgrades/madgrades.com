@@ -1,53 +1,79 @@
-import React, {Component} from 'react';
-import {Col, Row} from 'react-flexbox-grid';
-import {Container, Dropdown, Header, Form} from 'semantic-ui-react';
-import Explorer from '../components/Explorer';
-import EntitySelect from '../components/EntitySelect';
-import {parse, stringify} from 'qs';
-import {withRouter} from 'react-router';
-import _ from 'lodash';
+import React, { Component } from "react";
+import { Container, Dropdown, Grid, Header, Form } from "semantic-ui-react";
+import { Row, Col } from "../components/Grid";
+import Explorer from "../components/Explorer";
+import EntitySelect from "../components/EntitySelect";
+import { parse, stringify } from "qs";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import _ from "lodash";
 
 const entityOptions = [
   {
-    key: 'course',
-    text: 'Courses',
-    value: 'course',
+    key: "course",
+    text: "Courses",
+    value: "course",
   },
   {
-    key: 'instructor',
-    text: 'Instructors',
-    value: 'instructor',
+    key: "instructor",
+    text: "Instructors",
+    value: "instructor",
   },
   {
-    key: 'subject',
-    text: 'Subjects',
-    value: 'subject',
+    key: "subject",
+    text: "Subjects",
+    value: "subject",
   },
 ];
 
 class Explore extends Component {
-  state = {
-    params: {
+  constructor(props) {
+    super(props);
 
-    },
-    entityType: undefined,
-  };
+    // Initialize state with values from URL
+    const { location, match } = this.props;
+    const { entity } = match.params;
+    const params = parse(location.search.substr(1));
 
-  setStateFromQueryString = (forcedQueryParams) => {
-    const { location } = this.props;
-    const { entity } = this.props.match.params;
-    const params = forcedQueryParams || parse(location.search.substr(1));
-
-    const entityType = entity || 'course';
-    let minAvg = entityType === 'subject' ? 1 : 25;
-    let minTotal = entityType === 'course' ? 1500 : 500;
+    const entityType = entity || "course";
+    let minAvg = entityType === "subject" ? 1 : 25;
+    let minTotal = entityType === "course" ? 1500 : 500;
 
     let filteredParams = {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
       subjects: params.subjects,
-      instructors: params.instructors && params.instructors.map(s => parseInt(s, 10))
+      instructors:
+        params.instructors && params.instructors.map((s) => parseInt(s, 10)),
+    };
+
+    if (!params.instructors) {
+      filteredParams.minCountAvg = minAvg;
+      filteredParams.minGpaTotal = minTotal;
+    }
+
+    this.state = {
+      params: filteredParams,
+      entityType: entityType,
+    };
+  }
+
+  setStateFromQueryString = (forcedQueryParams) => {
+    const { location, match } = this.props;
+    const { entity } = match.params;
+    const params = forcedQueryParams || parse(location.search.substr(1));
+
+    const entityType = entity || "course";
+    let minAvg = entityType === "subject" ? 1 : 25;
+    let minTotal = entityType === "course" ? 1500 : 500;
+
+    let filteredParams = {
+      page: parseInt(params.page || 1, 10),
+      sort: params.sort,
+      order: params.order,
+      subjects: params.subjects,
+      instructors:
+        params.instructors && params.instructors.map((s) => parseInt(s, 10)),
     };
 
     if (!params.instructors) {
@@ -56,48 +82,56 @@ class Explore extends Component {
     }
 
     // if we dont have new data, ignore state update
-    if (_.isEqual(filteredParams, this.state.params) && entityType === this.state.entityType)
+    if (
+      _.isEqual(filteredParams, this.state.params) &&
+      entityType === this.state.entityType
+    )
       return;
 
     this.setState({
       params: filteredParams,
-      entityType
+      entityType,
     });
   };
 
-  componentWillMount = this.setStateFromQueryString;
-
   componentDidMount = () => {
-    document.title = 'Explore UW Madison Courses - Madgrades'
+    document.title = "Explore UW Madison Courses - Madgrades";
   };
 
-  componentDidUpdate = () => this.setStateFromQueryString();
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.location !== this.props.location ||
+      prevProps.match !== this.props.match
+    ) {
+      this.setStateFromQueryString();
+    }
+  };
 
   onEntityChange = (event, data) => {
-    const { history } = this.props;
+    const { navigate } = this.props;
 
     // go to the entity page
-    history.push('/explore/' + data.value);
+    navigate("/explore/" + data.value);
 
     // on entity change, update params to nothing
     this.setStateFromQueryString({});
   };
 
   updateParams = (params) => {
-    const { history } = this.props;
+    const { navigate } = this.props;
     const { pathname } = this.props.location;
-    
+
     this.setState({
-      params
+      params,
     });
 
-    history.push(pathname + '?' + stringify(params));
-  }
+    navigate(pathname + "?" + stringify(params));
+  };
 
   onPageChange = (page) => {
     const params = {
       ...this.state.params,
-      page
+      page,
     };
 
     this.updateParams(params);
@@ -108,7 +142,7 @@ class Explore extends Component {
       ...this.state.params,
       sort,
       order,
-      page: 1
+      page: 1,
     };
 
     this.updateParams(params);
@@ -117,103 +151,129 @@ class Explore extends Component {
   onSubjectChange = (value) => {
     const params = {
       ...this.state.params,
-      subjects: value
+      subjects: value,
     };
 
     this.updateParams(params);
-  }
+  };
 
   onInstructorChange = (value) => {
     const params = {
       ...this.state.params,
-      instructors: value
+      instructors: value,
     };
 
     this.updateParams(params);
-  }
+  };
 
   render = () => {
-    const { page, sort, order, minCountAvg, minGpaTotal, subjects, instructors } = this.state.params;
+    const {
+      page,
+      sort,
+      order,
+      minCountAvg,
+      minGpaTotal,
+      subjects,
+      instructors,
+    } = this.state.params;
 
     const { entityType } = this.state;
 
     const filterParams = {};
-    
-    if (entityType !== 'subject' && subjects) {
-      filterParams.subjects = subjects.join(',');
+
+    if (entityType !== "subject" && subjects) {
+      filterParams.subjects = subjects.join(",");
     }
-    
-    if (entityType !== 'subject' && instructors) {
-      filterParams.instructors = instructors.join(',');
+
+    if (entityType !== "subject" && instructors) {
+      filterParams.instructors = instructors.join(",");
     }
 
     return (
-        <div className='Explore'>
-          <Container>
-            <Header as='h1'>
-              <Header.Content>
-                Explore: {' '}
-                <Dropdown
-                    inline
-                    options={entityOptions}
-                    onChange={this.onEntityChange}
-                    value={entityType}/>
-              </Header.Content>
-              <Header.Subheader>
-                Find GPA stats on courses, instructors, subjects.*
-              </Header.Subheader>
-            </Header>
+      <div className="Explore">
+        <Container>
+          <Header as="h1">
+            <Header.Content>
+              Explore:{" "}
+              <Dropdown
+                inline
+                options={entityOptions}
+                onChange={this.onEntityChange}
+                value={entityType}
+              />
+            </Header.Content>
+            <Header.Subheader>
+              Find GPA stats on courses, instructors, subjects.*
+            </Header.Subheader>
+          </Header>
 
-            <Row>
-            {entityType !== 'subject' &&
+          <Row>
+            {entityType !== "subject" && (
               <Col xs={12} md={6}>
-                <p/>
+                <p />
                 <Form>
                   <Form.Field>
                     <label>Filter subjects</label>
                     <EntitySelect
-                      entityType='subject'
+                      entityType="subject"
                       value={subjects}
-                      onChange={this.onSubjectChange}/>
+                      onChange={this.onSubjectChange}
+                    />
                   </Form.Field>
                 </Form>
               </Col>
-            }
+            )}
 
-            {entityType !== 'subject' &&
+            {entityType !== "subject" && (
               <Col xs={12} md={6}>
-                <p/>
+                <p />
                 <Form>
                   <Form.Field>
                     <label>Filter instructors</label>
                     <EntitySelect
-                      entityType='instructor'
+                      entityType="instructor"
                       value={instructors}
-                      onChange={this.onInstructorChange}/>
+                      onChange={this.onInstructorChange}
+                    />
                   </Form.Field>
                 </Form>
               </Col>
-            }
-            </Row>
+            )}
+          </Row>
 
-            <Explorer
-                entityType={entityType}
-                page={page}
-                sort={sort}
-                order={order}
-                minCountAvg={minCountAvg}
-                minGpaTotal={minGpaTotal}
-                onPageChange={this.onPageChange}
-                onSortOrderChange={this.onSortOrderChange}
-                filterParams={filterParams}
-            />
-            <p>
-              * Some entries are omitted due to small class sizes.
-            </p>
-          </Container>
-
-        </div>
-    )
-  }
+          <Explorer
+            entityType={entityType}
+            page={page}
+            sort={sort}
+            order={order}
+            minCountAvg={minCountAvg}
+            minGpaTotal={minGpaTotal}
+            onPageChange={this.onPageChange}
+            onSortOrderChange={this.onSortOrderChange}
+            filterParams={filterParams}
+          />
+          <p>* Some entries are omitted due to small class sizes.</p>
+        </Container>
+      </div>
+    );
+  };
 }
+
+// HOC to inject router hooks as props
+function withRouter(Component) {
+  return function ComponentWithRouter(props) {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const params = useParams();
+    return (
+      <Component
+        {...props}
+        location={location}
+        navigate={navigate}
+        match={{ params }}
+      />
+    );
+  };
+}
+
 export default withRouter(Explore);

@@ -1,33 +1,41 @@
 import React from 'react';
 import SubjectName from '../components/SubjectName';
+import { Subject } from '../types';
 
-const SubjectNameList = ({subjectCodes, subjects}) => {
-  const result = [];
-  const count = (subjectCodes || subjects).length;
-  let keys = [];
+interface SubjectNameListProps {
+  subjectCodes?: string[];
+  subjects?: Subject[];
+}
 
-  if (subjectCodes)
+const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subjects }) => {
+  const result: JSX.Element[] = [];
+  const count = (subjectCodes || subjects || []).length;
+  let keys: string[] = [];
+
+  if (subjectCodes) {
     keys = subjectCodes;
-  else
-    keys = subjects.map(s => s.code);
+  } else if (subjects) {
+    keys = subjects.map((s) => s.code);
+  }
 
   for (let i = 0; i < count; i++) {
-    const curr = (subjectCodes || subjects)[i];
+    const curr = (subjectCodes || subjects)?.[i];
+    const divider = i < count - 1 ? '/' : '';
 
-    let divider = i < count - 1 && '/';
     result.push(
-        <span key={keys[i]}>
-          <SubjectName
-              code={subjectCodes && curr}
-              abbreviate={true}
-              fallback='???'
-              data={subjects && curr}/>
-          {divider}
-        </span>
+      <span key={keys[i]}>
+        <SubjectName
+          code={subjectCodes ? curr as string : ''}
+          abbreviate={true}
+          fallback="???"
+          data={subjects ? curr as Subject : undefined}
+        />
+        {divider}
+      </span>
     );
   }
 
-  return result;
+  return <>{result}</>;
 };
 
 export default SubjectNameList;

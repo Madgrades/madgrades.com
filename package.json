@@ -42,7 +42,8 @@
     "preview": "vite preview",
     "deploy": "npm run build && mv build/index.html build/200.html && surge build",
     "deploy-staging": "npm run build && mv build/index.html build/200.html && surge build staging.madgrades.com",
-    "deploy-prod": "npm run build && mv build/index.html build/200.html && surge build madgrades.com"
+    "deploy-prod": "npm run build && mv build/index.html build/200.html && surge build madgrades.com",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx"
   },
   "browserslist": [
     ">0.2%",
@@ -60,7 +61,12 @@
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
     "@types/react-router-dom": "^5.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
     "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "surge": "^0.24.6",
     "typescript": "^5.9.3",
     "vite": "^7.2.4"

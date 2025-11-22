@@ -5,7 +5,15 @@ import { Card, Button, Icon, Label } from 'semantic-ui-react';
 /**
  * Promotional card component for showcasing UW Madison student-created sites
  */
-const PromoCard = ({ title, description, link, isNew }) => {
+const PromoCard = ({ title, description, link, dateAdded }) => {
+  // Check if the card was added within the last 6 months
+  const isNew = dateAdded ? (() => {
+    const addedDate = new Date(dateAdded);
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    return addedDate > sixMonthsAgo;
+  })() : false;
+
   return (
     <Card fluid raised>
       <Card.Content>
@@ -37,7 +45,7 @@ PromoCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string,
   link: PropTypes.string.isRequired,
-  isNew: PropTypes.bool
+  dateAdded: PropTypes.string
 };
 
 export default PromoCard;

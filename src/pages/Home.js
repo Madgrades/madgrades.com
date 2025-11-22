@@ -57,21 +57,23 @@ const Home = () => {
 
           <PromoCard
             title="EnrollAlert"
-            description="Track real-time enrollment status for your courses and get notified when seats become available. Course information updates along with UW Course Search & Enroll, so you'll receive notifications as soon as seats open up."
+            description="Get notified instantly when seats open up in your courses. Real-time updates synced with UW Course Search & Enroll give you peace of mind and the best chance to snag that perfect class."
             link="https://enrollalert.com"
-            isNew={true}
+            dateAdded="2025-11-22"
           />
 
           <PromoCard
             title="enRollBadge"
             description="Sign up today to receive real-time notifications when classes open!"
             link="http://enrollbadge.com"
+            dateAdded="2023-01-01"
           />
 
           <PromoCard
             title="MadHousing"
             description="Love your dorm or don't? Come share your opinion! Review UW-Madison dorms and help future students make informed housing decisions."
             link="http://madhousing.com"
+            dateAdded="2023-01-01"
           />
         </Container>
       </div>

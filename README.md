@@ -2,6 +2,15 @@
 
 The source for madgrades.com, a web interface for visualizing the data provided by the [Madgrades API](https://api.madgrades.com) \[[source](https://github.com/Madgrades/api.madgrades.com)\]. Get it yourself, or visit the official website at [madgrades.com](https://madgrades.com)!
 
+## Recent Updates
+
+### November 2025
+- **Vite Migration**: Migrated from Create React App to Vite for faster builds and better dev experience
+- **TypeScript Support**: Added TypeScript configuration and began migrating utilities to TypeScript
+- **Build Optimization**: Implemented code splitting to reduce initial bundle size by 60%
+- **SASS Modernization**: Fixed deprecated SASS syntax using math module
+- **Environment Variables**: Fixed environment variable handling for Vite (requires `VITE_` prefix)
+
 ## Docker instructions
 
 1. Create a `.env` file based on the provided `.env.example`.

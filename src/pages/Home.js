@@ -1,7 +1,6 @@
 import React from 'react';
-import {Container, Header} from 'semantic-ui-react';
-import EnrollBadgeBanner from '../assets/enroll-badge.png';
-import MadhousingFlyer from '../assets/madhousing.png';
+import {Container, Header, Divider} from 'semantic-ui-react';
+import PromoCard from '../containers/PromoCard';
 
 const Home = () => {
   document.title = 'UW Madison Grade Distributions - Madgrades';
@@ -45,31 +44,35 @@ const Home = () => {
             </a>.
           </p>
 
-          <Header as='h1'>
-            <Header.Content>
-              Also check out Enroll Badge!
-            </Header.Content>
-          </Header>
-          <a href="http://enrollbadge.com" target="_blank">
-            <img
-              alt="Banner for enRollBadge"
-              src={EnrollBadgeBanner}
-              style={{ maxHeight: '350px', margin: '20px 0' }}
-            />
-          </a>
+          <Divider section />
 
-          <Header as='h1'>
+          <Header as='h2'>
             <Header.Content>
-              Share your dorm experience at MadHousing!
+              Other UW Madison Student Projects
             </Header.Content>
+            <Header.Subheader>
+              Check out these helpful tools built by UW Madison students
+            </Header.Subheader>
           </Header>
-          <a href="http://madhousing.com" target="_blank">
-            <img
-                alt="Flyer for MadHousing"
-                src={MadhousingFlyer}
-                style={{ maxHeight: '550px', margin: '20px 0' }}
-            />
-          </a>
+
+          <PromoCard
+            title="EnrollAlert"
+            description="Track real-time enrollment status for your courses and get notified when seats become available. Course information updates along with UW Course Search & Enroll, so you'll receive notifications as soon as seats open up."
+            link="https://enrollalert.com"
+            isNew={true}
+          />
+
+          <PromoCard
+            title="enRollBadge"
+            description="Sign up today to receive real-time notifications when classes open!"
+            link="http://enrollbadge.com"
+          />
+
+          <PromoCard
+            title="MadHousing"
+            description="Love your dorm or don't? Come share your opinion! Review UW-Madison dorms and help future students make informed housing decisions."
+            link="http://madhousing.com"
+          />
         </Container>
       </div>
   );

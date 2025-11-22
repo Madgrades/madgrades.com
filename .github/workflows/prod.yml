@@ -18,18 +18,27 @@ jobs:
       - name: "Create env file"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env.original
-          echo "=== Original env file ===" && cat .env.original
-          # Add VITE_ prefix to variables that don't already have it (for Vite migration)
-          # This handles lines like: MADGRADES_API=value -> VITE_MADGRADES_API=value
-          # But keeps: VITE_URL=value -> VITE_URL=value
-          # And skips: # comments, blank lines, PORT=3000
+          echo "=== Original env file (variable names only) ===" 
+          grep "=" .env.original | cut -d'=' -f1 || echo "No variables found"
+          # Transform old CRA variable names to Vite format:
+          # REACT_APP_MADGRADES_API -> VITE_MADGRADES_API
+          # MADGRADES_API -> VITE_MADGRADES_API  
+          # VITE_URL -> VITE_URL (keep as is)
+          # PORT=3000 -> PORT=3000 (keep as is)
           awk '
+            # Already has VITE_ prefix - keep as is
             /^VITE_[A-Z_]+=/ { print; next }
+            # Has REACT_APP_ prefix - strip it and add VITE_
+            /^REACT_APP_[A-Z_]+=/ { sub(/^REACT_APP_/, "VITE_"); print; next }
+            # Other env vars (but not PORT) - add VITE_ prefix
             /^[A-Z_]+=[^#]/ && !/^PORT=/ { print "VITE_" $0; next }
+            # Comments and blank lines - keep as is
             /^#/ || /^$/ { print; next }
+            # Everything else - keep as is
             { print }
           ' .env.original > .env
-          echo "=== Generated .env file ===" && cat .env
+          echo "=== Generated .env file (variable names only) ===" 
+          grep "=" .env | cut -d'=' -f1 || echo "No variables found"
       - name: Install dependencies
         run: npm install
       - if: github.event_name == 'push'

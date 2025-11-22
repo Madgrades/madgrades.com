@@ -1,17 +1,26 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
-import SubjectNameList from "../containers/SubjectNameList";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import SubjectNameList from '../containers/SubjectNameList';
+import { RootState, Course, Subject } from '../types';
 
-class CourseName extends Component {
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-    fallback: PropTypes.string,
-    data: PropTypes.object,
-    asSubjectAndNumber: PropTypes.bool,
-  };
+interface OwnProps {
+  uuid: string;
+  fallback?: string;
+  data?: Course;
+  asSubjectAndNumber?: boolean;
+}
 
+interface StateProps {
+  name?: string;
+  subjects?: Subject[];
+  number?: string;
+}
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & StateProps & PropsFromRedux;
+
+class CourseName extends Component<Props> {
   fetchCourseIfNeeded = () => {
     const { actions, uuid, data } = this.props;
 
@@ -22,7 +31,7 @@ class CourseName extends Component {
 
   componentDidMount = this.fetchCourseIfNeeded;
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: Props) => {
     if (prevProps.uuid !== this.props.uuid) {
       this.fetchCourseIfNeeded();
     }
@@ -51,7 +60,7 @@ class CourseName extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
   const { uuid, data } = ownProps;
 
   let courseData = data;
@@ -68,4 +77,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseName);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(CourseName);

@@ -1,33 +1,29 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
+import { RootState } from '../types';
 
-class SearchResultCount extends Component {
-  render = () => {
-    const { count } = this.props;
-
-    return <span>{utils.numberWithCommas(count)}</span>
-  }
+interface StateProps {
+  count: number;
 }
 
-function mapStateToProps(state, ownProps) {
-  const { search } = state.courses;
+const SearchResultCount: React.FC<PropsFromRedux> = ({ count }) => {
+  return <span>{utils.numberWithCommas(count)}</span>;
+};
 
+function mapStateToProps(state: RootState): StateProps {
+  const { search } = state.courses;
   const { page } = state.app.courseFilterParams || 1;
 
-  let count = search && search.pages && search.pages[page] && search.pages[page].totalCount;
+  const count =
+    search && search.pages && search.pages[page] && search.pages[page].totalCount;
 
-  if (count) {
-    return {
-      count
-    }
-  }
-  else {
-    return {
-      count: 0
-    }
-  }
+  return {
+    count: count || 0,
+  };
 }
 
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(SearchResultCount)
+export default connector(SearchResultCount);

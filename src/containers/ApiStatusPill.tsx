@@ -9,7 +9,7 @@ function ApiStatusPill() {
   const [status, setStatus] = useState<string>('N/A');
 
   useEffect(() => {
-    fetchStatus().then((monitor) => {
+    void fetchStatus().then((monitor) => {
       if (monitor !== undefined && monitor.uptime !== undefined) {
         setUptime(monitor.uptime);
         setStatus(monitor.status);

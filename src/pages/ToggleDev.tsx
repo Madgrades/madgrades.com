@@ -6,10 +6,10 @@ const ToggleDev = () => {
   const cookies = new Cookies();
 
   // set expiration to one year from now
-  let expiration = new Date();
+  const expiration = new Date();
   expiration.setFullYear(expiration.getFullYear() + 10);
 
-  let currentValue = cookies.get('user_is_dev') === 'true';
+  const currentValue = cookies.get('user_is_dev') === 'true';
 
   // set cookie
   cookies.set('user_is_dev', !currentValue, {

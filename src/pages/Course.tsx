@@ -30,8 +30,8 @@ const Course = () => {
   const onCourseDataLoad = (data) => {
     const { name, subjects, number } = data;
 
-    let visibleName = name || "Unknown Name";
-    let title = visibleName + " - Madgrades";
+    const visibleName = name || "Unknown Name";
+    const title = visibleName + " - Madgrades";
 
     let desc =
       subjects

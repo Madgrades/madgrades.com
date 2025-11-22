@@ -99,7 +99,7 @@ function Explorer({
     let link;
 
     switch (entityType) {
-      case 'course':
+      case 'course': {
         const { course } = entry;
         return (
           <Header as="h4">
@@ -113,7 +113,8 @@ function Explorer({
             </Header.Subheader>
           </Header>
         );
-      case 'instructor':
+      }
+      case 'instructor': {
         const { instructor } = entry;
         link = '/search?' + stringify({ instructors: [instructor.id] });
         return (
@@ -123,7 +124,8 @@ function Explorer({
             </Header.Content>
           </Header>
         );
-      case 'subject':
+      }
+      case 'subject': {
         const { subject } = entry;
         link = '/search?' + stringify({ subjects: [subject.code] });
         return (
@@ -133,6 +135,7 @@ function Explorer({
             </Header.Content>
           </Header>
         );
+      }
       default:
         break;
     }

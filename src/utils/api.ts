@@ -62,12 +62,12 @@ class Api {
    * Performs a complex course search/filter with optional sorting.
    */
   async filterCourses(params, page) {
-    let { query, subjects, instructors, sort, order } = params;
+    const { query, subjects, instructors, sort, order } = params;
 
     const subjectParam = Array.isArray(subjects) && subjects.join(',');
     const instructorParam = Array.isArray(instructors) && instructors.join(',');
 
-    let queryString = {
+    const queryString = {
       page: page,
       per_page: 25
     };

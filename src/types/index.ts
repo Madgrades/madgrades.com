@@ -101,17 +101,33 @@ export interface ExploreState {
   subjects: Subject[];
 }
 
+export interface GradeData {
+  isFetching?: boolean;
+  cumulative?: GradeDistribution;
+  byTerm?: { [termCode: number]: GradeDistribution };
+  byInstructor?: { [instructorId: number]: GradeDistribution };
+}
+
+export interface GradesState {
+  courses: {
+    data: { [uuid: string]: GradeData };
+  };
+  instructors: {
+    data: { [id: number]: GradeData };
+  };
+}
+
 export interface RootState {
   app: AppState;
   courses: CoursesState;
   instructors: InstructorsState;
   subjects: SubjectsState;
   explore: ExploreState;
-  grades: any; // TODO: Type this properly
+  grades: GradesState;
 }
 
 // Redux action types
-export interface ReduxAction<T = any> {
+export interface ReduxAction<T = unknown> {
   type: string;
   payload?: T;
 }

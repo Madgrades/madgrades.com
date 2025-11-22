@@ -13,7 +13,7 @@ function SiteFooter() {
   const [gitRev, setGitRev] = useState('');
 
   useEffect(() => {
-    fetch(gitRevFile)
+    void fetch(gitRevFile)
       .then((response) => response.text())
       .then((text) => {
         setGitRev(text.split(' ')[0]);

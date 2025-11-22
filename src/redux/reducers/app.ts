@@ -1,6 +1,13 @@
 import * as actionTypes from '../actionTypes';
+import { AppState, CourseFilterParams, Term, ReduxAction } from '../../types';
 
-const initialState = {
+interface AppAction extends ReduxAction {
+  query?: string;
+  params?: Partial<CourseFilterParams>;
+  terms?: Term[];
+}
+
+const initialState: AppState = {
   searchQuery: '',
   courseFilterParams: {
     subjects: undefined,
@@ -8,10 +15,10 @@ const initialState = {
     sort: undefined,
     order: undefined
   },
-  terms: undefined
+  terms: []
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action: AppAction): AppState {
   switch (action.type) {
     case actionTypes.SET_SEARCH_QUERY:
       return {

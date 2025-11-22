@@ -1,6 +1,13 @@
 import * as actionTypes from '../actionTypes';
+import { GradesState, ReduxAction } from '../../types';
 
-const initialState = {
+interface GradesAction extends ReduxAction {
+  uuid?: string;
+  id?: number;
+  data?: unknown;
+}
+
+const initialState: GradesState = {
   courses: {
     data: {}
   },
@@ -9,7 +16,7 @@ const initialState = {
   }
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action: GradesAction): GradesState {
   switch (action.type) {
     case actionTypes.REQUEST_COURSE_GRADES: {
       return {

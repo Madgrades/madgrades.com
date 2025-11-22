@@ -1,11 +1,21 @@
 import * as actionTypes from '../actionTypes';
+import { SubjectsState, Subject, ReduxAction } from '../../types';
 
-const initialState = {
+interface SubjectsAction extends ReduxAction {
+  code?: string;
+  data?: Subject | { totalCount: number; results: Subject[] };
+  query?: string;
+  page?: number;
+}
+
+const initialState: SubjectsState = {
   data: {},
-  searches: {}
+  search: {
+    pages: {}
+  }
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action: SubjectsAction): SubjectsState {
   switch (action.type) {
     case actionTypes.REQUEST_SUBJECT: {
       return {

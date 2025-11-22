@@ -1,14 +1,22 @@
 import * as actionTypes from '../actionTypes';
+import { CoursesState, Course, CourseFilterParams, ReduxAction } from '../../types';
 
-const initialState = {
+interface CoursesAction extends ReduxAction {
+  uuid?: string;
+  data?: Course | { totalCount: number; results: Course[] };
+  params?: CourseFilterParams;
+  page?: number;
+}
+
+const initialState: CoursesState = {
   data: {},
   search: {
-    params: {},
     pages: {}
-  }
+  },
+  grades: {}
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = initialState, action: CoursesAction): CoursesState {
   switch (action.type) {
     case actionTypes.REQUEST_COURSE: {
       return {

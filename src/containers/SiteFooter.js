@@ -59,7 +59,7 @@ class SiteFooter extends Component {
               <br />
             </span>
           </Col>
-          <Col auto>
+          <Col auto style={{ textAlign: "right" }}>
             <Label
               color="teal"
               horizontal

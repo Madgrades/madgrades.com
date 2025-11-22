@@ -3,9 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
 import { RootState } from '../types';
 
-interface LatestTermProps extends PropsFromRedux {}
-
-function LatestTerm({ actions, terms }: LatestTermProps) {
+function LatestTerm({ actions, terms }: PropsFromRedux) {
   useEffect(() => {
     actions.fetchTerms();
   }, [actions]);

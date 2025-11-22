@@ -59,9 +59,9 @@ function CourseChartViewer({
   };
 
   let instructorOptions: any[] = [],
-    termCodes: number[] = [],
-    termDescs: { [key: number]: string } = {},
-    instructorText = 'All instructors',
+    termCodes: number[] = [];
+  const termDescs: { [key: number]: string } = {};
+  let instructorText = 'All instructors',
     termText = 'All semesters';
 
   if (data && !data.isFetching) {

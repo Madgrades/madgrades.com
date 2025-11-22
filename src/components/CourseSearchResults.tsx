@@ -101,11 +101,9 @@ function mapStateToProps(state: RootState) {
   const { searchQuery, courseFilterParams } = state.app;
   const { page } = courseFilterParams;
 
-  let searchData, isFetching;
-
   const search = state.courses.search;
-  searchData = search.pages && search.pages[page];
-  isFetching = search.isFetching;
+  const searchData = search.pages && search.pages[page];
+  const isFetching = search.isFetching;
 
   return {
     searchQuery,

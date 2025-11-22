@@ -28,7 +28,7 @@ function EntitySelect({
   const [options, setOptions] = useState<any[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
-  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const performSearch = useCallback(
     (searchQuery: string) => {

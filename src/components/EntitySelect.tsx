@@ -1,32 +1,41 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import utils from '../utils';
-import PropTypes from 'prop-types'
-import {Dropdown} from 'semantic-ui-react';
+import { Instructor, Subject } from '../types';
+import { Dropdown } from 'semantic-ui-react';
 import _ from 'lodash';
+
+type EntityType = 'instructor' | 'subject';
+
+interface EntitySelectProps {
+  entityType: EntityType;
+  onChange?: (value: any) => void;
+  value?: any[];
+}
+
+interface EntitySelectState {
+  query: string;
+  options: any[];
+  isTyping: boolean;
+  isFetching: boolean;
+}
 
 /**
  * A dropdown/search box for selecting a particular entity from madgrades.
  *
  * This is pretty fragile, easy to create infinite loops... :(
  */
-class EntitySelect extends Component {
-  static propTypes = {
-    entityType: PropTypes.oneOf(['instructor', 'subject']).isRequired,
-    onChange: PropTypes.func,
-    value: PropTypes.array
-  };
-
+class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
   static defaultProps = {
     value: [],
-    onChange: (entityKey) => { }
+    onChange: (entityKey: any) => {},
   };
 
-  state = {
+  state: EntitySelectState = {
     query: '',
     options: [],
     isTyping: false,
-    isFetching: false
+    isFetching: false,
   };
 
   performSearch = (query) => {

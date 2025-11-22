@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   CartesianGrid,
   Label,
@@ -7,27 +7,26 @@ import {
   ResponsiveContainer,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts';
-import PropTypes from 'prop-types';
 import utils from '../../utils';
+import { CourseOffering } from '../../types';
 
-export class GpaChart extends Component {
-  static propTypes = {
-    gradeDistributions: PropTypes.arrayOf(PropTypes.object).isRequired,
-    title: PropTypes.string
-  };
+interface GpaChartProps {
+  gradeDistributions: CourseOffering[];
+  title?: string;
+}
 
+export class GpaChart extends Component<GpaChartProps> {
   render = () => {
     const { title, gradeDistributions } = this.props;
 
-    if (!gradeDistributions)
-      return null;
+    if (!gradeDistributions) return null;
 
-    const data = gradeDistributions.map(gradeDistribution => {
+    const data = gradeDistributions.map((gradeDistribution) => {
       return {
         gpa: utils.grades.gpa(gradeDistribution),
-        termName: utils.termCodes.toName(gradeDistribution.termCode)
+        termName: utils.termCodes.toName(gradeDistribution.termCode),
       }
     });
 

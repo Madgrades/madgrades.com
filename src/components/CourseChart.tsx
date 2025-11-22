@@ -1,17 +1,21 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
-import GradeDistributionChart from "../containers/charts/GradeDistributionChart";
-import { Dimmer, Loader } from "semantic-ui-react";
-import Div from "../containers/Div";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState } from '../types';
+import GradeDistributionChart from '../containers/charts/GradeDistributionChart';
+import { Dimmer, Loader } from 'semantic-ui-react';
+import Div from '../containers/Div';
 
-class CourseChart extends Component {
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-    termCode: PropTypes.number,
-    instructorId: PropTypes.number,
-  };
+interface CourseChartProps {
+  uuid: string;
+  termCode?: number;
+  instructorId?: number;
+  course?: any;
+  data?: any;
+  actions?: any;
+}
+
+class CourseChart extends Component<CourseChartProps> {
 
   componentDidMount = () => {
     const { actions, uuid } = this.props;
@@ -117,7 +121,7 @@ class CourseChart extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: { uuid: string }) {
   const course = state.courses.data[ownProps.uuid];
   const data = state.grades.courses.data[ownProps.uuid];
 
@@ -127,4 +131,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseChart);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(CourseChart);

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState } from '../types';
 import { Button, Dropdown, Form } from "semantic-ui-react";
 import { Row, Col } from "./Grid";
 import TermSelect from "../containers/TermSelect";
@@ -9,20 +9,27 @@ import CourseChart from "./CourseChart";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
 
-class CourseChartViewer extends Component {
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-    termCode: PropTypes.number,
-    instructorId: PropTypes.number,
-    onChange: PropTypes.func,
-  };
+interface CourseChartViewerProps {
+  uuid: string;
+  termCode?: number;
+  instructorId?: number;
+  onChange?: (params: { termCode?: number; instructorId?: number }) => void;
+  data?: any;
+  course?: any;
+  actions?: any;
+}
 
-  state = {
+interface CourseChartViewerState {
+  isExporting: boolean;
+}
+
+class CourseChartViewer extends Component<CourseChartViewerProps, CourseChartViewerState> {
+  state: CourseChartViewerState = {
     isExporting: false,
   };
 
   static defaultProps = {
-    onChange: ({ termCode, instructorId }) => {},
+    onChange: ({ termCode, instructorId }: { termCode?: number; instructorId?: number }) => {},
   };
 
   fetchCourseGrades = () => {
@@ -32,7 +39,7 @@ class CourseChartViewer extends Component {
 
   componentDidMount = this.fetchCourseGrades;
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: CourseChartViewerProps) => {
     if (prevProps.uuid !== this.props.uuid) {
       this.fetchCourseGrades();
     }
@@ -217,7 +224,7 @@ class CourseChartViewer extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: { uuid: string }) {
   const data = state.grades.courses.data[ownProps.uuid];
 
   return {
@@ -225,7 +232,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  utils.mapDispatchToProps
-)(CourseChartViewer);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(CourseChartViewer);

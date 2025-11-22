@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { Container, Grid, Segment, Header, Button } from "semantic-ui-react";
-import PropTypes from "prop-types";
-import CourseName from "./CourseName";
-import CourseChartViewer from "./CourseChartViewer";
-import CourseGpaChart from "./CourseGpaChart";
-import { parse, stringify } from "qs";
+import React, { Component } from 'react';
+import { Container, Grid, Segment, Header, Button } from 'semantic-ui-react';
+import CourseName from './CourseName';
+import CourseChartViewer from './CourseChartViewer';
+import CourseGpaChart from './CourseGpaChart';
+import { parse, stringify } from 'qs';
 
-class CourseComparison extends Component {
-  static propTypes = {
-    course1Uuid: PropTypes.string.isRequired,
-    course2Uuid: PropTypes.string.isRequired,
-    onRemoveComparison: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    navigate: PropTypes.func.isRequired,
-  };
+interface CourseComparisonProps {
+  course1Uuid: string;
+  course2Uuid: string;
+  onRemoveComparison: () => void;
+  location: { search: string };
+  navigate: (path: string) => void;
+}
 
-  handleCourse1Change = (params) => {
+class CourseComparison extends Component<CourseComparisonProps> {
+
+  handleCourse1Change = (params: { instructorId?: number; termCode?: number }) => {
     const { course1Uuid, course2Uuid, location, navigate } = this.props;
     const currentParams = parse(location.search.substr(1));
 
@@ -29,7 +29,7 @@ class CourseComparison extends Component {
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
   };
 
-  handleCourse2Change = (params) => {
+  handleCourse2Change = (params: { instructorId?: number; termCode?: number }) => {
     const { course1Uuid, course2Uuid, location, navigate } = this.props;
     const currentParams = parse(location.search.substr(1));
 

@@ -18,7 +18,8 @@ jobs:
       - name: "Create env file"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env.original
-          echo "=== Original env file ===" && cat .env.original
+          echo "=== Original env file (variable names only) ===" 
+          grep "=" .env.original | cut -d'=' -f1 || echo "No variables found"
           # Add VITE_ prefix to variables that don't already have it (for Vite migration)
           # This handles lines like: MADGRADES_API=value -> VITE_MADGRADES_API=value
           # But keeps: VITE_URL=value -> VITE_URL=value
@@ -29,7 +30,8 @@ jobs:
             /^#/ || /^$/ { print; next }
             { print }
           ' .env.original > .env
-          echo "=== Generated .env file ===" && cat .env
+          echo "=== Generated .env file (variable names only) ===" 
+          grep "=" .env | cut -d'=' -f1 || echo "No variables found"
       - name: Install dependencies
         run: npm install
       - if: github.event_name == 'push'

@@ -1,99 +1,110 @@
 import * as actionTypes from '../actionTypes';
 import _ from 'lodash';
+import { Dispatch } from 'redux';
 
-const requestExploreCourses = (params) => {
+interface ExploreParams {
+  sort?: string;
+  order?: string;
+  minCountAvg?: number;
+  minGpaTotal?: number;
+  [key: string]: any;
+}
+
+const requestExploreCourses = (params: ExploreParams) => {
   return {
     type: actionTypes.REQUEST_EXPLORE_COURSES,
-    params
-  }
+    params,
+  };
 };
 
-const receiveExploreCourses = (params, data) => {
+const receiveExploreCourses = (params: ExploreParams, data: any) => {
   return {
     type: actionTypes.RECEIVE_EXPLORE_COURSES,
     params,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchExploreCourses = (params) => async (dispatch, getState, api) => {
-  const state = getState();
+export const fetchExploreCourses =
+  (params: ExploreParams) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
 
-  // don't fetch again
-  if (_.isEqual(state.explore.courses.params, params))
-    return;
+    // don't fetch again
+    if (_.isEqual(state.explore.courses.params, params)) return;
 
-  // request action
-  dispatch(requestExploreCourses(params));
+    // request action
+    dispatch(requestExploreCourses(params));
 
-  // perform request
-  const courseData = await api.exploreCourses(params);
+    // perform request
+    const courseData = await api.exploreCourses(params);
 
-  // receive action
-  dispatch(receiveExploreCourses(params, courseData));
-};
+    // receive action
+    dispatch(receiveExploreCourses(params, courseData));
+  };
 
-
-const requestExploreInstructors = (params) => {
+const requestExploreInstructors = (params: ExploreParams) => {
   return {
     type: actionTypes.REQUEST_EXPLORE_INSTRUCTORS,
-    params
-  }
+    params,
+  };
 };
 
-const receiveExploreInstructors = (params, data) => {
+const receiveExploreInstructors = (params: ExploreParams, data: any) => {
   return {
     type: actionTypes.RECEIVE_EXPLORE_INSTRUCTORS,
     params,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchExploreInstructors = (params) => async (dispatch, getState, api) => {
-  const state = getState();
+export const fetchExploreInstructors =
+  (params: ExploreParams) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
 
-  // don't fetch again
-  if (_.isEqual(state.explore.instructors.params, params))
-    return;
+    // don't fetch again
+    if (_.isEqual(state.explore.instructors.params, params)) return;
 
-  // request action
-  dispatch(requestExploreInstructors(params));
+    // request action
+    dispatch(requestExploreInstructors(params));
 
-  // perform request
-  const courseData = await api.exploreInstructors(params);
+    // perform request
+    const instructorData = await api.exploreInstructors(params);
 
-  // receive action
-  dispatch(receiveExploreInstructors(params, courseData));
-};
+    // receive action
+    dispatch(receiveExploreInstructors(params, instructorData));
+  };
 
-const requestExploreSubjects = (params) => {
+const requestExploreSubjects = (params: ExploreParams) => {
   return {
     type: actionTypes.REQUEST_EXPLORE_SUBJECTS,
-    params
-  }
+    params,
+  };
 };
 
-const receiveExploreSubjects = (params, data) => {
+const receiveExploreSubjects = (params: ExploreParams, data: any) => {
   return {
     type: actionTypes.RECEIVE_EXPLORE_SUBJECTS,
     params,
-    data
-  }
+    data,
+  };
 };
 
-export const fetchExploreSubjects = (params) => async (dispatch, getState, api) => {
-  const state = getState();
+export const fetchExploreSubjects =
+  (params: ExploreParams) =>
+  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+    const state = getState();
 
-  // don't fetch again
-  if (_.isEqual(state.explore.subjects.params, params))
-    return;
+    // don't fetch again
+    if (_.isEqual(state.explore.subjects.params, params)) return;
 
-  // request action
-  dispatch(requestExploreSubjects(params));
+    // request action
+    dispatch(requestExploreSubjects(params));
 
-  // perform request
-  const courseData = await api.exploreSubjects(params);
+    // perform request
+    const subjectData = await api.exploreSubjects(params);
 
-  // receive action
-  dispatch(receiveExploreSubjects(params, courseData));
-};
+    // receive action
+    dispatch(receiveExploreSubjects(params, subjectData));
+  };

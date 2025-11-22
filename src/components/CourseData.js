@@ -10,19 +10,30 @@ class CourseData extends Component {
   };
 
   fetchData = () => {
-    const { actions, uuid, data, onDataLoad } = this.props;
+    const { actions, uuid } = this.props;
     actions.fetchCourse(uuid);
-
-    if (data && !data.isFetching) {
-      onDataLoad(data);
-    }
   };
 
-  componentDidMount = this.fetchData;
+  componentDidMount = () => {
+    this.fetchData();
+    this.notifyIfDataReady();
+  };
 
   componentDidUpdate = (prevProps) => {
     if (prevProps.uuid !== this.props.uuid) {
       this.fetchData();
+    }
+    
+    // Call onDataLoad when data changes and becomes available
+    if (prevProps.data !== this.props.data) {
+      this.notifyIfDataReady();
+    }
+  };
+
+  notifyIfDataReady = () => {
+    const { data, onDataLoad } = this.props;
+    if (data && !data.isFetching) {
+      onDataLoad(data);
     }
   };
 

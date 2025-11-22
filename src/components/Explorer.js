@@ -15,7 +15,7 @@ import _ from "lodash";
 import CourseName from "./CourseName";
 import { Link } from "react-router-dom";
 import { stringify } from "qs";
-import { Col, Row } from "react-flexbox-grid";
+import { Row, Col } from "../components/Grid";
 
 class Explorer extends Component {
   static propTypes = {
@@ -290,31 +290,29 @@ class Explorer extends Component {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan={4}>
-              <Row>
+              <Row center>
                 <Col xs={12}>
-                  <Row center="xs">
-                    <Pagination
-                      onPageChange={this.onPageChange}
-                      activePage={activePage}
-                      ellipsisItem={{
-                        content: <Icon name="ellipsis horizontal" />,
-                        icon: true,
-                      }}
-                      firstItem={null}
-                      lastItem={null}
-                      prevItem={{
-                        content: <Icon name="angle left" />,
-                        icon: true,
-                      }}
-                      nextItem={{
-                        content: <Icon name="angle right" />,
-                        icon: true,
-                      }}
-                      totalPages={totalPages}
-                      size="mini"
-                      siblingRange={1}
-                    />
-                  </Row>
+                  <Pagination
+                    onPageChange={this.onPageChange}
+                    activePage={activePage}
+                    ellipsisItem={{
+                      content: <Icon name="ellipsis horizontal" />,
+                      icon: true,
+                    }}
+                    firstItem={null}
+                    lastItem={null}
+                    prevItem={{
+                      content: <Icon name="angle left" />,
+                      icon: true,
+                    }}
+                    nextItem={{
+                      content: <Icon name="angle right" />,
+                      icon: true,
+                    }}
+                    totalPages={totalPages}
+                    size="mini"
+                    siblingRange={1}
+                  />
                 </Col>
               </Row>
             </Table.HeaderCell>

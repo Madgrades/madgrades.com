@@ -6,7 +6,7 @@ import CourseFilterForm from "../components/CourseFilterForm";
 import CourseSearchResults from "../components/CourseSearchResults";
 import SearchResultCount from "../components/SearchResultCount";
 import CourseSortForm from "../components/CourseSortForm";
-import { Col, Row } from "react-flexbox-grid";
+import { Row, Col } from "../components/Grid";
 import AdSlot from "../containers/AdSlot";
 import { useLocation } from "react-router-dom";
 
@@ -79,7 +79,7 @@ const Courses = () => {
           </Message.Content>
         </Message>
       )}
-      <Row columns={16}>
+      <Row>
         <Col xs={12} md={4} lg={3} style={{ marginBottom: "20px" }}>
           <CourseFilterForm />
           <br style={{ clear: "both" }} />
@@ -93,7 +93,7 @@ const Courses = () => {
           </center>
         </Col>
         <Col xs={12} md={8} lg={9}>
-          <Row middle="xs">
+          <Row middle>
             <Col xs>
               <Header as="h2">
                 <Header.Content>
@@ -101,8 +101,8 @@ const Courses = () => {
                 </Header.Content>
               </Header>
             </Col>
-            <Col xs>
-              <Header as="h4" floated="right">
+            <Col auto style={{ textAlign: "right" }}>
+              <Header as="h4">
                 Sort by: <CourseSortForm />
               </Header>
             </Col>

@@ -3,11 +3,11 @@ import { connect } from "react-redux";
 import utils from "../utils";
 import PropTypes from "prop-types";
 import { Button, Dropdown, Form } from "semantic-ui-react";
+import { Row, Col } from "./Grid";
 import TermSelect from "../containers/TermSelect";
 import CourseChart from "./CourseChart";
 import domtoimage from "dom-to-image";
 import FileSaver from "file-saver";
-import { Col, Row } from "react-flexbox-grid";
 
 class CourseChartViewer extends Component {
   static propTypes = {

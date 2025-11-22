@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import utils from "../utils";
 import { Dimmer, Icon, Loader, Pagination } from "semantic-ui-react";
+import { Row, Col } from "./Grid";
 import CourseSearchResultItem from "../containers/CourseSearchResultItem";
 import Div from "../containers/Div";
 import PropTypes from "prop-types";
 import * as _ from "lodash";
-import { Col, Row } from "react-flexbox-grid";
 import { useNavigate } from "react-router-dom";
 import { stringify } from "qs";
 
@@ -64,31 +64,29 @@ class CourseSearchResults extends Component {
           </Dimmer>
           {this.renderResults(results || [])}
           {results && results.length > 0 && (
-            <Row>
+            <Row center>
               <Col xs={12}>
-                <Row center="xs">
-                  <Pagination
-                    onPageChange={this.onPageChange}
-                    activePage={page}
-                    ellipsisItem={{
-                      content: <Icon name="ellipsis horizontal" />,
-                      icon: true,
-                    }}
-                    firstItem={null}
-                    lastItem={null}
-                    prevItem={{
-                      content: <Icon name="angle left" />,
-                      icon: true,
-                    }}
-                    nextItem={{
-                      content: <Icon name="angle right" />,
-                      icon: true,
-                    }}
-                    totalPages={totalPages}
-                    size="mini"
-                    siblingRange={1}
-                  />
-                </Row>
+                <Pagination
+                  onPageChange={this.onPageChange}
+                  activePage={page}
+                  ellipsisItem={{
+                    content: <Icon name="ellipsis horizontal" />,
+                    icon: true,
+                  }}
+                  firstItem={null}
+                  lastItem={null}
+                  prevItem={{
+                    content: <Icon name="angle left" />,
+                    icon: true,
+                  }}
+                  nextItem={{
+                    content: <Icon name="angle right" />,
+                    icon: true,
+                  }}
+                  totalPages={totalPages}
+                  size="mini"
+                  siblingRange={1}
+                />
               </Col>
             </Row>
           )}

@@ -16,10 +16,9 @@
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-fastclick": "^3.0.2",
-    "react-flexbox-grid": "^2.1.2",
     "react-markdown": "^9.0.1",
     "react-meta-tags": "^1.0.1",
     "react-redux": "^9.1.2",
@@ -55,6 +54,10 @@
     "not ie <= 11",
     "not op_mini all"
   ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
   "devDependencies": {
     "surge": "^0.24.6"
   },

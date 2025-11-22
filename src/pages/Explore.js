@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Col, Row } from "react-flexbox-grid";
-import { Container, Dropdown, Header, Form } from "semantic-ui-react";
+import { Container, Dropdown, Grid, Header, Form } from "semantic-ui-react";
+import { Row, Col } from "../components/Grid";
 import Explorer from "../components/Explorer";
 import EntitySelect from "../components/EntitySelect";
 import { parse, stringify } from "qs";

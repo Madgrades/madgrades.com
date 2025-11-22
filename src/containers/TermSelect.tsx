@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
 import utils from '../utils/index';
 
@@ -11,55 +10,50 @@ interface TermSelectProps {
   value?: number;
 }
 
-class TermSelect extends Component<TermSelectProps> {
-  static defaultProps = {
-    includeCumulative: false,
-    cumulativeText: 'Cumulative',
-    onChange: (termCode: number) => {},
-    descriptions: {},
-  };
-
-  generateOptions = () => {
-    const { includeCumulative, cumulativeText, descriptions } = this.props;
-    let cumulativeOption = [];
+function TermSelect({
+  termCodes,
+  includeCumulative = false,
+  cumulativeText = 'Cumulative',
+  onChange = () => {},
+  descriptions = {},
+  value,
+}: TermSelectProps) {
+  const generateOptions = () => {
+    let cumulativeOption: any[] = [];
 
     if (includeCumulative) {
-      cumulativeOption = [
-        {key: 0, value: 0, text: cumulativeText}
-      ];
+      cumulativeOption = [{ key: 0, value: 0, text: cumulativeText }];
     }
 
-    const termOptions = this.props.termCodes.map(code => {
+    const termOptions = termCodes.map((code) => {
       const desc = descriptions[code];
       return {
         key: code,
         value: code,
         text: utils.termCodes.toName(code),
-        description: desc
-      }
+        description: desc,
+      };
     });
 
     return cumulativeOption.concat(termOptions);
   };
 
-  onChange = (event: any, { value }: { value: number }) => {
-    this.props.onChange(value);
+  const handleChange = (event: any, { value: newValue }: { value: number }) => {
+    onChange(newValue);
   };
 
-  render = () => {
-    const { value } = this.props;
-    const options = this.generateOptions();
+  const options = generateOptions();
 
-    return (
-        <Dropdown
-            fluid
-            selection
-            search
-            value={value || options[0].value}
-            options={options}
-            onChange={this.onChange}/>
-    )
-  }
+  return (
+    <Dropdown
+      fluid
+      selection
+      search
+      value={value || options[0].value}
+      options={options}
+      onChange={handleChange}
+    />
+  );
 }
 
 export default TermSelect;

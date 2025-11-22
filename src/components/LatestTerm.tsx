@@ -1,34 +1,33 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
+import { RootState } from '../types';
 
-class LatestTerm extends Component {
-  componentDidMount = () => {
-    this.props.actions.fetchTerms();
-  }
+interface LatestTermProps extends PropsFromRedux {}
 
-  latestTermName = () => {
-    const { terms } = this.props;
+function LatestTerm({ actions, terms }: LatestTermProps) {
+  useEffect(() => {
+    actions.fetchTerms();
+  }, [actions]);
 
+  const latestTermName = () => {
     if (terms) {
-      const latestTerm = Math.max(...Object.keys(terms).map(key => parseInt(key, 10)));
+      const latestTerm = Math.max(...Object.keys(terms).map((key) => parseInt(key, 10)));
       return utils.termCodes.toName(latestTerm);
     }
-    else {
-      return "Unknown";
-    }
-  }
+    return 'Unknown';
+  };
 
-  render = () => {
-    return <span>{this.latestTermName()}</span>
-  }
+  return <span>{latestTermName()}</span>;
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState) {
   return {
-    terms: state.app.terms || {}
-  }
+    terms: state.app.terms || {},
+  };
 }
 
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(LatestTerm)
+export default connector(LatestTerm);

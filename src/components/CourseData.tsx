@@ -1,48 +1,32 @@
-import { Component } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import utils from "../utils";
+import { useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState, Course } from '../types';
 
-class CourseData extends Component {
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-    onDataLoad: PropTypes.func.isRequired,
-  };
+interface OwnProps {
+  uuid: string;
+  onDataLoad: (data: Course) => void;
+}
 
-  fetchData = () => {
-    const { actions, uuid } = this.props;
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
+
+function CourseData({ uuid, onDataLoad, actions, data }: Props) {
+  useEffect(() => {
     actions.fetchCourse(uuid);
-  };
+  }, [uuid, actions]);
 
-  componentDidMount = () => {
-    this.fetchData();
-    this.notifyIfDataReady();
-  };
-
-  componentDidUpdate = (prevProps) => {
-    if (prevProps.uuid !== this.props.uuid) {
-      this.fetchData();
-    }
-
-    // Call onDataLoad when data changes and becomes available
-    if (prevProps.data !== this.props.data) {
-      this.notifyIfDataReady();
-    }
-  };
-
-  notifyIfDataReady = () => {
-    const { data, onDataLoad } = this.props;
+  useEffect(() => {
     if (data && !data.isFetching) {
       onDataLoad(data);
     }
-  };
+  }, [data, onDataLoad]);
 
-  render = () => null;
+  return null;
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: OwnProps) {
   const { uuid } = ownProps;
-
   const { courses } = state;
   const data = courses.data[uuid];
 
@@ -51,4 +35,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseData);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(CourseData);

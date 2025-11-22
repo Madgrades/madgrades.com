@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
 import { RootState, Subject } from '../types';
@@ -18,21 +18,15 @@ interface StateProps {
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & StateProps & PropsFromRedux;
 
-class SubjectName extends Component<Props> {
-  componentDidMount = () => {
-    const { actions, code, data } = this.props;
-
+function SubjectName({ code, data, actions, name, abbreviation, abbreviate, fallback }: Props) {
+  useEffect(() => {
     if (!data && code) {
       actions.fetchSubject(code);
     }
-  };
+  }, [code, data, actions]);
 
-  render = () => {
-    const { name, abbreviation, abbreviate, fallback } = this.props;
-
-    const text = abbreviate ? abbreviation : name;
-    return <span>{text || fallback}</span>;
-  };
+  const text = abbreviate ? abbreviation : name;
+  return <span>{text || fallback}</span>;
 }
 
 function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {

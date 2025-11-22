@@ -1,48 +1,36 @@
-import React, { Component } from 'react';
+import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState, CourseOffering } from '../types';
+import { RootState } from '../types';
 import { GpaChart } from '../containers/charts/GpaChart';
 
-interface CourseGpaChartProps {
+interface OwnProps {
   uuid: string;
-  data?: any;
-  actions?: any;
 }
 
-class CourseGpaChart extends Component<CourseGpaChartProps> {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
 
-  fetchCourseGrades = () => {
-    this.props.actions.fetchCourseGrades(this.props.uuid);
-  };
+function CourseGpaChart({ uuid, actions, data }: Props) {
+  useEffect(() => {
+    actions.fetchCourseGrades(uuid);
+  }, [uuid, actions]);
 
-  componentDidMount = this.fetchCourseGrades;
+  if (!data || data.isFetching) return <GpaChart gradeDistributions={[]} />;
 
-  componentDidUpdate = (prevProps: CourseGpaChartProps) => {
-    if (prevProps.uuid !== this.props.uuid) {
-      this.fetchCourseGrades();
-    }
-  };
+  const gradeDistributions = data.courseOfferings
+    .map((o: any) => {
+      return {
+        ...o.cumulative,
+        termCode: o.termCode,
+      };
+    })
+    .sort((a: any, b: any) => a.termCode - b.termCode);
 
-  render = () => {
-    const { data } = this.props;
-
-    if (!data || data.isFetching) return <GpaChart gradeDistributions={[]} />;
-
-    const gradeDistributions = data.courseOfferings
-      .map((o) => {
-        return {
-          ...o.cumulative,
-          termCode: o.termCode,
-        };
-      })
-      .sort((a, b) => a.termCode - b.termCode);
-
-    return <GpaChart gradeDistributions={gradeDistributions} />;
-  };
+  return <GpaChart gradeDistributions={gradeDistributions} />;
 }
 
-function mapStateToProps(state: RootState, ownProps: { uuid: string }) {
+function mapStateToProps(state: RootState, ownProps: OwnProps) {
   const data = state.grades.courses.data[ownProps.uuid];
 
   return {

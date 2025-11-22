@@ -1,7 +1,6 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import _ from 'lodash';
 import { CourseFilterParams } from '../types';
 
 interface OwnProps {
@@ -11,23 +10,14 @@ interface OwnProps {
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
-class SetCourseFilterParams extends Component<Props> {
-  setCourseFilterParams = () => {
-    const { params, actions } = this.props;
+function SetCourseFilterParams({ params, actions }: Props) {
+  useEffect(() => {
     const { page } = params;
     actions.setCourseFilterParams(params);
     actions.fetchCourseSearch(params, page);
-  };
+  }, [params, actions]);
 
-  componentDidMount = this.setCourseFilterParams;
-
-  componentDidUpdate = (prevProps: Props) => {
-    if (!_.isEqual(prevProps.params, this.props.params)) {
-      this.setCourseFilterParams();
-    }
-  };
-
-  render = () => null;
+  return null;
 }
 
 const connector = connect(null, utils.mapDispatchToProps);

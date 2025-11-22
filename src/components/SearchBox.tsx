@@ -1,85 +1,72 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import { Input } from "semantic-ui-react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { Input } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../types';
 
-class SearchBox extends Component {
-  state = {
-    searchValue: "",
-  };
-
-  componentDidUpdate = (prevProps) => {
-    // when we get an outside search value update, reflect that in the
-    // search box via the local state
-    if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({
-        searchValue: this.props.searchQuery,
-      });
-    }
-  };
-
-  performSearch = () => {
-    const { searchValue } = this.state;
-
-    // tell the app about the search!
-    this.props.navigate(`/search?query=${searchValue}`);
-  };
-
-  onInputChange = (event, data) => {
-    // update the state of the search box to the new value
-    this.setState({
-      searchValue: data.value,
-    });
-  };
-
-  onKeyPress = (event) => {
-    if (event.key === "Enter") {
-      this.performSearch();
-      event.target.blur();
-    }
-  };
-
-  render = () => {
-    const { searchValue } = this.state;
-
-    return (
-      <Input
-        className="SearchBox"
-        style={{ minWidth: "250px" }}
-        value={searchValue}
-        onChange={this.onInputChange}
-        onKeyPress={this.onKeyPress}
-        icon={{
-          name: "search",
-          link: true,
-          onClick: this.performSearch,
-          title: "Perform Search",
-        }}
-        placeholder="Search..."
-        fluid
-      />
-    );
-  };
+interface OwnProps {
+  navigate: (path: string) => void;
 }
 
-function mapStateToProps(state) {
-  // we grab the app state search query, only used on page load basically
-  // like when you refresh the search page for some odd reason
+type PropsFromRedux = ConnectedProps<typeof connector>;
+type Props = OwnProps & PropsFromRedux;
+
+function SearchBox({ searchQuery, navigate }: Props) {
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    // when we get an outside search value update, reflect that in the search box
+    setSearchValue(searchQuery);
+  }, [searchQuery]);
+
+  const performSearch = () => {
+    navigate(`/search?query=${searchValue}`);
+  };
+
+  const onInputChange = (event: any, data: { value: string }) => {
+    setSearchValue(data.value);
+  };
+
+  const onKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      performSearch();
+      (event.target as HTMLInputElement).blur();
+    }
+  };
+
+  return (
+    <Input
+      className="SearchBox"
+      style={{ minWidth: '250px' }}
+      value={searchValue}
+      onChange={onInputChange}
+      onKeyPress={onKeyPress}
+      icon={{
+        name: 'search',
+        link: true,
+        onClick: performSearch,
+        title: 'Perform Search',
+      }}
+      placeholder="Search..."
+      fluid
+    />
+  );
+}
+
+function mapStateToProps(state: RootState) {
   return {
     searchQuery: state.app.searchQuery,
   };
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component) {
-  return function ComponentWithNavigate(props) {
+function withNavigate(Component: React.ComponentType<any>) {
+  return function ComponentWithNavigate(props: any) {
     const navigate = useNavigate();
     return <Component {...props} navigate={navigate} />;
   };
 }
 
-export default connect(
-  mapStateToProps,
-  utils.mapDispatchToProps
-)(withNavigate(SearchBox));
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(withNavigate(SearchBox));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 import utils from '../utils';
 import { RootState, CourseFilterParams } from '../types';
 import { Dimmer, Icon, Loader, Pagination } from 'semantic-ui-react';

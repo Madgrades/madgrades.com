@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .grid-row {
   display: flex;
   flex-wrap: wrap;
@@ -28,8 +30,8 @@
 /* Mobile first - xs (default) */
 @for $i from 1 through 12 {
   .grid-col-xs-#{$i} {
-    flex: 0 0 percentage($i / 12);
-    max-width: percentage($i / 12);
+    flex: 0 0 math.percentage(math.div($i, 12));
+    max-width: math.percentage(math.div($i, 12));
   }
 }
 
@@ -37,8 +39,8 @@
 @media (min-width: 48em) {
   @for $i from 1 through 12 {
     .grid-col-sm-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
     }
   }
   .grid-col-sm {
@@ -51,8 +53,8 @@
 @media (min-width: 62em) {
   @for $i from 1 through 12 {
     .grid-col-md-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
     }
   }
 }
@@ -61,8 +63,8 @@
 @media (min-width: 75em) {
   @for $i from 1 through 12 {
     .grid-col-lg-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 math.percentage(math.div($i, 12));
+      max-width: math.percentage(math.div($i, 12));
     }
   }
 }

@@ -1,21 +1,24 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import { Dimmer, Icon, Loader, Pagination } from "semantic-ui-react";
-import { Row, Col } from "./Grid";
-import CourseSearchResultItem from "../containers/CourseSearchResultItem";
-import Div from "../containers/Div";
-import PropTypes from "prop-types";
-import * as _ from "lodash";
-import { useNavigate } from "react-router-dom";
-import { stringify } from "qs";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState, CourseFilterParams } from '../types';
+import { Dimmer, Icon, Loader, Pagination } from 'semantic-ui-react';
+import { Row, Col } from './Grid';
+import CourseSearchResultItem from '../containers/CourseSearchResultItem';
+import Div from '../containers/Div';
+import * as _ from 'lodash';
+import { useNavigate } from 'react-router-dom';
+import { stringify } from 'qs';
 
-class CourseSearchResults extends Component {
-  static propTypes = {
-    courseFilterParams: PropTypes.object,
-  };
+interface CourseSearchResultsProps {
+  courseFilterParams: CourseFilterParams;
+  navigate: (path: string) => void;
+  search?: any;
+  actions?: any;
+}
 
-  componentDidUpdate = (prevProps) => {
+class CourseSearchResults extends Component<CourseSearchResultsProps> {
+  componentDidUpdate = (prevProps: CourseSearchResultsProps) => {
     const { actions, courseFilterParams } = this.props;
 
     if (!_.isEqual(courseFilterParams, prevProps.courseFilterParams)) {
@@ -23,7 +26,7 @@ class CourseSearchResults extends Component {
     }
   };
 
-  onPageChange = (event, data) => {
+  onPageChange = (event: any, data: { activePage: number }) => {
     const { activePage } = data;
     const { courseFilterParams, navigate } = this.props;
     const params = {
@@ -102,7 +105,7 @@ class CourseSearchResults extends Component {
   };
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state: RootState) {
   const { searchQuery, courseFilterParams } = state.app;
   const { page } = courseFilterParams;
 
@@ -121,14 +124,12 @@ function mapStateToProps(state) {
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component) {
-  return function ComponentWithNavigate(props) {
+function withNavigate(Component: React.ComponentType<any>) {
+  return function ComponentWithNavigate(props: any) {
     const navigate = useNavigate();
     return <Component {...props} navigate={navigate} />;
   };
 }
 
-export default connect(
-  mapStateToProps,
-  utils.mapDispatchToProps
-)(withNavigate(CourseSearchResults));
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(withNavigate(CourseSearchResults));

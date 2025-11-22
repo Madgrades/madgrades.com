@@ -1,23 +1,22 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Dropdown} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Dropdown } from 'semantic-ui-react';
 import utils from '../utils/index';
 
-class TermSelect extends Component {
-  static propTypes = {
-    termCodes: PropTypes.arrayOf(PropTypes.number).isRequired,
-    includeCumulative: PropTypes.bool,
-    cumulativeText: PropTypes.string,
-    onChange: PropTypes.func,
-    descriptions: PropTypes.object,
-    value: PropTypes.number
-  };
+interface TermSelectProps {
+  termCodes: number[];
+  includeCumulative?: boolean;
+  cumulativeText?: string;
+  onChange?: (termCode: number) => void;
+  descriptions?: { [key: number]: string };
+  value?: number;
+}
 
+class TermSelect extends Component<TermSelectProps> {
   static defaultProps = {
     includeCumulative: false,
     cumulativeText: 'Cumulative',
-    onChange: (termCode) => {},
-    descriptions: {}
+    onChange: (termCode: number) => {},
+    descriptions: {},
   };
 
   generateOptions = () => {
@@ -43,7 +42,7 @@ class TermSelect extends Component {
     return cumulativeOption.concat(termOptions);
   };
 
-  onChange = (event, { value }) => {
+  onChange = (event: any, { value }: { value: number }) => {
     this.props.onChange(value);
   };
 

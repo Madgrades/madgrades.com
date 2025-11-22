@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Bar,
   BarChart,
@@ -7,30 +7,35 @@ import {
   Legend,
   ResponsiveContainer,
   XAxis,
-  YAxis
+  YAxis,
 } from 'recharts';
-import PropTypes from 'prop-types';
 import utils from '../../utils';
+import { GradeDistribution } from '../../types';
 
-const renderBarLabel = (props) => {
+const renderBarLabel = (props: any) => {
   const { x, y, width, value } = props;
 
   return (
-      <text textAnchor='middle' dominantBaseline='middle'>
-        <tspan x={x + width / 2} y={y - 24} fontSize='80%' fontWeight='bold'>{value.split('\n')[0]}</tspan>
-        <tspan x={x + width / 2} y={y - 10} fontSize='70%'>{value.split('\n')[1]}</tspan>
-      </text>
-  )
+    <text textAnchor="middle" dominantBaseline="middle">
+      <tspan x={x + width / 2} y={y - 24} fontSize="80%" fontWeight="bold">
+        {value.split('\n')[0]}
+      </tspan>
+      <tspan x={x + width / 2} y={y - 10} fontSize="70%">
+        {value.split('\n')[1]}
+      </tspan>
+    </text>
+  );
 };
 
-class GradeDistributionChart extends Component {
-  static propTypes = {
-    title: PropTypes.string,
-    primary: PropTypes.object,
-    primaryLabel: PropTypes.string,
-    secondary: PropTypes.object,
-    secondaryLabel: PropTypes.string
-  };
+interface GradeDistributionChartProps {
+  title?: string;
+  primary?: GradeDistribution;
+  primaryLabel?: string;
+  secondary?: GradeDistribution;
+  secondaryLabel?: string;
+}
+
+class GradeDistributionChart extends Component<GradeDistributionChartProps> {
 
   static defaultProps = {
     title: 'Grade Distribution',

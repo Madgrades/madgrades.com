@@ -137,10 +137,10 @@ class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
     }
 
     let options = [];
-    let keys = new Set();
+    const keys = new Set();
 
     for (let keyStr of Object.keys(entityData)) {
-      let entity = entityData[keyStr];
+      const entity = entityData[keyStr];
       let key = this.entityToKey(entity, entityType);
       options.push(this.entityToOption(key, entity, entityType));
       keys.add(key);
@@ -162,7 +162,7 @@ class EntitySelect extends Component<EntitySelectProps, EntitySelectState> {
 
     // if we are searching, only show options found in the search
     if (searchData && !searchData.isFetching) {
-      let keys = searchData.results.map(e => this.entityToKey(e, entityType));
+      const keys = searchData.results.map(e => this.entityToKey(e, entityType));
       options = options.filter(o => keys.includes(o.key) || value.includes(o.key));
     }
 

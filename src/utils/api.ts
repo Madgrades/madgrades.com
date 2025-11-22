@@ -35,12 +35,12 @@ class Api {
   }
 
   async getSubject(code)  {
-    let res = await this._fetchPath('subjects/' + code);
+    const res = await this._fetchPath('subjects/' + code);
     return res.json();
   }
 
   async searchSubjects(query, page) {
-    let res = await this._fetchPath('subjects', {
+    const res = await this._fetchPath('subjects', {
       query: query,
       page: page,
       per_page: 100
@@ -49,12 +49,12 @@ class Api {
   }
 
   async getTerms() {
-    let res = await this._fetchPath('terms');
+    const res = await this._fetchPath('terms');
     return res.json();
   }
 
   async getCourse(uuid)  {
-    let res = await this._fetchPath(`courses/${uuid}`);
+    const res = await this._fetchPath(`courses/${uuid}`);
     return res.json();
   }
 
@@ -64,8 +64,8 @@ class Api {
   async filterCourses(params, page) {
     let { query, subjects, instructors, sort, order } = params;
 
-    let subjectParam = Array.isArray(subjects) && subjects.join(',');
-    let instructorParam = Array.isArray(instructors) && instructors.join(',');
+    const subjectParam = Array.isArray(subjects) && subjects.join(',');
+    const instructorParam = Array.isArray(instructors) && instructors.join(',');
 
     let queryString = {
       page: page,
@@ -92,22 +92,22 @@ class Api {
       queryString.query = query;
     }
 
-    let res = await this._fetchPath('courses', queryString);
+    const res = await this._fetchPath('courses', queryString);
     return res.json();
   }
 
   async getCourseGrades(uuid)  {
-    let res = await this._fetchPath('courses/' + uuid + '/grades');
+    const res = await this._fetchPath('courses/' + uuid + '/grades');
     return res.json();
   }
 
   async getInstructor(id)  {
-    let res = await this._fetchPath('instructors/' + id);
+    const res = await this._fetchPath('instructors/' + id);
     return res.json();
   }
 
   async searchInstructors(query, page) {
-    let res = await this._fetchPath('instructors', {
+    const res = await this._fetchPath('instructors', {
       query: query,
       page: page,
       per_page: 100
@@ -116,17 +116,17 @@ class Api {
   }
 
   async exploreCourses(params) {
-    let res = await this._fetchPath('explore/courses', params);
+    const res = await this._fetchPath('explore/courses', params);
     return res.json();
   }
 
   async exploreInstructors(params) {
-    let res = await this._fetchPath('explore/instructors', params);
+    const res = await this._fetchPath('explore/instructors', params);
     return res.json();
   }
 
   async exploreSubjects(params) {
-    let res = await this._fetchPath('explore/subjects', params);
+    const res = await this._fetchPath('explore/subjects', params);
     return res.json();
   }
 }

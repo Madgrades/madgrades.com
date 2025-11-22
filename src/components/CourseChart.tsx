@@ -37,10 +37,10 @@ class CourseChart extends Component<CourseChartProps> {
       primary = data.cumulative;
       label = `Cumulative - ${utils.grades.gpa(data.cumulative, true)} GPA`;
 
-      let termName = termCode && utils.termCodes.toName(termCode);
+      const termName = termCode && utils.termCodes.toName(termCode);
 
       if (termCode && !instructorId) {
-        let offering = data.courseOfferings.filter(
+        const offering = data.courseOfferings.filter(
           (o) => o.termCode === termCode
         )[0];
 
@@ -52,7 +52,7 @@ class CourseChart extends Component<CourseChartProps> {
           console.error(`Invalid course/term combination: ${uuid}/${termCode}`);
         }
       } else if (instructorId && !termCode) {
-        let instructor = data.instructors.filter(
+        const instructor = data.instructors.filter(
           (i) => i.id === instructorId
         )[0];
 
@@ -66,7 +66,7 @@ class CourseChart extends Component<CourseChartProps> {
           );
         }
       } else if (instructorId && termCode) {
-        let instructor = data.instructors.filter(
+        const instructor = data.instructors.filter(
           (i) => i.id === instructorId
         )[0];
 

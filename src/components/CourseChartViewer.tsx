@@ -147,7 +147,7 @@ class CourseChartViewer extends Component<CourseChartViewerProps, CourseChartVie
 
       // if term code selected, filter instructor options
       if (termCode) {
-        let termName = utils.termCodes.toName(termCode);
+        const termName = utils.termCodes.toName(termCode);
         instructorText += ` (${termName})`;
 
         instructorOptions = instructorOptions.filter((option) => {
@@ -165,7 +165,7 @@ class CourseChartViewer extends Component<CourseChartViewerProps, CourseChartVie
       instructorOptions[0].text = instructorText;
     }
 
-    let instructorChosen = instructorId || undefined,
+    const instructorChosen = instructorId || undefined,
       termChosen = termCode || undefined;
 
     return (

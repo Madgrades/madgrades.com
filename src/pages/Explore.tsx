@@ -1,50 +1,71 @@
-import React, { Component } from "react";
-import { Container, Dropdown, Grid, Header, Form } from "semantic-ui-react";
-import { Row, Col } from "../components/Grid";
-import Explorer from "../components/Explorer";
-import EntitySelect from "../components/EntitySelect";
-import { parse, stringify } from "qs";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import _ from "lodash";
+import React, { Component } from 'react';
+import { Container, Dropdown, Grid, Header, Form } from 'semantic-ui-react';
+import { Row, Col } from '../components/Grid';
+import Explorer from '../components/Explorer';
+import EntitySelect from '../components/EntitySelect';
+import { parse, stringify } from 'qs';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import _ from 'lodash';
 
 const entityOptions = [
   {
-    key: "course",
-    text: "Courses",
-    value: "course",
+    key: 'course',
+    text: 'Courses',
+    value: 'course',
   },
   {
-    key: "instructor",
-    text: "Instructors",
-    value: "instructor",
+    key: 'instructor',
+    text: 'Instructors',
+    value: 'instructor',
   },
   {
-    key: "subject",
-    text: "Subjects",
-    value: "subject",
+    key: 'subject',
+    text: 'Subjects',
+    value: 'subject',
   },
 ];
 
-class Explore extends Component {
-  constructor(props) {
+interface ExploreParams {
+  page: number;
+  sort?: string;
+  order?: string;
+  subjects?: string[];
+  instructors?: number[];
+  minCountAvg?: number;
+  minGpaTotal?: number;
+}
+
+interface ExploreState {
+  params: ExploreParams;
+  entityType: string;
+}
+
+interface ExploreProps {
+  location: { search: string };
+  match: { params: { entity?: string } };
+  navigate: (path: string) => void;
+}
+
+class Explore extends Component<ExploreProps, ExploreState> {
+  constructor(props: ExploreProps) {
     super(props);
 
     // Initialize state with values from URL
     const { location, match } = this.props;
     const { entity } = match.params;
-    const params = parse(location.search.substr(1));
+    const params: any = parse(location.search.substr(1));
 
-    const entityType = entity || "course";
-    let minAvg = entityType === "subject" ? 1 : 25;
-    let minTotal = entityType === "course" ? 1500 : 500;
+    const entityType = entity || 'course';
+    const minAvg = entityType === 'subject' ? 1 : 25;
+    const minTotal = entityType === 'course' ? 1500 : 500;
 
-    let filteredParams = {
+    const filteredParams: ExploreParams = {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
       subjects: params.subjects,
       instructors:
-        params.instructors && params.instructors.map((s) => parseInt(s, 10)),
+        params.instructors && params.instructors.map((s: string) => parseInt(s, 10)),
     };
 
     if (!params.instructors) {
@@ -58,16 +79,16 @@ class Explore extends Component {
     };
   }
 
-  setStateFromQueryString = (forcedQueryParams) => {
+  setStateFromQueryString = (forcedQueryParams?: any) => {
     const { location, match } = this.props;
     const { entity } = match.params;
     const params = forcedQueryParams || parse(location.search.substr(1));
 
     const entityType = entity || "course";
-    let minAvg = entityType === "subject" ? 1 : 25;
-    let minTotal = entityType === "course" ? 1500 : 500;
+    const minAvg = entityType === "subject" ? 1 : 25;
+    const minTotal = entityType === "course" ? 1500 : 500;
 
-    let filteredParams = {
+    const filteredParams = {
       page: parseInt(params.page || 1, 10),
       sort: params.sort,
       order: params.order,
@@ -98,7 +119,7 @@ class Explore extends Component {
     document.title = "Explore UW Madison Courses - Madgrades";
   };
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: ExploreProps) => {
     if (
       prevProps.location !== this.props.location ||
       prevProps.match !== this.props.match

@@ -1,13 +1,16 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import utils from "../utils";
-import PropTypes from "prop-types";
-import { GpaChart } from "../containers/charts/GpaChart";
+import React, { Component } from 'react';
+import { connect, ConnectedProps } from 'react-redux';
+import utils from '../utils';
+import { RootState, CourseOffering } from '../types';
+import { GpaChart } from '../containers/charts/GpaChart';
 
-class CourseGpaChart extends Component {
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-  };
+interface CourseGpaChartProps {
+  uuid: string;
+  data?: any;
+  actions?: any;
+}
+
+class CourseGpaChart extends Component<CourseGpaChartProps> {
 
   fetchCourseGrades = () => {
     this.props.actions.fetchCourseGrades(this.props.uuid);
@@ -15,7 +18,7 @@ class CourseGpaChart extends Component {
 
   componentDidMount = this.fetchCourseGrades;
 
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate = (prevProps: CourseGpaChartProps) => {
     if (prevProps.uuid !== this.props.uuid) {
       this.fetchCourseGrades();
     }
@@ -39,7 +42,7 @@ class CourseGpaChart extends Component {
   };
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state: RootState, ownProps: { uuid: string }) {
   const data = state.grades.courses.data[ownProps.uuid];
 
   return {
@@ -47,7 +50,5 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  utils.mapDispatchToProps
-)(CourseGpaChart);
+const connector = connect(mapStateToProps, utils.mapDispatchToProps);
+export default connector(CourseGpaChart);

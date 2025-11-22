@@ -221,9 +221,9 @@ class Explorer extends Component<ExplorerProps> {
     const { data, entityType, sort, order, page } = this.props;
     const entityName = _.upperFirst(entityType) + "s";
 
-    let orderFull = order === "asc" ? "ascending" : "descending";
+    const orderFull = order === "asc" ? "ascending" : "descending";
 
-    let activePage = page;
+    const activePage = page;
     let totalPages = 1;
     let results;
     let entries = [

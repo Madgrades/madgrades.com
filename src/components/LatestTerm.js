@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import utils from '../utils';
 
 class LatestTerm extends Component {
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.actions.fetchTerms();
   }
 

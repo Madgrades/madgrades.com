@@ -10,7 +10,7 @@ class ApiStatusPill extends Component {
     status: "N/A",
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     fetchStatus().then((monitor) => {
       if (monitor !== undefined && monitor.uptime !== undefined) {
         this.setState({

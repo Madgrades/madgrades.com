@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import utils from '../utils';
-import SubjectNameList from '../containers/SubjectNameList';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import utils from "../utils";
+import SubjectNameList from "../containers/SubjectNameList";
 
 class CourseName extends Component {
   static propTypes = {
@@ -12,7 +12,7 @@ class CourseName extends Component {
     asSubjectAndNumber: PropTypes.bool,
   };
 
-  componentWillMount = () => {
+  fetchCourseIfNeeded = () => {
     const { actions, uuid, data } = this.props;
 
     if (!data) {
@@ -20,7 +20,13 @@ class CourseName extends Component {
     }
   };
 
-  componentDidUpdate = this.componentWillMount;
+  componentDidMount = this.fetchCourseIfNeeded;
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.uuid !== this.props.uuid) {
+      this.fetchCourseIfNeeded();
+    }
+  };
 
   render = () => {
     const { name, subjects, number, fallback, asSubjectAndNumber } = this.props;
@@ -28,19 +34,21 @@ class CourseName extends Component {
     if (asSubjectAndNumber) {
       if (subjects) {
         return (
-            <span>
-              <SubjectNameList subjects={subjects}/> {number}
-            </span>
+          <span>
+            <SubjectNameList subjects={subjects} /> {number}
+          </span>
+        );
+      } else {
+        return (
+          <span>
+            {fallback} {number}
+          </span>
         );
       }
-      else {
-        return <span>{fallback} {number}</span>
-      }
-    }
-    else {
+    } else {
       return <span>{name || fallback}</span>;
     }
-  }
+  };
 }
 
 function mapStateToProps(state, ownProps) {
@@ -56,9 +64,8 @@ function mapStateToProps(state, ownProps) {
   return {
     name: courseData && courseData.name,
     subjects: courseData && courseData.subjects,
-    number: courseData && courseData.number
-  }
+    number: courseData && courseData.number,
+  };
 }
 
-
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseName)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseName);

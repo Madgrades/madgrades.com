@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import utils from '../utils';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import utils from "../utils";
 
 class SubjectName extends Component {
   static propTypes = {
     code: PropTypes.string,
     abbreviate: PropTypes.bool,
     fallback: PropTypes.string,
-    data: PropTypes.object
+    data: PropTypes.object,
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const { actions, code, data } = this.props;
 
     if (!data) {
@@ -23,8 +23,8 @@ class SubjectName extends Component {
     const { name, abbreviation, abbreviate, fallback } = this.props;
 
     const text = abbreviate ? abbreviation : name;
-    return <span>{text || fallback}</span>
-  }
+    return <span>{text || fallback}</span>;
+  };
 }
 
 function mapStateToProps(state, ownProps) {
@@ -33,8 +33,8 @@ function mapStateToProps(state, ownProps) {
   if (data) {
     return {
       name: data.name,
-      abbreviation: data.abbreviation
-    }
+      abbreviation: data.abbreviation,
+    };
   }
 
   const { subjects } = state;
@@ -42,9 +42,8 @@ function mapStateToProps(state, ownProps) {
 
   return {
     name: subjectData && subjectData.name,
-    abbreviation: subjectData && subjectData.abbreviation
-  }
+    abbreviation: subjectData && subjectData.abbreviation,
+  };
 }
 
-
-export default connect(mapStateToProps, utils.mapDispatchToProps)(SubjectName)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(SubjectName);

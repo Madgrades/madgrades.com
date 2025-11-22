@@ -1,15 +1,15 @@
-import {Component} from 'react';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
-import utils from '../utils';
+import { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import utils from "../utils";
 
 class CourseData extends Component {
   static propTypes = {
     uuid: PropTypes.string.isRequired,
-    onDataLoad: PropTypes.func.isRequired
+    onDataLoad: PropTypes.func.isRequired,
   };
 
-  componentWillMount = () => {
+  fetchData = () => {
     const { actions, uuid, data, onDataLoad } = this.props;
     actions.fetchCourse(uuid);
 
@@ -18,7 +18,13 @@ class CourseData extends Component {
     }
   };
 
-  componentDidUpdate = this.componentWillMount;
+  componentDidMount = this.fetchData;
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.uuid !== this.props.uuid) {
+      this.fetchData();
+    }
+  };
 
   render = () => null;
 }
@@ -30,9 +36,8 @@ function mapStateToProps(state, ownProps) {
   const data = courses.data[uuid];
 
   return {
-    data
-  }
+    data,
+  };
 }
 
-
-export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseData)
+export default connect(mapStateToProps, utils.mapDispatchToProps)(CourseData);

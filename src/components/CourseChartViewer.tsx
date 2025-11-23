@@ -75,7 +75,8 @@ function CourseChartViewer({
   let instructorText = 'All instructors';
   let termText = 'All semesters';
 
-  if (data.instructors && data.courseOfferings) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (data?.instructors && data.courseOfferings) {
     instructorOptions.push({
       key: 0,
       value: 0,

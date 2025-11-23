@@ -16,7 +16,7 @@ function CourseGpaChart({ uuid, actions, data }: Props) {
     actions.fetchCourseGrades(uuid);
   }, [uuid, actions]);
 
-  if (!data.isFetching) {
+  if (data && !data.isFetching) {
     const gradeDistributions: CourseTermData[] = (data.courseOfferings ?? [])
       .map((o: CourseOfferingData) => {
         return {
@@ -29,16 +29,7 @@ function CourseGpaChart({ uuid, actions, data }: Props) {
     return <GpaChart gradeDistributions={gradeDistributions} />;
   }
 
-  const gradeDistributions: CourseTermData[] = (data.courseOfferings ?? [])
-    .map((o: CourseOfferingData) => {
-      return {
-        ...o.cumulative,
-        termCode: o.termCode,
-      } as CourseTermData;
-    })
-    .sort((a: CourseTermData, b: CourseTermData) => a.termCode - b.termCode);
-
-  return <GpaChart gradeDistributions={gradeDistributions} />;
+  return <GpaChart gradeDistributions={[]} />;
 }
 
 function mapStateToProps(state: RootState, ownProps: OwnProps) {

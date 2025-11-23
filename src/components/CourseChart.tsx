@@ -27,10 +27,10 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
   let secondaryLabel: string | undefined;
   let isLoaded = false;
 
-  const title = course.name || 'Course';
+  const title = course?.name || 'Course';
   let titleWithSuffix = `${title}: Cumulative`;
 
-  if (data.cumulative && !data.isFetching) {
+  if (data?.cumulative && !data.isFetching) {
     isLoaded = true;
     const cumulative = data.cumulative as GradeDistribution;
 

@@ -14,7 +14,7 @@ declare global {
 
 function AdSlot({ slot, adWidth, adHeight }: AdSlotProps) {
   useEffect(() => {
-    window.adsbygoogle.push({});
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
 
   return (

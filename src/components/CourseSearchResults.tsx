@@ -98,10 +98,10 @@ function CourseSearchResults({
 
 function mapStateToProps(state: RootState) {
   const { searchQuery, courseFilterParams } = state.app;
-  const { page } = courseFilterParams;
+  const { page = 1 } = courseFilterParams;
 
   const search = state.courses.search;
-  const searchPage = search.pages[page] as SearchPage<Course> | undefined;
+  const searchPage = search.pages?.[page] as SearchPage<Course> | undefined;
   const isFetching = search.isFetching;
 
   const searchData: SearchPageWithPagination<Course> = searchPage

@@ -57,7 +57,7 @@ export const fetchCourseGrades =
   async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
     const gradesDataEntry = state.grades.courses.data[uuid];
-    const gradesData: CourseGradesResponse | undefined = gradesDataEntry.courseOfferings
+    const gradesData: CourseGradesResponse | undefined = gradesDataEntry?.courseOfferings
       ? (gradesDataEntry as unknown as CourseGradesResponse)
       : undefined;
 
@@ -190,7 +190,7 @@ export const fetchInstructorGrades =
   async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
     const gradesDataEntry = state.grades.instructors.data[id];
-    const gradesData: InstructorGradesResponse | undefined = gradesDataEntry.courseOfferings
+    const gradesData: InstructorGradesResponse | undefined = gradesDataEntry?.courseOfferings
       ? (gradesDataEntry as unknown as InstructorGradesResponse)
       : undefined;
 

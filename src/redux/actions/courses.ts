@@ -26,7 +26,7 @@ export const fetchCourse =
     const courseData = state.courses.data[uuid];
 
     // don't fetch again - check if data exists by checking a property
-    if (courseData.uuid) {
+    if (courseData && courseData.uuid) {
       return;
     }
 

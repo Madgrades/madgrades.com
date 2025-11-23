@@ -25,7 +25,7 @@ export const fetchSubject =
     const subjectData = state.subjects.data[code];
 
     // don't fetch again - check if data exists by checking a property
-    if (subjectData.code) {
+    if (subjectData && subjectData.code) {
       return;
     }
 

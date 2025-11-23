@@ -15,8 +15,7 @@ function mapStateToProps(state: RootState): StateProps {
   const { search } = state.courses;
   const page = state.app.courseFilterParams.page ?? 1;
 
-  const pageData = search.pages[page];
-  const count = pageData.totalCount || 0;
+  const count = search.pages?.[page]?.totalCount ?? 0;
 
   return {
     count,

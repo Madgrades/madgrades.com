@@ -144,15 +144,17 @@ function Explorer({
           <Table.Cell>{renderEntryName(entry)}</Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. # Grades: </strong>
-            {utils.numberWithCommas(parseFloat(entry.count_average.toFixed(1)))}
+            {entry.count_average != null 
+              ? utils.numberWithCommas(parseFloat(entry.count_average.toFixed(1)))
+              : 'N/A'}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Total # Grades: </strong>
-            {utils.numberWithCommas(entry.count_total)}
+            {entry.count_total != null ? utils.numberWithCommas(entry.count_total) : 'N/A'}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. GPA: </strong>
-            {entry.gpa_average.toFixed(3)}
+            {entry.gpa_average != null ? entry.gpa_average.toFixed(3) : 'N/A'}
           </Table.Cell>
         </Table.Row>
       );

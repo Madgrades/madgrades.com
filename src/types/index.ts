@@ -145,26 +145,26 @@ export interface ExploreState {
 
 export interface CourseExploreEntry {
   course: Course;
-  gpa_average: number;
-  gpa_total: number;
-  count_average: number;
-  count_total: number;
+  gpa_average: number | null;
+  gpa_total: number | null;
+  count_average: number | null;
+  count_total: number | null;
 }
 
 export interface InstructorExploreEntry {
   instructor: Instructor;
-  gpa_average: number;
-  gpa_total: number;
-  count_average: number;
-  count_total: number;
+  gpa_average: number | null;
+  gpa_total: number | null;
+  count_average: number | null;
+  count_total: number | null;
 }
 
 export interface SubjectExploreEntry {
   subject: Subject;
-  gpa_average: number;
-  gpa_total: number;
-  count_average: number;
-  count_total: number;
+  gpa_average: number | null;
+  gpa_total: number | null;
+  count_average: number | null;
+  count_total: number | null;
 }
 
 export interface InstructorTermData extends GradeDistribution {

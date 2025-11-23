@@ -12,8 +12,8 @@ import { useLocation } from 'react-router-dom';
 const extractParams = (location: { search: string }) => {
   const params = new URLSearchParams(location.search);
 
-  const query = params.get('query') || null;
-  const page = parseInt(params.get('page') || '1', 10);
+  const query = params.get('query') ?? null;
+  const page = parseInt(params.get('page') ?? '1', 10);
   let subjects: string[] | undefined = undefined;
   const subjectsParam = params.getAll('subjects');
   if (subjectsParam.length > 0) {
@@ -24,11 +24,11 @@ const extractParams = (location: { search: string }) => {
   if (instructorsParam.length > 0) {
     instructors = instructorsParam.map(i => parseInt(i, 10));
   }
-  let order: string | undefined = params.get('order')?.toLowerCase() || '';
+  let order: string | undefined = params.get('order')?.toLowerCase() ?? '';
   if (!['asc', 'desc'].includes(order)) {
     order = undefined;
   }
-  let sort: string | undefined = params.get('sort')?.toLowerCase() || '';
+  let sort: string | undefined = params.get('sort')?.toLowerCase() ?? '';
   if (
     ![
       'number',
@@ -41,7 +41,7 @@ const extractParams = (location: { search: string }) => {
   ) {
     sort = undefined;
   }
-  const compareWith = params.get('compareWith') || undefined;
+  const compareWith = params.get('compareWith') ?? undefined;
 
   return {
     query,

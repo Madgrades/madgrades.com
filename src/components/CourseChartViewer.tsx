@@ -75,7 +75,7 @@ function CourseChartViewer({
   let instructorText = 'All instructors';
   let termText = 'All semesters';
 
-  if (data?.instructors && data.courseOfferings && !data.isFetching) {
+  if (data.instructors && data.courseOfferings) {
     instructorOptions.push({
       key: 0,
       value: 0,

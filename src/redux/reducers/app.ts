@@ -13,9 +13,9 @@ const initialState: AppState = {
     subjects: undefined,
     instructors: undefined,
     sort: undefined,
-    order: undefined
+    order: undefined,
   },
-  terms: []
+  terms: [],
 };
 
 export default function reducer(state = initialState, action: AppAction): AppState {
@@ -23,23 +23,23 @@ export default function reducer(state = initialState, action: AppAction): AppSta
     case actionTypes.SET_SEARCH_QUERY:
       return {
         ...state,
-        searchQuery: action.query || ''
+        searchQuery: action.query ?? '',
       };
     case actionTypes.SET_COURSE_FILTER_PARAMS:
       return {
         ...state,
         courseFilterParams: {
           ...state.courseFilterParams,
-          ...action.params
-        }
+          ...action.params,
+        },
       };
     case actionTypes.RECEIVE_TERMS:
       return {
         ...state,
-        terms: action.terms
+        terms: action.terms,
       };
     default: {
-      return state
+      return state;
     }
   }
 }

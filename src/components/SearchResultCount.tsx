@@ -13,12 +13,13 @@ function SearchResultCount({ count }: PropsFromRedux) {
 
 function mapStateToProps(state: RootState): StateProps {
   const { search } = state.courses;
-  const page = state.app.courseFilterParams?.page || 1;
+  const page = state.app.courseFilterParams.page ?? 1;
 
-  const count = search?.pages?.[page]?.totalCount;
+  const pageData = search.pages[page];
+  const count = pageData.totalCount || 0;
 
   return {
-    count: count || 0,
+    count,
   };
 }
 

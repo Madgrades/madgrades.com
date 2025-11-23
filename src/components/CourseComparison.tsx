@@ -24,10 +24,10 @@ function CourseComparison({
 
     navigate(
       `/courses/${course1Uuid}?${utils.buildQueryString({
-        instructorId: params.instructorId || 0,
-        termCode: params.termCode || 0,
-        course2InstructorId: currentParams.get('course2InstructorId') || '0',
-        course2TermCode: currentParams.get('course2TermCode') || '0',
+        instructorId: params.instructorId ?? 0,
+        termCode: params.termCode ?? 0,
+        course2InstructorId: currentParams.get('course2InstructorId') ?? '0',
+        course2TermCode: currentParams.get('course2TermCode') ?? '0',
         compareWith: course2Uuid,
       })}`
     );
@@ -38,10 +38,10 @@ function CourseComparison({
 
     navigate(
       `/courses/${course1Uuid}?${utils.buildQueryString({
-        instructorId: currentParams.get('instructorId') || '0',
-        termCode: currentParams.get('termCode') || '0',
-        course2InstructorId: params.instructorId || 0,
-        course2TermCode: params.termCode || 0,
+        instructorId: currentParams.get('instructorId') ?? '0',
+        termCode: currentParams.get('termCode') ?? '0',
+        course2InstructorId: params.instructorId ?? 0,
+        course2TermCode: params.termCode ?? 0,
         compareWith: course2Uuid,
       })}`
     );
@@ -57,10 +57,10 @@ function CourseComparison({
 
   const params = new URLSearchParams(location.search);
 
-  const course1InstructorId = parseInt(params.get('instructorId') || '0', 10);
-  const course1TermCode = parseInt(params.get('termCode') || '0', 10);
-  const course2InstructorId = parseInt(params.get('course2InstructorId') || '0', 10);
-  const course2TermCode = parseInt(params.get('course2TermCode') || '0', 10);
+  const course1InstructorId = parseInt(params.get('instructorId') ?? '0', 10);
+  const course1TermCode = parseInt(params.get('termCode') ?? '0', 10);
+  const course2InstructorId = parseInt(params.get('course2InstructorId') ?? '0', 10);
+  const course2TermCode = parseInt(params.get('course2TermCode') ?? '0', 10);
 
   return (
     <Container fluid style={{ padding: '20px 40px' }}>

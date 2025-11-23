@@ -22,10 +22,12 @@ export const fetchSubject =
   (code: string) =>
   async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    const subjectData: Subject | undefined = state.subjects.data[code];
+    const subjectData = state.subjects.data[code];
 
-    // don't fetch again
-    if (subjectData) {return;}
+    // don't fetch again - check if data exists by checking a property
+    if (subjectData.code) {
+      return;
+    }
 
     // request action
     dispatch(requestSubject(code));
@@ -66,7 +68,9 @@ export const fetchSubjectSearch =
     const subjectSearchData = state.subjects.searches?.[query];
 
     // don't fetch again
-    if (subjectSearchData) {return;}
+    if (subjectSearchData) {
+      return;
+    }
 
     // request action
     dispatch(requestSubjectSearch(query, page));

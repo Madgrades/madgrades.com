@@ -16,9 +16,20 @@ function CourseGpaChart({ uuid, actions, data }: Props) {
     actions.fetchCourseGrades(uuid);
   }, [uuid, actions]);
 
-  if (!data || data.isFetching) {return <GpaChart gradeDistributions={[]} />;}
+  if (!data.isFetching) {
+    const gradeDistributions: CourseTermData[] = (data.courseOfferings ?? [])
+      .map((o: CourseOfferingData) => {
+        return {
+          ...o.cumulative,
+          termCode: o.termCode,
+        } as CourseTermData;
+      })
+      .sort((a: CourseTermData, b: CourseTermData) => a.termCode - b.termCode);
 
-  const gradeDistributions: CourseTermData[] = (data.courseOfferings || [])
+    return <GpaChart gradeDistributions={gradeDistributions} />;
+  }
+
+  const gradeDistributions: CourseTermData[] = (data.courseOfferings ?? [])
     .map((o: CourseOfferingData) => {
       return {
         ...o.cumulative,

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState, Course, PaginationData, SearchPageWithPagination } from '../types';
+import { RootState, Course, PaginationData, SearchPage, SearchPageWithPagination } from '../types';
 import { Dimmer, Icon, Loader, Pagination } from 'semantic-ui-react';
 import { Row, Col } from './Grid';
 import CourseSearchResultItem from '../containers/CourseSearchResultItem';
@@ -29,11 +29,10 @@ function CourseSearchResults({
   const onPageChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: PaginationData) => {
     const { activePage } = data;
     navigate(
-      `/search?${ 
-        utils.buildQueryString({
-          ...courseFilterParams,
-          page: activePage,
-        })}`
+      `/search?${utils.buildQueryString({
+        ...courseFilterParams,
+        page: activePage,
+      })}`
     );
   };
 
@@ -48,7 +47,7 @@ function CourseSearchResults({
 
   const { results, totalPages } = searchData;
 
-  if (isFetching || (results && results.length > 0)) {
+  if (isFetching || results.length > 0) {
     const { page } = courseFilterParams;
 
     return (
@@ -58,8 +57,8 @@ function CourseSearchResults({
             Loading
           </Loader>
         </Dimmer>
-        {renderResults(results || [])}
-        {results && results.length > 0 && (
+        {renderResults(results)}
+        {results.length > 0 && (
           <Row center>
             <Col xs={12}>
               <Pagination
@@ -102,12 +101,13 @@ function mapStateToProps(state: RootState) {
   const { page } = courseFilterParams;
 
   const search = state.courses.search;
-  const searchPage = search.pages?.[page || 1];
-  const isFetching = search.isFetching || false;
+  const searchPage = search.pages[page] as SearchPage<Course> | undefined;
+  const isFetching = search.isFetching;
 
   const searchData: SearchPageWithPagination<Course> = searchPage
     ? {
-        ...searchPage,
+        results: searchPage.results,
+        totalCount: searchPage.totalCount,
         totalPages: Math.ceil(searchPage.totalCount / 25),
       }
     : {

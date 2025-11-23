@@ -27,10 +27,10 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
   let secondaryLabel: string | undefined;
   let isLoaded = false;
 
-  let title = course?.name ?? 'Course';
-  title += ': Cumulative';
+  const title = course.name || 'Course';
+  let titleWithSuffix = `${title}: Cumulative`;
 
-  if (data?.cumulative && !data.isFetching) {
+  if (data.cumulative && !data.isFetching) {
     isLoaded = true;
     const cumulative = data.cumulative as GradeDistribution;
 
@@ -47,7 +47,7 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
       if (offering) {
         secondary = offering.cumulative;
         secondaryLabel = String(termName);
-        title += ` vs. ${String(termName)}`;
+        titleWithSuffix += ` vs. ${String(termName)}`;
       } else {
         console.error(`Invalid course/term combination: ${uuid}/${String(termCode)}`);
       }
@@ -57,7 +57,7 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
       if (instructor) {
         secondary = instructor.cumulative;
         secondaryLabel = instructor.name;
-        title += ` vs. ${instructor.name}`;
+        titleWithSuffix += ` vs. ${instructor.name}`;
       } else {
         console.error(`Invalid course/instructor combination: ${uuid}/${String(instructorId)}`);
       }
@@ -70,7 +70,7 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
         if (offering) {
           secondary = offering;
           secondaryLabel = `${instructor.name} (${String(termName)})`;
-          title += ` vs. ${instructor.name} (${String(termName)})`;
+          titleWithSuffix += ` vs. ${instructor.name} (${String(termName)})`;
         } else {
           console.error(
             `Invalid course/instructor/term combination: ${uuid}/${String(instructorId)}/${String(termCode)}`
@@ -83,14 +83,14 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
 
     if (secondary) {
       const gpaString = String(utils.grades.gpa(secondary, true));
-      secondaryLabel = `${secondaryLabel ?? ''  } - ${gpaString} GPA`;
+      secondaryLabel = `${secondaryLabel ?? ''} - ${gpaString} GPA`;
     }
   }
 
   if (isLoaded) {
     chart = (
       <GradeDistributionChart
-        title={title}
+        title={titleWithSuffix}
         primary={primary}
         primaryLabel={label}
         secondary={secondary}

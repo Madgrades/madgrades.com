@@ -9,7 +9,7 @@ interface SubjectNameListProps {
 
 function SubjectNameList({ subjectCodes, subjects }: SubjectNameListProps) {
   const result: JSX.Element[] = [];
-  const count = (subjectCodes || subjects || []).length;
+  const count = (subjectCodes ?? subjects ?? []).length;
   let keys: string[] = [];
 
   if (subjectCodes) {
@@ -19,7 +19,7 @@ function SubjectNameList({ subjectCodes, subjects }: SubjectNameListProps) {
   }
 
   for (let i = 0; i < count; i++) {
-    const curr = (subjectCodes || subjects)?.[i];
+    const curr = (subjectCodes ?? subjects)?.[i];
     const divider = i < count - 1 ? '/' : '';
 
     result.push(

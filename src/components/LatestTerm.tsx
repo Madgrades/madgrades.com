@@ -9,8 +9,9 @@ function LatestTerm({ actions, terms }: PropsFromRedux) {
   }, [actions]);
 
   const latestTermName = () => {
-    if (terms) {
-      const latestTerm = Math.max(...Object.keys(terms).map((key) => parseInt(key, 10)));
+    const termKeys = Object.keys(terms);
+    if (termKeys.length > 0) {
+      const latestTerm = Math.max(...termKeys.map(key => parseInt(key, 10)));
       return utils.termCodes.toName(latestTerm);
     }
     return 'Unknown';
@@ -21,7 +22,7 @@ function LatestTerm({ actions, terms }: PropsFromRedux) {
 
 function mapStateToProps(state: RootState) {
   return {
-    terms: state.app.terms || {},
+    terms: state.app.terms,
   };
 }
 

@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import { BrowserRouter, useLocation, Location } from "react-router-dom";
-import SiteHeader from "./containers/SiteHeader";
-import SiteFooter from "./containers/SiteFooter";
-import Routes from "./Routes";
+import { useEffect } from 'react';
+import { BrowserRouter, useLocation, Location } from 'react-router-dom';
+import SiteHeader from './containers/SiteHeader';
+import SiteFooter from './containers/SiteFooter';
+import Routes from './Routes';
 
 declare global {
   interface Window {
@@ -12,17 +12,17 @@ declare global {
 }
 
 const updateGa = (location: Location | typeof window.location) => {
-  const loc = location ?? window.location;
+  const loc = location;
   if (window.gtag) {
-    window.gtag("event", "page_view", {
+    window.gtag('event', 'page_view', {
       page_path: loc.pathname + loc.search + loc.hash,
       page_search: loc.search,
       page_hash: loc.hash,
     });
   }
   if (window.ga) {
-    window.ga("set", "page", loc.pathname + loc.search);
-    window.ga("send", "pageview");
+    window.ga('set', 'page', loc.pathname + loc.search);
+    window.ga('send', 'pageview');
   }
 };
 

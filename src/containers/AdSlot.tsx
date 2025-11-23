@@ -14,7 +14,7 @@ declare global {
 
 function AdSlot({ slot, adWidth, adHeight }: AdSlotProps) {
   useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    window.adsbygoogle.push({});
   }, []);
 
   return (
@@ -22,8 +22,8 @@ function AdSlot({ slot, adWidth, adHeight }: AdSlotProps) {
       className="adsbygoogle"
       style={{
         display: 'inline-block',
-        width: adWidth || 'auto',
-        height: adHeight || 'auto',
+        width: adWidth ?? 'auto',
+        height: adHeight ?? 'auto',
       }}
       data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT}
       data-ad-slot={slot}

@@ -17,7 +17,7 @@ function CourseData({ uuid, onDataLoad, actions, data }: Props) {
   }, [uuid, actions]);
 
   useEffect(() => {
-    if (data && !data.isFetching) {
+    if (!data.isFetching) {
       onDataLoad(data);
     }
   }, [data, onDataLoad]);

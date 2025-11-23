@@ -62,20 +62,18 @@ function GradeDistributionChart({
   const data = utils.grades.getGradeKeys(false).map(key => {
     const name = utils.grades.keyToName(key);
 
-    let percent, label, percentSecondary, labelSecondary;
+    let percentSecondary, labelSecondary;
 
-    if (primary) {
-      const gradeCount = primary[key];
-      const outOf = primary.total || 1; // we don't want to divide by 0
-      percent = (gradeCount / outOf) * 100;
-      label = `${percent.toFixed(1)  }%\n${  utils.numberWithCommas(gradeCount)}`;
-    }
+    const gradeCount = primary[key];
+    const outOf = primary.total ?? 1; // we don't want to divide by 0
+    const percent = (gradeCount / outOf) * 100;
+    const label = `${percent.toFixed(1)}%\n${utils.numberWithCommas(gradeCount)}`;
 
     if (secondary) {
       const gradeCount = secondary[key];
-      const outOf = secondary.total || 1; // we don't want to divide by 0
+      const outOf = secondary.total ?? 1; // we don't want to divide by 0
       percentSecondary = (gradeCount / outOf) * 100;
-      labelSecondary = `${percentSecondary.toFixed(1)  }%\n${  utils.numberWithCommas(gradeCount)}`;
+      labelSecondary = `${percentSecondary.toFixed(1)}%\n${utils.numberWithCommas(gradeCount)}`;
     }
 
     return {

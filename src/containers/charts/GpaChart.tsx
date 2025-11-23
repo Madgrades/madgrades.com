@@ -17,9 +17,7 @@ interface GpaChartProps {
 }
 
 export function GpaChart({ title, gradeDistributions }: GpaChartProps) {
-  if (!gradeDistributions) {return null;}
-
-  const data = gradeDistributions.map((gradeDistribution) => {
+  const data = gradeDistributions.map(gradeDistribution => {
     return {
       gpa: utils.grades.gpa(gradeDistribution),
       termName: utils.termCodes.toName(gradeDistribution.termCode),
@@ -42,7 +40,7 @@ export function GpaChart({ title, gradeDistributions }: GpaChartProps) {
               <Label value="Average GPA" position="insideLeft" dx={15} dy={25} angle={-90} />
             </YAxis>
             <Line type="monotone" dataKey="gpa" isAnimationActive={false} />
-            <Tooltip formatter={(gpa) => utils.grades.formatGpa(Number(gpa))} />
+            <Tooltip formatter={gpa => utils.grades.formatGpa(Number(gpa))} />
           </LineChart>
         </ResponsiveContainer>
       </div>

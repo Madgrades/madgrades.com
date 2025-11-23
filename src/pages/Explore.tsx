@@ -51,7 +51,7 @@ function Explore() {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const newEntityType = entity || 'course';
+    const newEntityType = entity ?? 'course';
     const minAvg = newEntityType === 'subject' ? 1 : 25;
     const minTotal = newEntityType === 'course' ? 1500 : 500;
 
@@ -59,9 +59,9 @@ function Explore() {
     const instructorsParam = queryParams.getAll('instructors');
 
     const filteredParams: ExploreParams = {
-      page: parseInt(queryParams.get('page') || '1', 10),
-      sort: queryParams.get('sort') || undefined,
-      order: queryParams.get('order') || undefined,
+      page: parseInt(queryParams.get('page') ?? '1', 10),
+      sort: queryParams.get('sort') ?? undefined,
+      order: queryParams.get('order') ?? undefined,
       subjects: subjectsParam.length > 0 ? subjectsParam : undefined,
       instructors:
         instructorsParam.length > 0 ? instructorsParam.map(s => parseInt(s, 10)) : undefined,
@@ -77,16 +77,16 @@ function Explore() {
       setParams(filteredParams);
       setEntityType(newEntityType);
     }
-  }, [location, entity]);
+  }, [location, entity, entityType, params]);
 
   const onEntityChange = (_event: React.SyntheticEvent, data: { value: string }) => {
-    navigate(`/explore/${  data.value}`);
+    navigate(`/explore/${data.value}`);
   };
 
   const updateParams = (newParams: ExploreParams) => {
     const { pathname } = location;
     setParams(newParams);
-    navigate(`${pathname  }?${  utils.buildQueryString(newParams)}`);
+    navigate(`${pathname}?${utils.buildQueryString(newParams)}`);
   };
 
   const onPageChange = (page: number) => {

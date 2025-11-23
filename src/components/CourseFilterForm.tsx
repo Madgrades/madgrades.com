@@ -20,8 +20,8 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
 
   useEffect(() => {
     const { subjects: s, instructors: i, query: q } = courseFilterParams;
-    setSubjects(s || []);
-    setInstructors(i || []);
+    setSubjects(s ?? []);
+    setInstructors(i ?? []);
     setQuery(q);
   }, [courseFilterParams]);
 
@@ -61,7 +61,7 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
       allParams.compareWith = courseFilterParams.compareWith;
     }
 
-    navigate(`/search?${  utils.buildQueryString(allParams)}`);
+    navigate(`/search?${utils.buildQueryString(allParams)}`);
   };
 
   return (
@@ -70,22 +70,18 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
         <label>Search</label>
         <Input
           placeholder="i.e. Math 222, Music in Performance"
-          value={query || ''}
+          value={query ?? ''}
           onChange={onQueryChange}
         />
       </Form.Field>
       <Divider horizontal content="Filter" className="divider-small" />
       <Form.Field>
         <label>Subjects</label>
-        <EntitySelect value={subjects || []} onChange={onSubjectChange} entityType="subject" />
+        <EntitySelect value={subjects} onChange={onSubjectChange} entityType="subject" />
       </Form.Field>
       <Form.Field>
         <label>Instructors</label>
-        <EntitySelect
-          value={instructors || []}
-          onChange={onInstructorChange}
-          entityType="instructor"
-        />
+        <EntitySelect value={instructors} onChange={onInstructorChange} entityType="instructor" />
       </Form.Field>
       <Form.Button positive floated="right">
         Search

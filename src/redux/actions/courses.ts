@@ -23,10 +23,12 @@ export const fetchCourse =
   (uuid: string) =>
   async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    const courseData: Course | undefined = state.courses.data[uuid];
+    const courseData = state.courses.data[uuid];
 
-    // don't fetch again
-    if (courseData) {return;}
+    // don't fetch again - check if data exists by checking a property
+    if (courseData.uuid) {
+      return;
+    }
 
     // request action
     dispatch(requestCourse(uuid));
@@ -71,7 +73,9 @@ export const fetchCourseSearch =
     const searchData = state.courses.search;
 
     // if params are the same, we don't need to fetch
-    if (_.isEqual(searchData.params, params)) {return;}
+    if (_.isEqual(searchData.params, params)) {
+      return;
+    }
 
     // request action
     dispatch(requestCourseSearch(params, page));

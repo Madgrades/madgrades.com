@@ -106,10 +106,10 @@ export const zero = (): GradeDistribution => {
 
 export const combine = (a: GradeDistribution, b: GradeDistribution): GradeDistribution => {
   const result = zero();
-  result.total = (a.total || 0) + (b.total || 0);
+  result.total = (a.total ?? 0) + (b.total ?? 0);
   getGradeKeys(true).forEach(key => {
-    const aVal = (a as Record<string, number | undefined>)[key] || 0;
-    const bVal = (b as Record<string, number | undefined>)[key] || 0;
+    const aVal = (a as Record<string, number | undefined>)[key] ?? 0;
+    const bVal = (b as Record<string, number | undefined>)[key] ?? 0;
     (result as Record<string, number>)[key] = aVal + bVal;
   });
   return result;

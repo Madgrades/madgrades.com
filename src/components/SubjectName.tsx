@@ -26,7 +26,7 @@ function SubjectName({ code, data, actions, name, abbreviation, abbreviate, fall
   }, [code, data, actions]);
 
   const text = abbreviate ? abbreviation : name;
-  return <span>{text || fallback}</span>;
+  return <span>{text ?? fallback}</span>;
 }
 
 function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
@@ -43,8 +43,8 @@ function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
   const subjectData = subjects.data[code];
 
   return {
-    name: subjectData && subjectData.name,
-    abbreviation: subjectData?.abbreviation,
+    name: subjectData.name,
+    abbreviation: subjectData.abbreviation,
   };
 }
 

@@ -157,10 +157,6 @@ function Explorer({
   };
 
   const renderEntries = (results: ExploreEntry[]) => {
-    if (!results) {
-      return null;
-    }
-
     return results.map(entry => {
       return (
         <Table.Row key={entryKey(entry)}>

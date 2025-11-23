@@ -21,8 +21,10 @@ export const fetchTerms = () => async (dispatch: Dispatch, getState: () => RootS
   const state = getState();
   const termsData = state.app.terms;
 
-  // don't fetch again
-  if (termsData && termsData.length > 0) {return;}
+  // don't fetch again - TypeScript knows this is always defined, but we still want to skip if already loaded
+  if (Object.keys(termsData).length > 0) {
+    return;
+  }
 
   // perform request
   const terms = await api.getTerms();

@@ -20,7 +20,16 @@ interface StateProps {
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & StateProps & PropsFromRedux;
 
-function CourseName({ uuid, data, actions, name, subjects, number, fallback, asSubjectAndNumber }: Props) {
+function CourseName({
+  uuid,
+  data,
+  actions,
+  name,
+  subjects,
+  number,
+  fallback,
+  asSubjectAndNumber,
+}: Props) {
   useEffect(() => {
     if (!data) {
       actions.fetchCourse(uuid);
@@ -42,7 +51,7 @@ function CourseName({ uuid, data, actions, name, subjects, number, fallback, asS
       );
     }
   } else {
-    return <span>{name || fallback}</span>;
+    return <span>{name ?? fallback}</span>;
   }
 }
 

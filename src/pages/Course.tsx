@@ -44,7 +44,7 @@ const Course = () => {
     const title = `${visibleName} - Madgrades`;
 
     let desc = `${subjects
-      .map(s => s.abbreviation || '')
+      .map(s => s.abbreviation ?? '')
       .slice(0, 3)
       .join(', ')} ${number}`;
     desc += ' UW Madison course grade distribution and average GPA over time or by instructor.';

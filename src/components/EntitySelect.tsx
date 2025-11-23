@@ -139,9 +139,7 @@ function EntitySelect({
 
     if (query.length >= 2) {
       const querySearches = searches[query];
-      if (querySearches) {
-        searchData = querySearches[1];
-      }
+      searchData = querySearches[1];
     }
 
     const newOptions: EntityOption[] = [];
@@ -166,7 +164,7 @@ function EntitySelect({
       }
     }
 
-    const newIsFetching = searchData?.isFetching;
+    const newIsFetching = Boolean(searchData?.isFetching);
 
     // if we are searching, only show options found in the search
     let filteredOptions = newOptions;
@@ -182,13 +180,13 @@ function EntitySelect({
     // only update if options are new, we don't want infinite loop
     if (!_.isEqual(options, filteredOptions)) {
       setOptions(filteredOptions);
-      setIsFetching(!!newIsFetching);
+      setIsFetching(newIsFetching);
     }
 
     if (isFetching !== newIsFetching) {
-      setIsFetching(!!newIsFetching);
+      setIsFetching(newIsFetching);
     }
-  }, [entityType, entityData, searches, value, query, requestEntity]);
+  }, [entityType, entityData, searches, value, query, requestEntity, isFetching, options]);
 
   useEffect(() => {
     return () => {
@@ -232,12 +230,12 @@ function mapStateToProps(state: RootState, ownProps: OwnProps) {
   switch (entityType) {
     case 'instructor':
       return {
-        searches: state.instructors.searches || {},
+        searches: state.instructors.searches ?? {},
         entityData: state.instructors.data,
       };
     case 'subject':
       return {
-        searches: state.subjects.searches || {},
+        searches: state.subjects.searches ?? {},
         entityData: state.subjects.data,
       };
     default:

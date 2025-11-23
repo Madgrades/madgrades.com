@@ -51,7 +51,7 @@ function TermSelect({
       fluid
       selection
       search
-      value={value || options[0].value}
+      value={value ?? options[0].value}
       options={options}
       onChange={handleChange}
     />

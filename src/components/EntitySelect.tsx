@@ -26,7 +26,9 @@ type Props = OwnProps & PropsFromRedux;
 
 function EntitySelect({
   entityType,
-  onChange = () => {},
+  onChange = () => {
+    /* no-op */
+  },
   value = [],
   actions,
   searches,
@@ -78,12 +80,15 @@ function EntitySelect({
     }
   };
 
-  const entityToOption = (key: EntityKey, entity: Entity | { isFetching: boolean }): EntityOption => {
+  const entityToOption = (
+    key: EntityKey,
+    entity: Entity | { isFetching: boolean }
+  ): EntityOption => {
     if ('isFetching' in entity && entity.isFetching) {
       return {
         key: key,
         value: key,
-        text: `${key} (Loading...)`,
+        text: `${String(key)} (Loading...)`,
       };
     } else {
       const typedEntity = entity as Entity;
@@ -109,7 +114,8 @@ function EntitySelect({
   };
 
   const handleSearchChange = (_event: unknown, { searchQuery }: DropdownProps) => {
-    setQuery(searchQuery as string);
+    const query = searchQuery ?? '';
+    setQuery(query);
     setIsTyping(true);
 
     if (searchTimeout.current) {
@@ -118,7 +124,7 @@ function EntitySelect({
 
     searchTimeout.current = setTimeout(() => {
       setIsTyping(false);
-      performSearch(searchQuery as string);
+      performSearch(query);
     }, 500);
   };
 
@@ -153,7 +159,7 @@ function EntitySelect({
         newOptions.push({
           key: key,
           value: key,
-          text: `${key} (Loading...)`,
+          text: `${String(key)} (Loading...)`,
         });
         requestEntity(key);
         keys.add(key);
@@ -166,11 +172,11 @@ function EntitySelect({
     let filteredOptions = newOptions;
     if (searchData && !searchData.isFetching && searchData.results) {
       const searchKeys = searchData.results.map((e: Entity) => entityToKey(e));
-      filteredOptions = newOptions.filter((o) => searchKeys.includes(o.key) || value.includes(o.key));
+      filteredOptions = newOptions.filter(o => searchKeys.includes(o.key) || value.includes(o.key));
     }
     // otherwise the only options are the already selected values
     else {
-      filteredOptions = newOptions.filter((o) => value.includes(o.key));
+      filteredOptions = newOptions.filter(o => value.includes(o.key));
     }
 
     // only update if options are new, we don't want infinite loop
@@ -193,8 +199,11 @@ function EntitySelect({
   }, []);
 
   let message = 'No results found';
-  if (query.length < 2) message = 'Start typing to see results';
-  else if (isTyping || isFetching) message = 'Searching...';
+  if (query.length < 2) {
+    message = 'Start typing to see results';
+  } else if (isTyping || isFetching) {
+    message = 'Searching...';
+  }
 
   return (
     <Dropdown
@@ -212,7 +221,7 @@ function EntitySelect({
       searchQuery={query}
       onChange={handleChange}
       onSearchChange={handleSearchChange}
-      search={(options) => options}
+      search={options => options}
     />
   );
 }

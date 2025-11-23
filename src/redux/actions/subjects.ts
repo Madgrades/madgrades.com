@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes';
 import { Dispatch } from 'redux';
-import { Subject } from '../../types';
+import { Subject, RootState } from '../../types';
+import { Api } from '../../utils/api';
 
 const requestSubject = (code: string) => {
   return {
@@ -19,18 +20,18 @@ const receiveSubject = (code: string, data: Subject) => {
 
 export const fetchSubject =
   (code: string) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
     const subjectData: Subject | undefined = state.subjects.data[code];
 
     // don't fetch again
-    if (subjectData) return;
+    if (subjectData) {return;}
 
     // request action
     dispatch(requestSubject(code));
 
     // perform request
-    const newSubjectData: Subject = await api.getSubject(code);
+    const newSubjectData = (await api.getSubject(code)) as Subject;
 
     // receive action
     dispatch(receiveSubject(code, newSubjectData));
@@ -60,25 +61,25 @@ const receiveSubjectSearch = (query: string, page: number, data: SubjectSearchRe
 
 export const fetchSubjectSearch =
   (query: string, page: number) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    const subjectSearchData = state.subjects.searches[query];
+    const subjectSearchData = state.subjects.searches?.[query];
 
     // don't fetch again
-    if (subjectSearchData) return;
+    if (subjectSearchData) {return;}
 
     // request action
     dispatch(requestSubjectSearch(query, page));
 
     // perform request
-    const newSubjectSearchData: SubjectSearchResult = await api.searchSubjects(query, page);
+    const newSubjectSearchData = (await api.searchSubjects(query, page)) as SubjectSearchResult;
 
     // receive action
     dispatch(receiveSubjectSearch(query, page, newSubjectSearchData));
 
     const { results } = newSubjectSearchData;
 
-    results.forEach((subject) => {
+    results.forEach(subject => {
       dispatch(receiveSubject(subject.code, subject));
     });
   };

@@ -11,7 +11,7 @@ interface PromoCardProps {
 /**
  * Promotional card component for showcasing UW Madison student-created sites
  */
-const PromoCard: React.FC<PromoCardProps> = ({ title, description, link, dateAdded }) => {
+function PromoCard({ title, description, link, dateAdded }: PromoCardProps) {
   // Check if the card was added within the last 6 months
   const isNew = dateAdded
     ? (() => {
@@ -41,6 +41,6 @@ const PromoCard: React.FC<PromoCardProps> = ({ title, description, link, dateAdd
       </Button>
     </Card>
   );
-};
+}
 
 export default PromoCard;

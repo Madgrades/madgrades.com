@@ -9,7 +9,7 @@ interface OwnProps {
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
-function Template({ example }: Props) {
+function Template({ example: _example }: Props) {
   return <div>Template</div>;
 }
 

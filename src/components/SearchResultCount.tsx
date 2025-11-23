@@ -7,16 +7,15 @@ interface StateProps {
   count: number;
 }
 
-const SearchResultCount: React.FC<PropsFromRedux> = ({ count }) => {
+function SearchResultCount({ count }: PropsFromRedux) {
   return <span>{utils.numberWithCommas(count)}</span>;
-};
+}
 
 function mapStateToProps(state: RootState): StateProps {
   const { search } = state.courses;
   const page = state.app.courseFilterParams?.page || 1;
 
-  const count =
-    search?.pages?.[page]?.totalCount;
+  const count = search?.pages?.[page]?.totalCount;
 
   return {
     count: count || 0,

@@ -17,7 +17,7 @@ interface GpaChartProps {
 }
 
 export function GpaChart({ title, gradeDistributions }: GpaChartProps) {
-  if (!gradeDistributions) return null;
+  if (!gradeDistributions) {return null;}
 
   const data = gradeDistributions.map((gradeDistribution) => {
     return {

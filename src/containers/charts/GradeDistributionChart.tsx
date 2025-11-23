@@ -11,16 +11,24 @@ import {
 import utils from '../../utils';
 import { GradeDistribution } from '../../types';
 
-const renderBarLabel = (props: any) => {
+interface BarLabelProps {
+  x: number;
+  y: number;
+  width: number;
+  value: string;
+}
+
+const renderBarLabel = (props: BarLabelProps) => {
   const { x, y, width, value } = props;
 
+  const parts = value.split('\n');
   return (
     <text textAnchor="middle" dominantBaseline="middle">
       <tspan x={x + width / 2} y={y - 24} fontSize="80%" fontWeight="bold">
-        {value.split('\n')[0]}
+        {parts[0]}
       </tspan>
       <tspan x={x + width / 2} y={y - 10} fontSize="70%">
-        {value.split('\n')[1]}
+        {parts[1]}
       </tspan>
     </text>
   );
@@ -51,7 +59,7 @@ function GradeDistributionChart({
     }
   }
 
-  const data = utils.grades.getGradeKeys(false).map((key) => {
+  const data = utils.grades.getGradeKeys(false).map(key => {
     const name = utils.grades.keyToName(key);
 
     let percent, label, percentSecondary, labelSecondary;
@@ -60,14 +68,14 @@ function GradeDistributionChart({
       const gradeCount = primary[key];
       const outOf = primary.total || 1; // we don't want to divide by 0
       percent = (gradeCount / outOf) * 100;
-      label = percent.toFixed(1) + '%\n' + utils.numberWithCommas(gradeCount);
+      label = `${percent.toFixed(1)  }%\n${  utils.numberWithCommas(gradeCount)}`;
     }
 
     if (secondary) {
       const gradeCount = secondary[key];
       const outOf = secondary.total || 1; // we don't want to divide by 0
       percentSecondary = (gradeCount / outOf) * 100;
-      labelSecondary = percentSecondary.toFixed(1) + '%\n' + utils.numberWithCommas(gradeCount);
+      labelSecondary = `${percentSecondary.toFixed(1)  }%\n${  utils.numberWithCommas(gradeCount)}`;
     }
 
     return {

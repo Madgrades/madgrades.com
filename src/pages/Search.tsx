@@ -1,50 +1,47 @@
-import React from "react";
-import { Button, Container, Divider, Header, Message } from "semantic-ui-react";
-import { parse } from "qs";
-import SetCourseFilterParams from "../components/SetCourseFilterParams";
-import CourseFilterForm from "../components/CourseFilterForm";
-import CourseSearchResults from "../components/CourseSearchResults";
-import SearchResultCount from "../components/SearchResultCount";
-import CourseSortForm from "../components/CourseSortForm";
-import { Row, Col } from "../components/Grid";
-import AdSlot from "../containers/AdSlot";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import { Button, Container, Divider, Header, Message } from 'semantic-ui-react';
+import SetCourseFilterParams from '../components/SetCourseFilterParams';
+import CourseFilterForm from '../components/CourseFilterForm';
+import CourseSearchResults from '../components/CourseSearchResults';
+import SearchResultCount from '../components/SearchResultCount';
+import CourseSortForm from '../components/CourseSortForm';
+import { Row, Col } from '../components/Grid';
+import AdSlot from '../containers/AdSlot';
+import { useLocation } from 'react-router-dom';
 
 const extractParams = (location: { search: string }) => {
-  const params = parse(location.search.substr(1));
+  const params = new URLSearchParams(location.search);
 
-  const queryParam = params.query;
-  const query = typeof queryParam === 'string' ? queryParam : null;
-  const pageParam = params.page;
-  const page = parseInt(typeof pageParam === 'string' ? pageParam : '1', 10);
-  let subjects = undefined;
-  if (params.subjects && Array.isArray(params.subjects)) {
-    subjects = params.subjects;
+  const query = params.get('query') || null;
+  const page = parseInt(params.get('page') || '1', 10);
+  let subjects: string[] | undefined = undefined;
+  const subjectsParam = params.getAll('subjects');
+  if (subjectsParam.length > 0) {
+    subjects = subjectsParam;
   }
-  let instructors = undefined;
-  if (Array.isArray(params.instructors)) {
-    instructors = params.instructors.map((i: string) => parseInt(i, 10));
+  let instructors: number[] | undefined = undefined;
+  const instructorsParam = params.getAll('instructors');
+  if (instructorsParam.length > 0) {
+    instructors = instructorsParam.map(i => parseInt(i, 10));
   }
-  const orderParam = params.order;
-  let order: string | undefined = typeof orderParam === 'string' ? orderParam.toLowerCase() : '';
-  if (!["asc", "desc"].includes(order)) {
+  let order: string | undefined = params.get('order')?.toLowerCase() || '';
+  if (!['asc', 'desc'].includes(order)) {
     order = undefined;
   }
-  const sortParam = params.sort;
-  let sort: string | undefined = typeof sortParam === 'string' ? sortParam.toLowerCase() : '';
+  let sort: string | undefined = params.get('sort')?.toLowerCase() || '';
   if (
     ![
-      "number",
-      "relevance",
-      "trending_all",
-      "trending_recent",
-      "trending_gpa_recent",
-      "trending_gpa",
+      'number',
+      'relevance',
+      'trending_all',
+      'trending_recent',
+      'trending_gpa_recent',
+      'trending_gpa',
     ].includes(sort)
   ) {
     sort = undefined;
   }
-  const compareWith = params.compareWith || undefined;
+  const compareWith = params.get('compareWith') || undefined;
 
   return {
     query,
@@ -58,7 +55,7 @@ const extractParams = (location: { search: string }) => {
 };
 
 const Courses = () => {
-  document.title = "Search UW Madison Courses - Madgrades";
+  document.title = 'Search UW Madison Courses - Madgrades';
   const location = useLocation();
   const params = extractParams(location);
   const isComparing = !!params.compareWith;
@@ -74,7 +71,7 @@ const Courses = () => {
             <Button
               onClick={() => {
                 const params = new URLSearchParams(location.search);
-                params.delete("compareWith");
+                params.delete('compareWith');
                 window.location.search = params.toString();
               }}
             >
@@ -84,15 +81,15 @@ const Courses = () => {
         </Message>
       )}
       <Row>
-        <Col xs={12} md={4} lg={3} style={{ marginBottom: "20px" }}>
+        <Col xs={12} md={4} lg={3} style={{ marginBottom: '20px' }}>
           <CourseFilterForm />
-          <br style={{ clear: "both" }} />
+          <br style={{ clear: 'both' }} />
           <Divider />
           <center>
             <AdSlot
               slot={import.meta.env.VITE_ADSENSE_SIDEBAR_SLOT}
-              adWidth={"250px"}
-              adHeight={"250px"}
+              adWidth={'250px'}
+              adHeight={'250px'}
             />
           </center>
         </Col>
@@ -105,7 +102,7 @@ const Courses = () => {
                 </Header.Content>
               </Header>
             </Col>
-            <Col auto style={{ textAlign: "right" }}>
+            <Col auto style={{ textAlign: 'right' }}>
               <Header as="h4">
                 Sort by: <CourseSortForm />
               </Header>

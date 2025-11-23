@@ -57,9 +57,9 @@ function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
   }
 
   return {
-    name: courseData && courseData.name,
-    subjects: courseData && courseData.subjects,
-    number: courseData && courseData.number,
+    name: courseData?.name,
+    subjects: courseData?.subjects,
+    number: courseData?.number,
   };
 }
 

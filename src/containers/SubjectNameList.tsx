@@ -7,7 +7,7 @@ interface SubjectNameListProps {
   subjects?: Subject[];
 }
 
-const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subjects }) => {
+function SubjectNameList({ subjectCodes, subjects }: SubjectNameListProps) {
   const result: JSX.Element[] = [];
   const count = (subjectCodes || subjects || []).length;
   let keys: string[] = [];
@@ -15,7 +15,7 @@ const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subject
   if (subjectCodes) {
     keys = subjectCodes;
   } else if (subjects) {
-    keys = subjects.map((s) => s.code);
+    keys = subjects.map(s => s.code);
   }
 
   for (let i = 0; i < count; i++) {
@@ -25,10 +25,10 @@ const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subject
     result.push(
       <span key={keys[i]}>
         <SubjectName
-          code={subjectCodes ? curr as string : ''}
+          code={subjectCodes ? (curr as string) : ''}
           abbreviate={true}
           fallback="???"
-          data={subjects ? curr as Subject : undefined}
+          data={subjects ? (curr as Subject) : undefined}
         />
         {divider}
       </span>
@@ -36,6 +36,6 @@ const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subject
   }
 
   return <>{result}</>;
-};
+}
 
 export default SubjectNameList;

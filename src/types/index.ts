@@ -57,9 +57,7 @@ export interface SearchPage<T> {
 }
 
 export interface SearchState<T> {
-  pages: {
-    [page: number]: SearchPage<T>;
-  };
+  pages: Record<number, SearchPage<T>>;
   isFetching?: boolean;
   params?: CourseFilterParams;
   error?: string;
@@ -86,9 +84,9 @@ export interface AppState {
 }
 
 export interface CoursesState {
-  data: { [uuid: string]: Course };
+  data: Record<string, Course>;
   search: SearchState<Course>;
-  grades: { [uuid: string]: CourseOffering[] };
+  grades: Record<string, CourseOffering[]>;
 }
 
 export interface SearchResults<T> {
@@ -98,23 +96,15 @@ export interface SearchResults<T> {
 }
 
 export interface InstructorsState {
-  data: { [id: number]: Instructor & { isFetching?: boolean } };
+  data: Record<number, Instructor & { isFetching?: boolean }>;
   search: SearchState<Instructor>;
-  searches?: {
-    [query: string]: {
-      [page: number]: SearchResults<Instructor>;
-    };
-  };
+  searches?: Record<string, Record<number, SearchResults<Instructor>>>;
 }
 
 export interface SubjectsState {
-  data: { [code: string]: Subject };
+  data: Record<string, Subject>;
   search: SearchState<Subject>;
-  searches?: {
-    [query: string]: {
-      [page: number]: SearchResults<Subject>;
-    };
-  };
+  searches?: Record<string, Record<number, SearchResults<Subject>>>;
 }
 
 export interface ExploreParams {
@@ -132,8 +122,8 @@ export interface ExploreData<T> {
   isFetching?: boolean;
   data?: {
     results: T[];
-    total_count: number;
-    total_pages: number;
+    totalCount: number;
+    totalPages: number;
   };
 }
 
@@ -145,26 +135,26 @@ export interface ExploreState {
 
 export interface CourseExploreEntry {
   course: Course;
-  gpa_average: number | null;
-  gpa_total: number | null;
-  count_average: number | null;
-  count_total: number | null;
+  gpa: number | null;
+  gpaTotal: number | null;
+  countAvg: number | null;
+  rank: number;
 }
 
 export interface InstructorExploreEntry {
   instructor: Instructor;
-  gpa_average: number | null;
-  gpa_total: number | null;
-  count_average: number | null;
-  count_total: number | null;
+  gpa: number | null;
+  gpaTotal: number | null;
+  countAvg: number | null;
+  rank: number;
 }
 
 export interface SubjectExploreEntry {
   subject: Subject;
-  gpa_average: number | null;
-  gpa_total: number | null;
-  count_average: number | null;
-  count_total: number | null;
+  gpa: number | null;
+  gpaTotal: number | null;
+  countAvg: number | null;
+  rank: number;
 }
 
 export interface InstructorTermData extends GradeDistribution {
@@ -181,12 +171,12 @@ export interface ProcessedInstructor {
 
 export interface CourseOfferingData {
   termCode: number;
-  sections: Array<{
-    instructors: Array<{
+  sections: ({
+    instructors: {
       id: number;
       name: string;
-    }>;
-  } & GradeDistribution>;
+    }[];
+  } & GradeDistribution)[];
   cumulative?: GradeDistribution;
 }
 
@@ -209,27 +199,27 @@ export interface CourseGradeData {
 
 export interface InstructorGradeData {
   isFetching?: boolean;
-  courseOfferings?: Array<{
+  courseOfferings?: {
     termCode: number;
     courseUuid: string;
     cumulative: GradeDistribution;
-  }>;
+  }[];
   courses?: ProcessedCourse[];
 }
 
 export interface GradeData {
   isFetching?: boolean;
   cumulative?: GradeDistribution;
-  byTerm?: { [termCode: number]: GradeDistribution };
-  byInstructor?: { [instructorId: number]: GradeDistribution };
+  byTerm?: Record<number, GradeDistribution>;
+  byInstructor?: Record<number, GradeDistribution>;
 }
 
 export interface GradesState {
   courses: {
-    data: { [uuid: string]: CourseGradeData };
+    data: Record<string, CourseGradeData>;
   };
   instructors: {
-    data: { [id: number]: InstructorGradeData };
+    data: Record<number, InstructorGradeData>;
   };
 }
 

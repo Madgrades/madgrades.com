@@ -30,7 +30,9 @@ function CourseChartViewer({
   uuid,
   termCode,
   instructorId,
-  onChange = () => {},
+  onChange = () => {
+    /* no-op */
+  },
   data,
   actions,
 }: Props) {
@@ -50,13 +52,15 @@ function CourseChartViewer({
   };
 
   const onSaveChart = () => {
-    if (isExporting || !chartRef.current) return;
+    if (isExporting || !chartRef.current) {
+      return;
+    }
 
     setIsExporting(true);
 
     domtoimage
       .toBlob(chartRef.current, { bgcolor: '#fff' })
-      .then((blob) => {
+      .then(blob => {
         FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);
         setIsExporting(false);
       })
@@ -67,11 +71,11 @@ function CourseChartViewer({
 
   let instructorOptions: InstructorOption[] = [];
   const termCodes: number[] = [];
-  const termDescs: { [key: number]: string } = {};
+  const termDescs: Record<number, string> = {};
   let instructorText = 'All instructors';
   let termText = 'All semesters';
 
-  if (data && !data.isFetching && data.instructors && data.courseOfferings) {
+  if (data?.instructors && data.courseOfferings && !data.isFetching) {
     instructorOptions.push({
       key: 0,
       value: 0,
@@ -88,7 +92,7 @@ function CourseChartViewer({
       })
     );
 
-    data.courseOfferings.forEach((o) => {
+    data.courseOfferings.forEach(o => {
       termCodes.push(o.termCode);
       if (o.cumulative) {
         termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true);
@@ -99,15 +103,19 @@ function CourseChartViewer({
     if (instructorId) {
       let instructorName = 'N/A';
 
-      const filteredTermCodes = termCodes.filter((code) => {
-        if (code === 0) return true;
+      const filteredTermCodes = termCodes.filter(code => {
+        if (code === 0) {
+          return true;
+        }
 
-        const instructor = data.instructors?.filter((i) => i.id === instructorId)[0];
+        const instructor = data.instructors?.find(i => i.id === instructorId);
 
-        if (!instructor) return true;
+        if (!instructor) {
+          return true;
+        }
 
         instructorName = instructor.name;
-        return instructor.terms.map((term) => term.termCode).includes(code);
+        return instructor.terms.map(term => term.termCode).includes(code);
       });
 
       termCodes.length = 0;
@@ -120,21 +128,23 @@ function CourseChartViewer({
       const termName = utils.termCodes.toName(termCode);
       instructorText += ` (${termName})`;
 
-      instructorOptions = instructorOptions.filter((option) => {
+      instructorOptions = instructorOptions.filter(option => {
         const id = option.value;
 
-        if (id === 0) return true;
+        if (id === 0) {
+          return true;
+        }
 
-        const instructor = data.instructors?.filter((i) => i.id === id)[0];
-        return instructor && instructor.terms.map((term) => term.termCode).includes(termCode);
+        const instructor = data.instructors?.find(i => i.id === id);
+        return instructor?.terms.map(term => term.termCode).includes(termCode);
       });
     }
 
     instructorOptions[0].text = instructorText;
   }
 
-  const instructorChosen = instructorId || undefined,
-    termChosen = termCode || undefined;
+  const instructorChosen = instructorId ?? undefined,
+    termChosen = termCode ?? undefined;
 
   return (
     <Row>

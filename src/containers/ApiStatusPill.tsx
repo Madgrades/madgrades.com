@@ -9,8 +9,8 @@ function ApiStatusPill() {
   const [status, setStatus] = useState<string>('N/A');
 
   useEffect(() => {
-    void fetchStatus().then((monitor) => {
-      if (monitor !== undefined && monitor.uptime !== undefined) {
+    void fetchStatus().then(monitor => {
+      if (monitor?.uptime !== undefined) {
         setUptime(monitor.uptime);
         setStatus(monitor.status);
       }
@@ -20,7 +20,7 @@ function ApiStatusPill() {
   const uptimePercent = uptime === undefined ? 'N/A' : uptime >= 100 ? 100 : uptime.toFixed(2);
 
   let icon: 'thumbs down' | 'thumbs up' = 'thumbs down';
-  let text = `${uptimePercent}% Uptime`;
+  let text = `${String(uptimePercent)}% Uptime`;
   let color: 'red' | 'orange' | 'yellow' | 'green' | undefined;
 
   if (status === 'N/A') {

@@ -1,7 +1,7 @@
 const SEASON_IDS: Record<number, string> = {
   4: 'Spring',
   6: 'Summer',
-  2: 'Fall'
+  2: 'Fall',
 };
 
 export const toName = (termCode: number): string => {
@@ -15,5 +15,5 @@ export const toName = (termCode: number): string => {
 
   const calendarYear = 2001 + offset;
   const season = SEASON_IDS[seasonId];
-  return `${season} ${calendarYear}`;
+  return `${season} ${String(calendarYear)}`;
 };

@@ -1,6 +1,7 @@
 import * as actionTypes from '../actionTypes';
 import { Dispatch } from 'redux';
-import { Instructor } from '../../types';
+import { Instructor, RootState } from '../../types';
+import { Api } from '../../utils/api';
 
 const requestInstructor = (id: number) => {
   return {
@@ -19,9 +20,9 @@ const receiveInstructor = (id: string, data: Instructor) => {
 
 export const fetchInstructor =
   (id: number) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, _getState: () => RootState, api: Api): Promise<void> => {
     dispatch(requestInstructor(id));
-    const response: Instructor = await api.getInstructor(id);
+    const response = (await api.getInstructor(id)) as Instructor;
     dispatch(receiveInstructor(id.toString(), response));
   };
 
@@ -49,25 +50,28 @@ const receiveInstructorSearch = (query: string, page: number, data: InstructorSe
 
 export const fetchInstructorSearch =
   (query: string, page: number) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    const instructorSearchData = state.instructors.searches[query];
+    const instructorSearchData = state.instructors.searches?.[query];
 
     // don't fetch again
-    if (instructorSearchData) return;
+    if (instructorSearchData) {return;}
 
     // request action
     dispatch(requestInstructorSearch(query, page));
 
     // perform request
-    const newInstructorSearchData: InstructorSearchResult = await api.searchInstructors(query, page);
+    const newInstructorSearchData = (await api.searchInstructors(
+      query,
+      page
+    )) as InstructorSearchResult;
 
     // receive action
     dispatch(receiveInstructorSearch(query, page, newInstructorSearchData));
 
     const { results } = newInstructorSearchData;
 
-    results.forEach((instructor) => {
+    results.forEach(instructor => {
       dispatch(receiveInstructor(instructor.id.toString(), instructor));
     });
   };

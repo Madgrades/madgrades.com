@@ -12,7 +12,7 @@ declare global {
 }
 
 const updateGa = (location: Location | typeof window.location) => {
-  const loc = location || window.location;
+  const loc = location ?? window.location;
   if (window.gtag) {
     window.gtag("event", "page_view", {
       page_path: loc.pathname + loc.search + loc.hash,

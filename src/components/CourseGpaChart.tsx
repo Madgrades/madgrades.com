@@ -16,7 +16,7 @@ function CourseGpaChart({ uuid, actions, data }: Props) {
     actions.fetchCourseGrades(uuid);
   }, [uuid, actions]);
 
-  if (!data || data.isFetching) return <GpaChart gradeDistributions={[]} />;
+  if (!data || data.isFetching) {return <GpaChart gradeDistributions={[]} />;}
 
   const gradeDistributions: CourseTermData[] = (data.courseOfferings || [])
     .map((o: CourseOfferingData) => {

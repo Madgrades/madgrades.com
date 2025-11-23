@@ -4,8 +4,6 @@ import utils from '../utils';
 import { Button, Divider, Form, Input } from 'semantic-ui-react';
 import EntitySelect from './EntitySelect';
 import { useNavigate } from 'react-router-dom';
-import { stringify } from 'qs';
-import * as _ from 'lodash';
 import { RootState, CourseFilterParams } from '../types';
 
 interface OwnProps {
@@ -35,7 +33,10 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
     setInstructors(newInstructors as number[]);
   };
 
-  const onQueryChange = (_event: React.ChangeEvent<HTMLInputElement>, { value }: { value: string }) => {
+  const onQueryChange = (
+    _event: React.ChangeEvent<HTMLInputElement>,
+    { value }: { value: string }
+  ) => {
     setQuery(value);
   };
 
@@ -60,8 +61,7 @@ function CourseFilterForm({ courseFilterParams, navigate }: Props) {
       allParams.compareWith = courseFilterParams.compareWith;
     }
 
-    const params = _.omitBy(allParams, (value) => _.isNil(value)) as Record<string, string | string[] | number | number[]>;
-    navigate('/search?' + stringify(params));
+    navigate(`/search?${  utils.buildQueryString(allParams)}`);
   };
 
   return (

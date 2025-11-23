@@ -1,28 +1,29 @@
-import React from "react";
-import { Header, Segment, Button } from "semantic-ui-react";
-import CourseName from "../components/CourseName";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import SubjectNameList from "./SubjectNameList";
+import React from 'react';
+import { Header, Segment, Button } from 'semantic-ui-react';
+import CourseName from '../components/CourseName';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import SubjectNameList from './SubjectNameList';
+import { Course } from '../types';
 
-const CourseSearchResultItem = ({ result }) => {
+interface CourseSearchResultItemProps {
+  result: Course;
+}
+
+const CourseSearchResultItem = ({ result }: CourseSearchResultItemProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const compareWith = params.get("compareWith");
+  const compareWith = params.get('compareWith');
 
   const handleCompare = () => {
-    navigate(`/courses/${compareWith}?compareWith=${result.uuid}`);
+    navigate(`/courses/${compareWith ?? ''}?compareWith=${result.uuid}`);
   };
 
   return (
     <Segment color="blue">
       <Header>
         <Header.Content as={Link} to={`/courses/${result.uuid}`}>
-          <CourseName
-            data={result}
-            uuid={result.uuid}
-            fallback={"(Unknown Name)"}
-          />
+          <CourseName data={result} uuid={result.uuid} fallback={'(Unknown Name)'} />
           <Header.Subheader>
             <SubjectNameList subjects={result.subjects} /> {result.number}
           </Header.Subheader>

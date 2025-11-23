@@ -27,7 +27,7 @@ const GPA_KEYS: readonly GradeKey[] = [
   'bcCount',
   'cCount',
   'dCount',
-  'fCount'
+  'fCount',
 ] as const;
 
 const ALL_KEYS: readonly GradeKey[] = [
@@ -40,7 +40,7 @@ const ALL_KEYS: readonly GradeKey[] = [
   'iCount',
   'nwCount',
   'nrCount',
-  'otherCount'
+  'otherCount',
 ] as const;
 
 export const getGradeKeys = (includeMisc: boolean): readonly GradeKey[] => {
@@ -50,12 +50,10 @@ export const getGradeKeys = (includeMisc: boolean): readonly GradeKey[] => {
   return GPA_KEYS;
 };
 
-export const keyToName = (key: string): string => 
-  key.replace('Count', '').toUpperCase();
+export const keyToName = (key: string): string => key.replace('Count', '').toUpperCase();
 
 export const gpaCount = (dist: GradeDistribution): number =>
-  dist.aCount + dist.abCount + dist.bCount + dist.bcCount +
-  dist.cCount + dist.dCount + dist.fCount;
+  dist.aCount + dist.abCount + dist.bCount + dist.bcCount + dist.cCount + dist.dCount + dist.fCount;
 
 export const formatGpa = (gpa: number): string => {
   if (isNaN(gpa)) {
@@ -74,7 +72,8 @@ export const gpa = (dist: GradeDistribution, format?: boolean): number | string 
     return NaN;
   }
 
-  const weighted = dist.aCount * 4.0 +
+  const weighted =
+    dist.aCount * 4.0 +
     dist.abCount * 3.5 +
     dist.bCount * 3.0 +
     dist.bcCount * 2.5 +
@@ -89,7 +88,7 @@ export const gpa = (dist: GradeDistribution, format?: boolean): number | string 
 };
 
 export const zero = (): GradeDistribution => {
-  const result: any = {
+  const result: Record<string, number> = {
     total: 0,
     aCount: 0,
     abCount: 0,
@@ -97,7 +96,7 @@ export const zero = (): GradeDistribution => {
     bcCount: 0,
     cCount: 0,
     dCount: 0,
-    fCount: 0
+    fCount: 0,
   };
   getGradeKeys(true).forEach(key => {
     result[key] = 0;
@@ -109,7 +108,9 @@ export const combine = (a: GradeDistribution, b: GradeDistribution): GradeDistri
   const result = zero();
   result.total = (a.total || 0) + (b.total || 0);
   getGradeKeys(true).forEach(key => {
-    (result as any)[key] = ((a as any)[key] || 0) + ((b as any)[key] || 0);
+    const aVal = (a as Record<string, number | undefined>)[key] || 0;
+    const bVal = (b as Record<string, number | undefined>)[key] || 0;
+    (result as Record<string, number>)[key] = aVal + bVal;
   });
   return result;
 };

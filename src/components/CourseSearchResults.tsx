@@ -7,7 +7,6 @@ import { Row, Col } from './Grid';
 import CourseSearchResultItem from '../containers/CourseSearchResultItem';
 import Div from '../containers/Div';
 import { useNavigate } from 'react-router-dom';
-import { stringify } from 'qs';
 
 interface OwnProps {
   navigate: (path: string) => void;
@@ -16,28 +15,30 @@ interface OwnProps {
 type PropsFromRedux = ConnectedProps<typeof connector>;
 type Props = OwnProps & PropsFromRedux;
 
-function CourseSearchResults({ courseFilterParams, navigate, actions, isFetching, searchData }: Props) {
+function CourseSearchResults({
+  courseFilterParams,
+  navigate,
+  actions,
+  isFetching,
+  searchData,
+}: Props) {
   useEffect(() => {
     actions.fetchCourseSearch(courseFilterParams, courseFilterParams.page);
   }, [courseFilterParams, actions]);
 
   const onPageChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: PaginationData) => {
     const { activePage } = data;
-    const params = {
-      ...courseFilterParams,
-      page: activePage,
-    };
-
-    // Preserve compareWith parameter if it exists
-    if (courseFilterParams.compareWith) {
-      params.compareWith = courseFilterParams.compareWith;
-    }
-
-    navigate('/search?' + stringify(params));
+    navigate(
+      `/search?${ 
+        utils.buildQueryString({
+          ...courseFilterParams,
+          page: activePage,
+        })}`
+    );
   };
 
   const renderResults = (results: Course[]) =>
-    results.map((result) => {
+    results.map(result => {
       return (
         <div key={result.uuid} style={{ marginBottom: '10px' }}>
           <CourseSearchResultItem result={result} />
@@ -104,14 +105,16 @@ function mapStateToProps(state: RootState) {
   const searchPage = search.pages?.[page || 1];
   const isFetching = search.isFetching || false;
 
-  const searchData: SearchPageWithPagination<Course> = searchPage ? {
-    ...searchPage,
-    totalPages: Math.ceil(searchPage.totalCount / 25)
-  } : {
-    results: [],
-    totalCount: 0,
-    totalPages: 0
-  };
+  const searchData: SearchPageWithPagination<Course> = searchPage
+    ? {
+        ...searchPage,
+        totalPages: Math.ceil(searchPage.totalCount / 25),
+      }
+    : {
+        results: [],
+        totalCount: 0,
+        totalPages: 0,
+      };
 
   return {
     searchQuery,

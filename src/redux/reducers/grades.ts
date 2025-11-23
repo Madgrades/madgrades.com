@@ -9,11 +9,11 @@ interface GradesAction extends ReduxAction {
 
 const initialState: GradesState = {
   courses: {
-    data: {}
+    data: {},
   },
   instructors: {
-    data: {}
-  }
+    data: {},
+  },
 };
 
 export default function reducer(state = initialState, action: GradesAction): GradesState {
@@ -25,11 +25,11 @@ export default function reducer(state = initialState, action: GradesAction): Gra
           data: {
             ...state.courses.data,
             [action.uuid]: {
-              isFetching: true
-            }
-          }
-        }
-      }
+              isFetching: true,
+            },
+          },
+        },
+      };
     }
     case actionTypes.RECEIVE_COURSE_GRADES: {
       return {
@@ -37,13 +37,13 @@ export default function reducer(state = initialState, action: GradesAction): Gra
         courses: {
           data: {
             ...state.courses.data,
-            [action.uuid]: {
+            [action.uuid ?? '']: {
               isFetching: false,
-              ...action.data
-            }
-          }
-        }
-      }
+              ...(action.data as Record<string, unknown>),
+            },
+          },
+        },
+      };
     }
     case actionTypes.REQUEST_INSTRUCTOR_GRADES: {
       return {
@@ -52,11 +52,11 @@ export default function reducer(state = initialState, action: GradesAction): Gra
           data: {
             ...state.instructors.data,
             [action.id]: {
-              isFetching: true
-            }
-          }
-        }
-      }
+              isFetching: true,
+            },
+          },
+        },
+      };
     }
     case actionTypes.RECEIVE_INSTRUCTOR_GRADES: {
       return {
@@ -64,16 +64,16 @@ export default function reducer(state = initialState, action: GradesAction): Gra
         instructors: {
           data: {
             ...state.instructors.data,
-            [action.id]: {
+            [action.id ?? 0]: {
               isFetching: false,
-              ...action.data
-            }
-          }
-        }
-      }
+              ...(action.data as Record<string, unknown>),
+            },
+          },
+        },
+      };
     }
     default: {
-      return state
+      return state;
     }
   }
 }

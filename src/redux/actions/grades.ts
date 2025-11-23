@@ -1,18 +1,19 @@
 import * as actionTypes from '../actionTypes';
 import utils from '../../utils';
 import { Dispatch } from 'redux';
-import { GradeDistribution } from '../../types';
+import { GradeDistribution, RootState } from '../../types';
+import { Api } from '../../utils/api';
 
 interface CourseGradesResponse {
-  courseOfferings: Array<{
+  courseOfferings: {
     termCode: number;
-    sections: Array<{
-      instructors: Array<{
-        id: number;
-        name: string;
-      }>;
-    } & GradeDistribution>;
-  }>;
+    sections: ({
+        instructors: {
+          id: number;
+          name: string;
+        }[];
+      } & GradeDistribution)[];
+  }[];
 }
 
 interface InstructorTermData extends GradeDistribution {
@@ -20,7 +21,7 @@ interface InstructorTermData extends GradeDistribution {
 }
 
 interface InstructorGradesData {
-  terms: { [termCode: number]: InstructorTermData };
+  terms: Record<number, InstructorTermData>;
   id: number;
 }
 
@@ -53,31 +54,34 @@ const receiveCourseGrades = (uuid: string, data: ProcessedCourseGrades) => {
 
 export const fetchCourseGrades =
   (uuid: string) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    let gradesData: CourseGradesResponse | undefined = state.grades.courses.data[uuid];
+    let gradesData: CourseGradesResponse | undefined = state.grades.courses.data[uuid]
+      ?.courseOfferings
+      ? (state.grades.courses.data[uuid] as unknown as CourseGradesResponse)
+      : undefined;
 
     // don't fetch again
-    if (gradesData) return;
+    if (gradesData) {return;}
 
     // request action
     dispatch(requestCourseGrades(uuid));
 
     // perform request
     // we process this data bit so we can view by instructor
-    gradesData = await api.getCourseGrades(uuid);
+    gradesData = (await api.getCourseGrades(uuid)) as CourseGradesResponse;
 
-    const byInstructor: { [id: number]: InstructorGradesData } = {};
-    const instructorNames: { [id: number]: string } = {};
+    const byInstructor: Record<number, InstructorGradesData> = {};
+    const instructorNames: Record<number, string> = {};
 
     // iterate each offering
-    gradesData.courseOfferings.forEach((offering) => {
+    gradesData.courseOfferings.forEach(offering => {
       const { termCode } = offering;
 
       // each section
-      offering.sections.forEach((section) => {
+      offering.sections.forEach(section => {
         // each instructor for the section
-        section.instructors.forEach((instructor) => {
+        section.instructors.forEach(instructor => {
           const { id, name } = instructor;
           instructorNames[id] = name;
 
@@ -91,7 +95,7 @@ export const fetchCourseGrades =
           const { terms } = instructorGrades;
           let base = utils.grades.zero();
 
-          if (termCode in terms) base = terms[termCode];
+          if (termCode in terms) {base = terms[termCode];}
 
           // combine existing with new section
           terms[termCode] = utils.grades.combine(base, section);
@@ -105,19 +109,19 @@ export const fetchCourseGrades =
     processedGradesData.instructors = [];
 
     // iterate each instructor key
-    Object.keys(byInstructor).forEach((instructorKey) => {
+    Object.keys(byInstructor).forEach(instructorKey => {
       const data = byInstructor[parseInt(instructorKey)];
       const terms: InstructorTermData[] = [];
       let latestTerm = 0;
 
       // each term for the instructor gets added to array instead of map
-      Object.keys(data.terms).forEach((termKey) => {
+      Object.keys(data.terms).forEach(termKey => {
         const termData = data.terms[parseInt(termKey)];
         const { termCode } = termData;
         terms.push(termData);
 
         // track latest term taught
-        if (termCode > latestTerm) latestTerm = termCode;
+        if (termCode > latestTerm) {latestTerm = termCode;}
       });
 
       // combine all terms
@@ -141,11 +145,11 @@ export const fetchCourseGrades =
   };
 
 interface InstructorGradesResponse {
-  courseOfferings: Array<{
+  courseOfferings: {
     termCode: number;
     courseUuid: string;
     cumulative: GradeDistribution;
-  }>;
+  }[];
 }
 
 interface CourseTermData extends GradeDistribution {
@@ -153,7 +157,7 @@ interface CourseTermData extends GradeDistribution {
 }
 
 interface CourseGradesData {
-  terms: { [termCode: number]: CourseTermData };
+  terms: Record<number, CourseTermData>;
   uuid: string;
 }
 
@@ -185,23 +189,26 @@ const receiveInstructorGrades = (id: number, data: ProcessedInstructorGrades) =>
 
 export const fetchInstructorGrades =
   (id: number) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
-    let gradesData: InstructorGradesResponse | undefined = state.grades.instructors.data[id];
+    let gradesData: InstructorGradesResponse | undefined = state.grades.instructors.data[id]
+      ?.courseOfferings
+      ? (state.grades.instructors.data[id] as unknown as InstructorGradesResponse)
+      : undefined;
 
     // don't fetch again
-    if (gradesData) return;
+    if (gradesData) {return;}
 
     // request action
     dispatch(requestInstructorGrades(id));
 
     // get json
-    gradesData = await api.getInstructorGrades(id);
+    gradesData = (await api.getInstructorGrades(id)) as InstructorGradesResponse;
 
-    const byCourse: { [uuid: string]: CourseGradesData } = {};
+    const byCourse: Record<string, CourseGradesData> = {};
 
     // iterate each offering
-    gradesData.courseOfferings.forEach((offering) => {
+    gradesData.courseOfferings.forEach(offering => {
       const { termCode, courseUuid } = offering;
 
       let courseGrades = byCourse[courseUuid];
@@ -213,7 +220,7 @@ export const fetchInstructorGrades =
       const { terms } = courseGrades;
       let base = utils.grades.zero();
 
-      if (termCode in terms) base = terms[termCode];
+      if (termCode in terms) {base = terms[termCode];}
 
       // combine existing with new offering
       terms[termCode] = utils.grades.combine(base, offering.cumulative);
@@ -225,19 +232,19 @@ export const fetchInstructorGrades =
     processedGradesData.courses = [];
 
     // iterate each course key
-    Object.keys(byCourse).forEach((courseKey) => {
+    Object.keys(byCourse).forEach(courseKey => {
       const data = byCourse[courseKey];
       const terms: CourseTermData[] = [];
       let latestTerm = 0;
 
       // each term for the course gets added to array instead of map
-      Object.keys(data.terms).forEach((termKey) => {
+      Object.keys(data.terms).forEach(termKey => {
         const termData = data.terms[parseInt(termKey)];
         const { termCode } = termData;
         terms.push(termData);
 
         // track latest term taught
-        if (termCode > latestTerm) latestTerm = termCode;
+        if (termCode > latestTerm) {latestTerm = termCode;}
       });
 
       // combine all terms

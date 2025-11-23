@@ -6,7 +6,7 @@ interface TermSelectProps {
   includeCumulative?: boolean;
   cumulativeText?: string;
   onChange?: (termCode: number) => void;
-  descriptions?: { [key: number]: string };
+  descriptions?: Record<number, string>;
   value?: number;
 }
 
@@ -14,18 +14,20 @@ function TermSelect({
   termCodes,
   includeCumulative = false,
   cumulativeText = 'Cumulative',
-  onChange = () => {},
+  onChange = () => {
+    /* no-op */
+  },
   descriptions = {},
   value,
 }: TermSelectProps) {
   const generateOptions = () => {
-    let cumulativeOption: any[] = [];
+    let cumulativeOption: { key: number; value: number; text: string }[] = [];
 
     if (includeCumulative) {
       cumulativeOption = [{ key: 0, value: 0, text: cumulativeText }];
     }
 
-    const termOptions = termCodes.map((code) => {
+    const termOptions = termCodes.map(code => {
       const desc = descriptions[code];
       return {
         key: code,
@@ -38,7 +40,7 @@ function TermSelect({
     return cumulativeOption.concat(termOptions);
   };
 
-  const handleChange = (event: any, { value: newValue }: { value: number }) => {
+  const handleChange = (_event: React.SyntheticEvent, { value: newValue }: { value: number }) => {
     onChange(newValue);
   };
 

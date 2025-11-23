@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
-import { RootState, ExploreParams, CourseExploreEntry, InstructorExploreEntry, SubjectExploreEntry, PaginationData } from '../types';
+import {
+  RootState,
+  ExploreParams,
+  CourseExploreEntry,
+  InstructorExploreEntry,
+  SubjectExploreEntry,
+  PaginationData,
+} from '../types';
 import { Dimmer, Header, Icon, Loader, Pagination, Popup, Table } from 'semantic-ui-react';
 import _ from 'lodash';
 import CourseName from './CourseName';
 import { Link } from 'react-router-dom';
-import { stringify } from 'qs';
 import { Row, Col } from '../components/Grid';
 
 type EntityType = 'instructor' | 'course' | 'subject';
@@ -29,10 +35,14 @@ type Props = OwnProps & PropsFromRedux;
 
 function Explorer({
   entityType,
-  sort = 'gpa_total',
+  sort = 'gpaTotal',
   order = 'desc',
-  onSortOrderChange = () => {},
-  onPageChange = () => {},
+  onSortOrderChange = () => {
+    /* no-op */
+  },
+  onPageChange = () => {
+    /* no-op */
+  },
   page = 1,
   minCountAvg = 0,
   minGpaTotal = 0,
@@ -41,6 +51,15 @@ function Explorer({
   actions,
 }: Props) {
   useEffect(() => {
+    // Convert array params to comma-separated strings for API
+    const processedFilterParams: Record<string, string | number | boolean> = {};
+    if (filterParams.subjects && Array.isArray(filterParams.subjects)) {
+      processedFilterParams.subjects = filterParams.subjects.join(',');
+    }
+    if (filterParams.instructors && Array.isArray(filterParams.instructors)) {
+      processedFilterParams.instructors = filterParams.instructors.join(',');
+    }
+
     const params = {
       page,
       sort,
@@ -48,7 +67,7 @@ function Explorer({
       min_count_avg: minCountAvg,
       min_gpa_total: minGpaTotal,
       per_page: 15,
-      ...filterParams,
+      ...processedFilterParams,
     };
 
     switch (entityType) {
@@ -68,7 +87,9 @@ function Explorer({
 
   const handlePageChange = (_event: React.MouseEvent, data: PaginationData) => {
     const { activePage } = data;
-    onPageChange(activePage);
+    if (typeof activePage === 'number' && !isNaN(activePage) && activePage > 0) {
+      onPageChange(activePage);
+    }
   };
 
   const handleSortChange = (newSort: string) => () => {
@@ -113,7 +134,7 @@ function Explorer({
       );
     } else if ('instructor' in entry) {
       const { instructor } = entry;
-      link = '/search?' + stringify({ instructors: [instructor.id] });
+      link = `/search?${utils.buildQueryString({ instructors: [instructor.id] })}`;
       return (
         <Header as="h4">
           <Header.Content>
@@ -123,7 +144,7 @@ function Explorer({
       );
     } else if ('subject' in entry) {
       const { subject } = entry;
-      link = '/search?' + stringify({ subjects: [subject.code] });
+      link = `/search?${utils.buildQueryString({ subjects: [subject.code] })}`;
       return (
         <Header as="h4">
           <Header.Content>
@@ -136,38 +157,40 @@ function Explorer({
   };
 
   const renderEntries = (results: ExploreEntry[]) => {
-    if (!results) return null;
+    if (!results) {
+      return null;
+    }
 
-    return results.map((entry) => {
+    return results.map(entry => {
       return (
         <Table.Row key={entryKey(entry)}>
           <Table.Cell>{renderEntryName(entry)}</Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. # Grades: </strong>
-            {entry.count_average != null 
-              ? utils.numberWithCommas(parseFloat(entry.count_average.toFixed(1)))
+            {entry.countAvg != null
+              ? utils.numberWithCommas(parseFloat(entry.countAvg.toFixed(1)))
               : 'N/A'}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Total # Grades: </strong>
-            {entry.count_total != null ? utils.numberWithCommas(entry.count_total) : 'N/A'}
+            {entry.gpaTotal != null ? utils.numberWithCommas(entry.gpaTotal) : 'N/A'}
           </Table.Cell>
           <Table.Cell>
             <strong className="mobile only">Avg. GPA: </strong>
-            {entry.gpa_average != null ? entry.gpa_average.toFixed(3) : 'N/A'}
+            {entry.gpa != null ? entry.gpa.toFixed(3) : 'N/A'}
           </Table.Cell>
         </Table.Row>
       );
     });
   };
 
-  const entityName = _.upperFirst(entityType) + 's';
+  const entityName = `${_.upperFirst(entityType)}s`;
   const orderFull = order === 'asc' ? 'ascending' : 'descending';
 
-  const activePage = page;
+  const activePage = typeof page === 'number' && !isNaN(page) && page > 0 ? page : 1;
   let totalPages = 1;
-  let results;
-  let entries: any = [
+  let results: ExploreEntry[] | undefined;
+  let entries: JSX.Element[] = [
     <Table.Row key={1}>
       <Dimmer.Dimmable as={Table.Cell} colSpan={4} style={{ height: '100px' }}>
         <Dimmer active={true} inverted>
@@ -177,9 +200,12 @@ function Explorer({
     </Table.Row>,
   ];
 
-  if (data && !data.isFetching) {
-    totalPages = data.totalPages;
-    results = data.results;
+  if (data && !data.isFetching && data.data) {
+    totalPages =
+      typeof data.data.totalPages === 'number' && !isNaN(data.data.totalPages)
+        ? data.data.totalPages
+        : 1;
+    results = data.data.results;
     entries = renderEntries(results);
   }
 
@@ -189,8 +215,8 @@ function Explorer({
         <Table.Row>
           <Table.HeaderCell>{entityName}</Table.HeaderCell>
           <Table.HeaderCell
-            onClick={handleSortChange('count_avg')}
-            sorted={sort === 'count_avg' ? orderFull : undefined}
+            onClick={handleSortChange('countAvg')}
+            sorted={sort === 'countAvg' ? orderFull : undefined}
           >
             Avg. # Grades{' '}
             <Popup trigger={<Icon color="grey" name="question circle" />}>
@@ -201,8 +227,8 @@ function Explorer({
             </Popup>
           </Table.HeaderCell>
           <Table.HeaderCell
-            onClick={handleSortChange('gpa_total')}
-            sorted={sort === 'gpa_total' ? orderFull : undefined}
+            onClick={handleSortChange('gpaTotal')}
+            sorted={sort === 'gpaTotal' ? orderFull : undefined}
           >
             Total # Grades{' '}
             <Popup trigger={<Icon color="grey" name="question circle" />}>
@@ -261,17 +287,23 @@ function Explorer({
 function mapStateToProps(state: RootState, ownProps: OwnProps) {
   const { entityType } = ownProps;
 
-  let data;
+  let data:
+    | {
+        data?: { results: ExploreEntry[]; totalCount: number; totalPages: number };
+        isFetching?: boolean;
+        params?: unknown;
+      }
+    | undefined;
 
   switch (entityType) {
     case 'instructor':
-      data = state.explore.instructors.data;
+      data = state.explore.instructors;
       break;
     case 'course':
-      data = state.explore.courses.data;
+      data = state.explore.courses;
       break;
     case 'subject':
-      data = state.explore.subjects.data;
+      data = state.explore.subjects;
       break;
     default:
       break;

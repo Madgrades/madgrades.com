@@ -1,7 +1,8 @@
 import * as actionTypes from '../actionTypes';
 import * as _ from 'lodash';
 import { Dispatch } from 'redux';
-import { Course, CourseFilterParams } from '../../types';
+import { Course, CourseFilterParams, RootState } from '../../types';
+import { Api } from '../../utils/api';
 
 const requestCourse = (uuid: string) => {
   return {
@@ -20,12 +21,12 @@ const receiveCourse = (uuid: string, data: Course) => {
 
 export const fetchCourse =
   (uuid: string) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
     const courseData: Course | undefined = state.courses.data[uuid];
 
     // don't fetch again
-    if (courseData) return;
+    if (courseData) {return;}
 
     // request action
     dispatch(requestCourse(uuid));
@@ -50,7 +51,11 @@ interface CourseSearchResult {
   results: string[];
 }
 
-const receiveCourseSearch = (params: CourseFilterParams, page: number, data: CourseSearchResult) => {
+const receiveCourseSearch = (
+  params: CourseFilterParams,
+  page: number,
+  data: CourseSearchResult
+) => {
   return {
     type: actionTypes.RECEIVE_COURSE_SEARCH,
     params,
@@ -61,12 +66,12 @@ const receiveCourseSearch = (params: CourseFilterParams, page: number, data: Cou
 
 export const fetchCourseSearch =
   (params: CourseFilterParams, page: number) =>
-  async (dispatch: Dispatch, getState: () => any, api: any): Promise<void> => {
+  async (dispatch: Dispatch, getState: () => RootState, api: Api): Promise<void> => {
     const state = getState();
     const searchData = state.courses.search;
 
     // if params are the same, we don't need to fetch
-    if (_.isEqual(searchData.params, params)) return;
+    if (_.isEqual(searchData.params, params)) {return;}
 
     // request action
     dispatch(requestCourseSearch(params, page));

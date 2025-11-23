@@ -27,51 +27,53 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
   let secondaryLabel: string | undefined;
   let isLoaded = false;
 
-  let title = course && course.name;
+  let title = course?.name ?? 'Course';
   title += ': Cumulative';
 
   if (data?.cumulative && !data.isFetching) {
     isLoaded = true;
-    const cumulative: GradeDistribution = data.cumulative;
+    const cumulative = data.cumulative as GradeDistribution;
 
     primary = cumulative;
-    label = `Cumulative - ${utils.grades.gpa(cumulative, true)} GPA`;
+    label = `Cumulative - ${String(utils.grades.gpa(cumulative, true))} GPA`;
 
     const termName = termCode && utils.termCodes.toName(termCode);
 
     if (termCode && !instructorId && data.courseOfferings) {
-      const offering = data.courseOfferings.find((o: CourseOfferingData) => o.termCode === termCode);
+      const offering = data.courseOfferings.find(
+        (o: CourseOfferingData) => o.termCode === termCode
+      );
 
       if (offering) {
         secondary = offering.cumulative;
-        secondaryLabel = `${termName}`;
-        title += ` vs. ${termName}`;
+        secondaryLabel = String(termName);
+        title += ` vs. ${String(termName)}`;
       } else {
-        console.error(`Invalid course/term combination: ${uuid}/${termCode}`);
+        console.error(`Invalid course/term combination: ${uuid}/${String(termCode)}`);
       }
     } else if (instructorId && !termCode && data.instructors) {
-      const instructor = data.instructors.find((i) => i.id === instructorId);
+      const instructor = data.instructors.find(i => i.id === instructorId);
 
       if (instructor) {
         secondary = instructor.cumulative;
         secondaryLabel = instructor.name;
         title += ` vs. ${instructor.name}`;
       } else {
-        console.error(`Invalid course/instructor combination: ${uuid}/${instructorId}`);
+        console.error(`Invalid course/instructor combination: ${uuid}/${String(instructorId)}`);
       }
     } else if (instructorId && termCode && data.instructors) {
-      const instructor = data.instructors.find((i) => i.id === instructorId);
+      const instructor = data.instructors.find(i => i.id === instructorId);
 
       if (instructor) {
-        const offering = instructor.terms.find((o) => o.termCode === termCode);
+        const offering = instructor.terms.find(o => o.termCode === termCode);
 
         if (offering) {
           secondary = offering;
-          secondaryLabel = `${instructor.name} (${termName})`;
-          title += ` vs. ${instructor.name} (${termName})`;
+          secondaryLabel = `${instructor.name} (${String(termName)})`;
+          title += ` vs. ${instructor.name} (${String(termName)})`;
         } else {
           console.error(
-            `Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`
+            `Invalid course/instructor/term combination: ${uuid}/${String(instructorId)}/${String(termCode)}`
           );
         }
       }
@@ -80,7 +82,8 @@ function CourseChart({ course, uuid, data, termCode, instructorId, actions }: Pr
     }
 
     if (secondary) {
-      secondaryLabel += ' - ' + utils.grades.gpa(secondary, true) + ' GPA';
+      const gpaString = String(utils.grades.gpa(secondary, true));
+      secondaryLabel = `${secondaryLabel ?? ''  } - ${gpaString} GPA`;
     }
   }
 

@@ -44,7 +44,7 @@ function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
 
   return {
     name: subjectData && subjectData.name,
-    abbreviation: subjectData && subjectData.abbreviation,
+    abbreviation: subjectData?.abbreviation,
   };
 }
 

@@ -3,8 +3,8 @@ import { Container, Dropdown, Header, Form } from 'semantic-ui-react';
 import { Row, Col } from '../components/Grid';
 import Explorer from '../components/Explorer';
 import EntitySelect from '../components/EntitySelect';
-import { parse, stringify } from 'qs';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import utils from '../utils';
 import _ from 'lodash';
 
 const entityOptions = [
@@ -50,24 +50,25 @@ function Explore() {
   }, []);
 
   useEffect(() => {
-    const queryParams = parse(location.search.substr(1));
+    const queryParams = new URLSearchParams(location.search);
     const newEntityType = entity || 'course';
     const minAvg = newEntityType === 'subject' ? 1 : 25;
     const minTotal = newEntityType === 'course' ? 1500 : 500;
 
-    const pageParam = queryParams.page;
+    const subjectsParam = queryParams.getAll('subjects');
+    const instructorsParam = queryParams.getAll('instructors');
+
     const filteredParams: ExploreParams = {
-      page: parseInt(typeof pageParam === 'string' ? pageParam : '1', 10),
-      sort: typeof queryParams.sort === 'string' ? queryParams.sort : undefined,
-      order: typeof queryParams.order === 'string' ? queryParams.order : undefined,
-      subjects: Array.isArray(queryParams.subjects) ? queryParams.subjects as string[] : undefined,
+      page: parseInt(queryParams.get('page') || '1', 10),
+      sort: queryParams.get('sort') || undefined,
+      order: queryParams.get('order') || undefined,
+      subjects: subjectsParam.length > 0 ? subjectsParam : undefined,
       instructors:
-        Array.isArray(queryParams.instructors) 
-          ? (queryParams.instructors as string[]).map((s: string) => parseInt(s, 10))
-          : undefined,
+        instructorsParam.length > 0 ? instructorsParam.map(s => parseInt(s, 10)) : undefined,
     };
 
-    if (!queryParams.instructors) {
+    // Only apply minimums if no filters are active
+    if (subjectsParam.length === 0 && instructorsParam.length === 0) {
       filteredParams.minCountAvg = minAvg;
       filteredParams.minGpaTotal = minTotal;
     }
@@ -78,14 +79,14 @@ function Explore() {
     }
   }, [location, entity]);
 
-  const onEntityChange = (event: any, data: any) => {
-    navigate('/explore/' + data.value);
+  const onEntityChange = (_event: React.SyntheticEvent, data: { value: string }) => {
+    navigate(`/explore/${  data.value}`);
   };
 
   const updateParams = (newParams: ExploreParams) => {
     const { pathname } = location;
     setParams(newParams);
-    navigate(pathname + '?' + stringify(newParams));
+    navigate(`${pathname  }?${  utils.buildQueryString(newParams)}`);
   };
 
   const onPageChange = (page: number) => {
@@ -106,32 +107,32 @@ function Explore() {
     updateParams(newParams);
   };
 
-  const onSubjectChange = (value: any) => {
+  const onSubjectChange = (value: string[] | number[]) => {
     const newParams = {
       ...params,
-      subjects: value,
+      subjects: value as string[],
     };
     updateParams(newParams);
   };
 
-  const onInstructorChange = (value: any) => {
+  const onInstructorChange = (value: string[] | number[]) => {
     const newParams = {
       ...params,
-      instructors: value,
+      instructors: value as number[],
     };
     updateParams(newParams);
   };
 
   const { page, sort, order, minCountAvg, minGpaTotal, subjects, instructors } = params;
 
-  const filterParams: any = {};
+  const filterParams: Partial<ExploreParams> = {};
 
   if (entityType !== 'subject' && subjects) {
-    filterParams.subjects = subjects.join(',');
+    filterParams.subjects = subjects;
   }
 
   if (entityType !== 'subject' && instructors) {
-    filterParams.instructors = instructors.join(',');
+    filterParams.instructors = instructors;
   }
 
   return (
@@ -176,7 +177,7 @@ function Explore() {
         </Row>
 
         <Explorer
-          entityType={entityType as any}
+          entityType={entityType as 'course' | 'instructor' | 'subject'}
           page={page}
           sort={sort}
           order={order}

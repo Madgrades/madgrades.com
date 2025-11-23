@@ -24,7 +24,7 @@ function SearchBox({ searchQuery, navigate }: Props) {
     navigate(`/search?query=${searchValue}`);
   };
 
-  const onInputChange = (event: any, data: { value: string }) => {
+  const onInputChange = (_event: React.ChangeEvent<HTMLInputElement>, data: { value: string }) => {
     setSearchValue(data.value);
   };
 
@@ -61,10 +61,10 @@ function mapStateToProps(state: RootState) {
 }
 
 // HOC to inject navigate as prop
-function withNavigate(Component: React.ComponentType<any>) {
-  return function ComponentWithNavigate(props: any) {
+function withNavigate<P extends OwnProps>(Component: React.ComponentType<P>) {
+  return function ComponentWithNavigate(props: Omit<P, keyof OwnProps>) {
     const navigate = useNavigate();
-    return <Component {...props} navigate={navigate} />;
+    return <Component {...(props as P)} navigate={navigate} />;
   };
 }
 

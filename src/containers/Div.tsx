@@ -1,9 +1,9 @@
 import React from 'react';
 
-interface DivProps {
-  [key: string]: any;
-}
+type DivProps = React.ComponentProps<'div'>;
 
-const Div: React.FC<DivProps> = (props) => <div {...props} />;
+function Div(props: DivProps) {
+  return <div {...props} />;
+}
 
 export default Div;

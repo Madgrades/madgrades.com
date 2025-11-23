@@ -3,8 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import utils from '../utils';
 import { Dropdown } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
-import { stringify } from 'qs';
-import { RootState, CourseFilterParams } from '../types';
+import { RootState } from '../types';
 
 const sortOptions = [
   {
@@ -44,7 +43,7 @@ function CourseSortForm({ courseFilterParams, navigate }: Props) {
       newValue = 'relevance';
     } else if (sort === 'number') {
       newValue = 'number';
-      if (order === 'desc') newValue = 'number_desc';
+      if (order === 'desc') {newValue = 'number_desc';}
     }
 
     if (newValue && newValue !== value) {
@@ -66,12 +65,14 @@ function CourseSortForm({ courseFilterParams, navigate }: Props) {
       // nothing to do
     }
 
-    const params = {
-      ...courseFilterParams,
-      sort,
-      order,
-    };
-    navigate('/search?' + stringify(params, { encode: false }));
+    navigate(
+      `/search?${ 
+        utils.buildQueryString({
+          ...courseFilterParams,
+          sort,
+          order,
+        })}`
+    );
   };
 
   return (

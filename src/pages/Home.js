@@ -56,6 +56,13 @@ const Home = () => {
           </Header>
 
           <PromoCard
+            title="UW Course Map"
+            description="Visualize course prerequisites with an interactive graph. Explore 10,000+ courses, view detailed course info, and check professor ratings all in one place."
+            link="https://uwcourses.com"
+            dateAdded="2025-11-24"
+          />
+
+          <PromoCard
             title="EnrollAlert"
             description="Get notified instantly when seats open up in your courses. Real-time updates synced with UW Course Search & Enroll give you peace of mind and the best chance to snag that perfect class."
             link="https://enrollalert.com"

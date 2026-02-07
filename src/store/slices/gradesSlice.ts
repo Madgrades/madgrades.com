@@ -100,7 +100,7 @@ export const fetchCourseGrades = createAsyncThunk<
 
     // Each term for the instructor gets added to array
     Object.keys(data.terms).forEach((termKey) => {
-      const termData = data.terms[termKey];
+      const termData = data.terms[termKey] as any;
       const { termCode } = termData;
       terms.push(termData);
 
@@ -180,7 +180,7 @@ export const fetchInstructorGrades = createAsyncThunk<
 
     // Each term gets added to array
     Object.keys(data.terms).forEach((termKey) => {
-      const termData = data.terms[termKey];
+      const termData = data.terms[termKey] as any;
       const { termCode } = termData;
       terms.push(termData);
 

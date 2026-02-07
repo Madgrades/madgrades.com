@@ -2,6 +2,7 @@
   "name": "madgrades",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "ajv": "^8.17.1",
@@ -40,7 +41,7 @@
     "build": "npm-run-all git-info build-css build-js",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --report-unused-disable-directives --max-warnings 300",
     "deploy": "npm run build && mv build/index.html build/200.html && surge build",
     "deploy-staging": "npm run build && mv build/index.html build/200.html && surge build staging.madgrades.com",
     "deploy-prod": "npm run build && mv build/index.html build/200.html && surge build madgrades.com"

@@ -102,14 +102,14 @@ const instructorsSlice = createSlice({
         const id = action.meta.arg;
         state.data[id.toString()] = {
           isFetching: true,
-          id: Number(id),
+          id: id,
         };
       })
       .addCase(fetchInstructor.fulfilled, (state, action) => {
         const id = action.meta.arg;
         state.data[id.toString()] = {
           isFetching: false,
-          id: Number(id),
+          id: id,
           data: action.payload,
         };
       })

@@ -64,7 +64,7 @@ class SiteFooter extends Component {
               color="teal"
               horizontal
               as="a"
-              href={process.env.REACT_APP_MADGRADES_API}
+              href={import.meta.env.VITE_MADGRADES_API}
             >
               <Icon name="code" />
               API

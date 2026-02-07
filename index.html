@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <title>Madgrades</title>
+    <meta
+      name="description"
+      content="Search and visualize University of Wisconsin Madison (UW Madison) course grade distributions."
+    />
+    <!-- Google Analytics GA4 -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_TRACKING_ID%"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "%VITE_GA4_TRACKING_ID%");
+    </script>
+    <!-- AdSense client -->
+    <script
+      data-ad-client="%VITE_ADSENSE_CLIENT%"
+      async
+      src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+    ></script>
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "%VITE_URL%",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "%VITE_URL%/search?query={search_term_string}",
+          "query-input": {
+            "@type": "PropertyValueSpecification",
+            "valueRequired": true,
+            "valueName": "search_term_string"
+          }
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
+  </body>
+</html>

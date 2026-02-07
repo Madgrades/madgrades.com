@@ -20,7 +20,7 @@ class AdSlot extends Component {
         width: this.props.adWidth || "auto",
         height: this.props.adHeight || "auto",
       }}
-      data-ad-client={process.env.REACT_APP_ADSENSE_CLIENT}
+      data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT}
       data-ad-slot={this.props.slot}
     ></ins>
   );

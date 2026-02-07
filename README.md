@@ -24,9 +24,18 @@ $ docker run --env-file .env -p 3000:3000 madgrades.com
 
 ### Requirements
 
-* Nodejs >= 10 (?)
-* NPM
+* Node.js >= 18
+* NPM >= 8
 * Git
+
+### Tech Stack
+
+* **React 19** - Modern React with latest features
+* **Vite** - Fast build tool and dev server (replaced Create React App)
+* **Redux + Redux Thunk** - State management
+* **React Router 6** - Client-side routing
+* **Semantic UI React** - UI component library
+* **SASS** - CSS preprocessing
 
 ### Steps
 

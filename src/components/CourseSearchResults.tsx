@@ -8,17 +8,7 @@ import Div from "../containers/Div";
 import * as _ from "lodash";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import { stringify } from "qs";
-import { Course } from "../types/api";
-
-interface CourseFilterParams {
-  page?: number;
-  compareWith?: string;
-  query?: string;
-  subjects?: string[];
-  instructors?: number[];
-  sort?: string;
-  order?: 'asc' | 'desc';
-}
+import { Course, CourseFilterParams } from "../types/api";
 
 interface SearchData {
   results?: Course[];
@@ -101,7 +91,7 @@ class CourseSearchResultsClass extends Component<CourseSearchResultsProps> {
                     content: <Icon name="angle right" />,
                     icon: true,
                   }}
-                  totalPages={totalPages}
+                  totalPages={totalPages || 1}
                   size="mini"
                   siblingRange={1}
                 />
@@ -126,7 +116,7 @@ const CourseSearchResults: React.FC = () => {
   const courseFilterParams = useAppSelector(state => state.app.courseFilterParams);
   const search = useAppSelector(state => state.courses.search);
   
-  const page = courseFilterParams?.page || 1;
+  const page = courseFilterParams.page || 1;
   const searchData = search.pages?.[page] || {};
   const isFetching = search.isFetching;
 

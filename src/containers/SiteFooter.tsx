@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Container, Divider, List, Label, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "../components/Grid";
@@ -22,13 +22,14 @@ class SiteFooter extends Component<Record<string, never>, SiteFooterState> {
     fetch(gitRevFile)
       .then((response) => response.text())
       .then((text) => {
+        const rev = text.split(" ")[0];
         this.setState({
-          gitRev: text.split(" ")[0],
+          gitRev: rev || "",
         });
       });
   };
 
-  render = (): JSX.Element => (
+  render = () => (
     <div className="SiteFooter">
       <Divider />
       <Container>

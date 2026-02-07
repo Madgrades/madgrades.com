@@ -3,16 +3,7 @@ import { useAppDispatch } from "../store/hooks";
 import { setCourseFilterParams } from "../store/slices/appSlice";
 import { fetchCourseSearch } from "../store/slices/coursesSlice";
 import _ from "lodash";
-
-interface CourseFilterParams {
-  query?: string;
-  page?: number;
-  subjects?: string[];
-  instructors?: number[];
-  sort?: string;
-  order?: 'asc' | 'desc';
-  compareWith?: string;
-}
+import { CourseFilterParams } from "../types/api";
 
 interface SetCourseFilterParamsProps {
   params: CourseFilterParams;
@@ -26,8 +17,17 @@ class SetCourseFilterParamsClass extends Component<SetCourseFilterParamsClassPro
   setCourseFilterParams = (): void => {
     const { params, dispatch } = this.props;
     const { page } = params;
-    dispatch(setCourseFilterParams(params));
-    dispatch(fetchCourseSearch({ params, page: page || 1 }));
+    
+    const normalizedParams: CourseFilterParams = {
+      ...params,
+      subjects: Array.isArray(params.subjects) ? params.subjects : (params.subjects ? [params.subjects] : undefined),
+      instructors: Array.isArray(params.instructors) 
+        ? params.instructors.map(i => typeof i === 'number' ? i : parseInt(String(i), 10))
+        : (params.instructors ? [typeof params.instructors === 'number' ? params.instructors : parseInt(String(params.instructors), 10)] : undefined)
+    };
+    
+    dispatch(setCourseFilterParams(normalizedParams));
+    dispatch(fetchCourseSearch({ params: normalizedParams, page: page || 1 }));
   };
 
   componentDidMount = (): void => {

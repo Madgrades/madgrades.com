@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 
 declare global {
   interface Window {
@@ -17,7 +17,7 @@ class AdSlot extends Component<AdSlotProps> {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   };
 
-  render = (): JSX.Element => (
+  render = () => (
     <ins
       className="adsbygoogle"
       style={{

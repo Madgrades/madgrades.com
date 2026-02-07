@@ -28,7 +28,7 @@ class CourseChartClass extends Component<CourseChartClassProps> {
   render = () => {
     const { course, uuid, data, termCode, instructorId } = this.props;
 
-    let chart: JSX.Element;
+    let chart: React.ReactNode;
     let primary: GradeDistribution | undefined;
     let label: string | undefined;
     let secondary: GradeDistribution | undefined;

@@ -53,7 +53,7 @@ class TermSelect extends Component<TermSelectProps> {
     this.props.onChange!(value as number);
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { value } = this.props;
     const options = this.generateOptions();
 
@@ -62,7 +62,7 @@ class TermSelect extends Component<TermSelectProps> {
         fluid
         selection
         search
-        value={value || options[0].value}
+        value={value !== undefined ? value : options[0]?.value}
         options={options}
         onChange={this.onChange}
       />

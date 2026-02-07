@@ -30,7 +30,7 @@ import {
   ExploreSubjectsResponse,
 } from "../types/api";
 
-type EntityType = "instructor" | "course" | "subject";
+export type EntityType = "instructor" | "course" | "subject";
 type ExploreEntry = ExploreCourseEntry | ExploreInstructorEntry | ExploreSubjectEntry;
 type ExploreResponse = ExploreCoursesResponse | ExploreInstructorsResponse | ExploreSubjectsResponse;
 
@@ -246,7 +246,7 @@ class ExplorerClass extends Component<ExplorerClassProps> {
     const activePage = page!;
     let totalPages = 1;
     let results: ExploreEntry[] | undefined;
-    let entries: JSX.Element[] = [
+    let entries: React.ReactNode[] = [
       <Table.Row key={1}>
         <Dimmer.Dimmable
           as={Table.Cell}

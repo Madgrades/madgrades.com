@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import {
   CartesianGrid,
   Label,
@@ -23,15 +23,16 @@ interface ChartDataPoint {
 }
 
 export class GpaChart extends Component<GpaChartProps> {
-  render = (): JSX.Element | null => {
+  render = () => {
     const { title, gradeDistributions } = this.props;
 
     if (!gradeDistributions)
       return null;
 
     const data: ChartDataPoint[] = gradeDistributions.map(gradeDistribution => {
+      const gpaValue = utils.grades.gpa(gradeDistribution);
       return {
-        gpa: utils.grades.gpa(gradeDistribution),
+        gpa: typeof gpaValue === 'number' ? gpaValue : 0,
         termName: utils.termCodes.toName(gradeDistribution.termCode)
       };
     });
@@ -50,7 +51,7 @@ export class GpaChart extends Component<GpaChartProps> {
             <LineChart data={data} margin={{ top: 10, right: 20, left: -15, bottom: 50 }}>
               <CartesianGrid stroke='#ccc' />
               <XAxis dataKey='termName' interval={0} angle={-45} textAnchor='end' type='category' />
-              <YAxis domain={[min => Math.floor(Math.min(3.0, min as number)), _max => 4.0]}>
+              <YAxis domain={[(min: number) => Math.floor(Math.min(3.0, min)), (_max: number) => 4.0]}>
                 <Label value='Average GPA' position='insideLeft' dx={15} dy={25} angle={-90} />
               </YAxis>
               <Line type='monotone' dataKey='gpa' isAnimationActive={false} />

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Dropdown, Header, Form, DropdownProps } from "semantic-ui-react";
 import { Row, Col } from "../components/Grid";
-import Explorer from "../components/Explorer";
+import Explorer, { EntityType } from "../components/Explorer";
 import EntitySelect from "../components/EntitySelect";
 import { parse, stringify } from "qs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -69,8 +69,9 @@ class Explore extends Component<ExploreProps, ExploreState> {
       sort: params.sort as string,
       order: params.order as string,
       subjects: params.subjects as string[],
-      instructors:
-        params.instructors && (params.instructors as string[]).map((s: string) => parseInt(s, 10)),
+      instructors: params.instructors 
+        ? (params.instructors === "" ? [] : (params.instructors as string[]).map((s: string) => parseInt(s, 10)))
+        : undefined,
     };
 
     if (!params.instructors) {
@@ -98,8 +99,9 @@ class Explore extends Component<ExploreProps, ExploreState> {
       sort: params.sort as string,
       order: params.order as string,
       subjects: params.subjects as string[],
-      instructors:
-        params.instructors && (params.instructors as string[]).map((s: string) => parseInt(s, 10)),
+      instructors: params.instructors 
+        ? (params.instructors === "" ? undefined : (params.instructors as string[]).map((s: string) => parseInt(s, 10)))
+        : undefined,
     };
 
     if (!params.instructors) {
@@ -171,25 +173,25 @@ class Explore extends Component<ExploreProps, ExploreState> {
     this.updateParams(params);
   };
 
-  onSubjectChange = (value: string[]): void => {
+  onSubjectChange = (value: (string | number)[]): void => {
     const params = {
       ...this.state.params,
-      subjects: value,
+      subjects: value.map(v => String(v)),
     };
 
     this.updateParams(params);
   };
 
-  onInstructorChange = (value: number[]): void => {
+  onInstructorChange = (value: (string | number)[]): void => {
     const params = {
       ...this.state.params,
-      instructors: value,
+      instructors: value.map(v => typeof v === 'number' ? v : parseInt(String(v), 10)),
     };
 
     this.updateParams(params);
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const {
       page,
       sort,
@@ -265,7 +267,7 @@ class Explore extends Component<ExploreProps, ExploreState> {
           </Row>
 
           <Explorer
-            entityType={entityType}
+            entityType={entityType as EntityType}
             page={page}
             sort={sort}
             order={order}

@@ -169,4 +169,5 @@ export interface CourseFilterParams {
   instructors?: string | string[] | number[];
   sort?: string;
   order?: 'asc' | 'desc';
+  compareWith?: string;
 }

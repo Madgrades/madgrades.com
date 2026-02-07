@@ -11,7 +11,7 @@ import AdSlot from "../containers/AdSlot";
 import { useLocation } from "react-router-dom";
 
 interface SearchParams {
-  query: string | null;
+  query: string | undefined;
   page: number;
   subjects: string[] | undefined;
   instructors: number[] | undefined;
@@ -23,7 +23,7 @@ interface SearchParams {
 const extractParams = (location: { search: string }): SearchParams => {
   const params = parse(location.search.substr(1));
 
-  const query = params.query as string || null;
+  const query = params.query as string || undefined;
   const page = parseInt((params.page as string) || "1", 10);
   
   let subjects: string[] | undefined = undefined;

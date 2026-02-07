@@ -32,7 +32,7 @@ class SiteHeader extends Component<SiteHeaderProps, SiteHeaderState> {
     });
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { isNavToggled } = this.state;
     const toggled = isNavToggled ? "toggled" : "";
 

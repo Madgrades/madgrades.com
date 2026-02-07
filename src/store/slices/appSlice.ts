@@ -1,15 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
-import type { Term } from '../../types/api';
+import type { Term, CourseFilterParams } from '../../types/api';
 
 // Define types
-interface CourseFilterParams {
-  subjects?: string | string[];
-  instructors?: string | string[];
-  sort?: string;
-  order?: 'asc' | 'desc';
-}
-
 interface AppState {
   searchQuery: string;
   courseFilterParams: CourseFilterParams;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { useAppDispatch } from '../store/hooks';
 
 interface TemplateProps {
   example?: number;
@@ -16,7 +15,7 @@ class TemplateClass extends Component<TemplateProps> {
 }
 
 const Template: React.FC<TemplateProps> = (props) => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   
   return <TemplateClass {...props} />;
 };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import {
   Bar,
   BarChart,
@@ -13,19 +13,23 @@ import utils from '../../utils';
 import { GradeDistribution } from '../../types/api';
 
 interface BarLabelProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  value?: string;
+  x?: string | number;
+  y?: string | number;
+  width?: string | number;
+  value?: string | number;
 }
 
-const renderBarLabel = (props: BarLabelProps): JSX.Element => {
+const renderBarLabel = (props: BarLabelProps) => {
   const { x, y, width, value } = props;
+  const xNum = typeof x === 'number' ? x : parseFloat(String(x || 0));
+  const yNum = typeof y === 'number' ? y : parseFloat(String(y || 0));
+  const widthNum = typeof width === 'number' ? width : parseFloat(String(width || 0));
+  const valueStr = String(value || '');
 
   return (
     <text textAnchor='middle' dominantBaseline='middle'>
-      <tspan x={(x || 0) + (width || 0) / 2} y={(y || 0) - 24} fontSize='80%' fontWeight='bold'>{(value || '').split('\n')[0]}</tspan>
-      <tspan x={(x || 0) + (width || 0) / 2} y={(y || 0) - 10} fontSize='70%'>{(value || '').split('\n')[1]}</tspan>
+      <tspan x={xNum + widthNum / 2} y={yNum - 24} fontSize='80%' fontWeight='bold'>{valueStr.split('\n')[0]}</tspan>
+      <tspan x={xNum + widthNum / 2} y={yNum - 10} fontSize='70%'>{valueStr.split('\n')[1]}</tspan>
     </text>
   );
 };
@@ -53,7 +57,7 @@ class GradeDistributionChart extends Component<GradeDistributionChartProps> {
     secondaryLabel: 'Secondary'
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { title, primary, secondary } = this.props;
     let { primaryLabel, secondaryLabel } = this.props;
 

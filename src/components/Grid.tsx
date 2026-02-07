@@ -23,7 +23,7 @@ export const Row: React.FC<RowProps> = ({ children, center, middle, between, ...
 
 interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
-  xs?: number;
+  xs?: number | boolean;
   sm?: number | boolean;
   md?: number;
   lg?: number;
@@ -33,7 +33,7 @@ interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Col: React.FC<ColProps> = ({ children, xs, sm, md, lg, auto, ...props }) => {
   const classNames = ["grid-col"];
 
-  if (xs) classNames.push(`grid-col-xs-${xs}`);
+  if (xs) classNames.push(`grid-col-xs-${typeof xs === 'number' ? xs : ''}`);
   if (sm) classNames.push(`grid-col-sm-${typeof sm === 'number' ? sm : ''}`);
   if (md) classNames.push(`grid-col-md-${md}`);
   if (lg) classNames.push(`grid-col-lg-${lg}`);

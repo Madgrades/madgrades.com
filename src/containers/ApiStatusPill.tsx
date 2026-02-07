@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Label, Icon, SemanticCOLORS } from "semantic-ui-react";
 import fetchStatus from "../utils/fetchStatus";
 
@@ -26,7 +26,7 @@ class ApiStatusPill extends Component<Record<string, never>, ApiStatusPillState>
     });
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { uptime, status } = this.state;
 
     const uptimePercent =

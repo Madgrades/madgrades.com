@@ -8,7 +8,7 @@ interface SubjectNameListProps {
 }
 
 const SubjectNameList: React.FC<SubjectNameListProps> = ({ subjectCodes, subjects }) => {
-  const result: JSX.Element[] = [];
+  const result: React.ReactNode[] = [];
   const count = (subjectCodes || subjects)!.length;
   let keys: string[] = [];
 

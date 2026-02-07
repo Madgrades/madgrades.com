@@ -3,6 +3,7 @@ import { useAppSelector } from "../store/hooks";
 import { Dropdown, DropdownProps } from "semantic-ui-react";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import { stringify } from "qs";
+import { CourseFilterParams } from "../types/api";
 
 interface SortOption {
   key: string;
@@ -27,16 +28,6 @@ const sortOptions: SortOption[] = [
     value: "number_desc",
   },
 ];
-
-interface CourseFilterParams {
-  sort?: string;
-  order?: string;
-  query?: string;
-  page?: number;
-  subjects?: string[];
-  instructors?: number[];
-  compareWith?: string;
-}
 
 interface CourseSortFormProps {
   courseFilterParams: CourseFilterParams;

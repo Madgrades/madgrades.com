@@ -5,16 +5,7 @@ import EntitySelect from "./EntitySelect";
 import { useNavigate, NavigateFunction } from "react-router-dom";
 import { stringify } from "qs";
 import * as _ from "lodash";
-
-interface CourseFilterParams {
-  query?: string;
-  page?: number;
-  subjects?: string[];
-  instructors?: number[];
-  sort?: string;
-  order?: 'asc' | 'desc';
-  compareWith?: string;
-}
+import { CourseFilterParams } from "../types/api";
 
 interface CourseFilterFormProps {
   courseFilterParams: CourseFilterParams;
@@ -38,10 +29,15 @@ class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilte
     if (
       !_.isEqual(prevProps.courseFilterParams, this.props.courseFilterParams)
     ) {
-      const { query } = this.props.courseFilterParams;
+      const { query, subjects, instructors } = this.props.courseFilterParams;
+      const normalizedSubjects = Array.isArray(subjects) ? subjects : (subjects ? [subjects] : []);
+      const normalizedInstructors = Array.isArray(instructors) 
+        ? instructors.map(i => typeof i === 'number' ? i : parseInt(String(i), 10))
+        : (instructors ? [typeof instructors === 'number' ? instructors : parseInt(String(instructors), 10)] : []);
+      
       this.setState({
-        subjects: subjects || [],
-        instructors: instructors || [],
+        subjects: normalizedSubjects,
+        instructors: normalizedInstructors,
         query: query || "",
       });
     }

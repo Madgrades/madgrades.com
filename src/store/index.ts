@@ -2,10 +2,20 @@ import { configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import utils from '../utils';
 import appReducer from './slices/appSlice';
+import coursesReducer from './slices/coursesSlice';
+import instructorsReducer from './slices/instructorsSlice';
+import subjectsReducer from './slices/subjectsSlice';
+import gradesReducer from './slices/gradesSlice';
+import exploreReducer from './slices/exploreSlice';
 
 // Root reducer
 const rootReducer = {
   app: appReducer,
+  courses: coursesReducer,
+  instructors: instructorsReducer,
+  subjects: subjectsReducer,
+  grades: gradesReducer,
+  explore: exploreReducer,
 };
 
 const api = utils.api.create(

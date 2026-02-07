@@ -13,24 +13,30 @@ import logger from "redux-logger";
 import initReactFastclick from "react-fastclick";
 import "babel-polyfill";
 
+console.log("REACT_APP_MADGRADES_API:", process.env.REACT_APP_MADGRADES_API);
+console.log(
+  "REACT_APP_MADGRADES_API_TOKEN present:",
+  !!process.env.REACT_APP_MADGRADES_API_TOKEN,
+);
+
 const api = utils.api.create(
   process.env.REACT_APP_MADGRADES_API || "https://api.madgrades.com/",
-  process.env.REACT_APP_MADGRADES_API_TOKEN
+  process.env.REACT_APP_MADGRADES_API_TOKEN,
 );
 
 const store = createStore(
   combineReducers(reducers),
   applyMiddleware(
-    withExtraArgument(api)
+    withExtraArgument(api),
     // logger
-  )
+  ),
 );
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <App />
-  </Provider>
+  </Provider>,
 );
 
 initReactFastclick();

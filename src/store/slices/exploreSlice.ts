@@ -1,22 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { isEqual } from 'lodash';
 import type { RootState } from '../index';
+import type {
+  ExploreCoursesResponse,
+  ExploreInstructorsResponse,
+  ExploreSubjectsResponse,
+} from '../../types/api';
+import type { ApiClient } from '../../types/apiClient';
 
 // Define types
 interface ExploreParams {
-  [key: string]: any;
+  [key: string]: string | number | undefined;
 }
 
-interface ExploreData {
+interface ExploreData<T> {
   params: ExploreParams;
   isFetching: boolean;
-  data?: any;
+  data?: T;
 }
 
 interface ExploreState {
-  courses: ExploreData;
-  instructors: ExploreData;
-  subjects: ExploreData;
+  courses: ExploreData<ExploreCoursesResponse>;
+  instructors: ExploreData<ExploreInstructorsResponse>;
+  subjects: ExploreData<ExploreSubjectsResponse>;
 }
 
 // Initial state
@@ -37,9 +43,9 @@ const initialState: ExploreState = {
 
 // Async thunks
 export const fetchExploreCourses = createAsyncThunk<
-  { params: ExploreParams; data: any },
+  { params: ExploreParams; data: ExploreCoursesResponse },
   ExploreParams,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('explore/fetchExploreCourses', async (params, { getState, extra: api }) => {
   const state = getState();
 
@@ -53,9 +59,9 @@ export const fetchExploreCourses = createAsyncThunk<
 });
 
 export const fetchExploreInstructors = createAsyncThunk<
-  { params: ExploreParams; data: any },
+  { params: ExploreParams; data: ExploreInstructorsResponse },
   ExploreParams,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('explore/fetchExploreInstructors', async (params, { getState, extra: api }) => {
   const state = getState();
 
@@ -69,9 +75,9 @@ export const fetchExploreInstructors = createAsyncThunk<
 });
 
 export const fetchExploreSubjects = createAsyncThunk<
-  { params: ExploreParams; data: any },
+  { params: ExploreParams; data: ExploreSubjectsResponse },
   ExploreParams,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('explore/fetchExploreSubjects', async (params, { getState, extra: api }) => {
   const state = getState();
 

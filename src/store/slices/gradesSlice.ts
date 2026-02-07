@@ -1,20 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import utils from '../../utils';
 import type { RootState } from '../index';
+import type {
+  CourseGradesResponse,
+  InstructorGradesResponse,
+  CourseOffering,
+  InstructorWithGrades,
+  CourseWithGrades,
+  GradeDistribution,
+} from '../../types/api';
+import type { ApiClient } from '../../types/apiClient';
 
 // Define types
 interface CourseGradesData {
   isFetching: boolean;
-  courseOfferings?: any[];
-  instructors?: any[];
-  [key: string]: any;
+  courseOfferings?: CourseOffering[];
+  instructors?: InstructorWithGrades[];
 }
 
 interface InstructorGradesData {
   isFetching: boolean;
-  courseOfferings?: any[];
-  courses?: any[];
-  [key: string]: any;
+  courseOfferings?: Array<CourseOffering & { courseUuid: string }>;
+  courses?: CourseWithGrades[];
 }
 
 interface GradesState {
@@ -38,33 +45,39 @@ const initialState: GradesState = {
 
 // Async thunks
 export const fetchCourseGrades = createAsyncThunk<
-  any,
+  CourseGradesResponse,
   string,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('grades/fetchCourseGrades', async (uuid, { getState, extra: api }) => {
   const state = getState();
   const gradesData = state.grades.courses.data[uuid];
 
   // Don't fetch if already loaded
   if (gradesData && !gradesData.isFetching && gradesData.courseOfferings) {
-    return gradesData;
+    return gradesData as CourseGradesResponse;
   }
 
   // Perform request
   const rawData = await api.getCourseGrades(uuid);
 
   // Process the data to view by instructor
-  const byInstructor: Record<string, any> = {};
+  const byInstructor: Record<
+    string,
+    {
+      id: number;
+      terms: Record<number, GradeDistribution & { termCode: number }>;
+    }
+  > = {};
   const instructorNames: Record<string, string> = {};
 
   // Iterate each offering
-  rawData.courseOfferings.forEach((offering: any) => {
+  rawData.courseOfferings.forEach((offering) => {
     const { termCode } = offering;
 
     // Each section
-    offering.sections.forEach((section: any) => {
+    offering.sections.forEach((section) => {
       // Each instructor for the section
-      section.instructors.forEach((instructor: any) => {
+      section.instructors.forEach((instructor) => {
         const { id, name } = instructor;
         instructorNames[id] = name;
 
@@ -90,17 +103,17 @@ export const fetchCourseGrades = createAsyncThunk<
   });
 
   // Arrange the data by instructor
-  rawData.instructors = [];
+  const instructors: InstructorWithGrades[] = [];
 
   // Iterate each instructor key
   Object.keys(byInstructor).forEach((instructorKey) => {
     const data = byInstructor[instructorKey];
-    const terms: any[] = [];
+    const terms: Array<GradeDistribution & { termCode: number }> = [];
     let latestTerm = 0;
 
     // Each term for the instructor gets added to array
     Object.keys(data.terms).forEach((termKey) => {
-      const termData = data.terms[termKey] as any;
+      const termData = data.terms[Number(termKey)];
       const { termCode } = termData;
       terms.push(termData);
 
@@ -114,7 +127,7 @@ export const fetchCourseGrades = createAsyncThunk<
     const cumulative = utils.grades.combineAll(terms);
 
     // Add instructor to data
-    rawData.instructors.push({
+    instructors.push({
       id: data.id,
       name: instructorNames[data.id],
       cumulative,
@@ -124,31 +137,37 @@ export const fetchCourseGrades = createAsyncThunk<
   });
 
   // Sort instructors by most recent teachings first
-  rawData.instructors.sort((a: any, b: any) => b.latestTerm - a.latestTerm);
+  instructors.sort((a, b) => b.latestTerm - a.latestTerm);
 
-  return rawData;
+  return { ...rawData, instructors };
 });
 
 export const fetchInstructorGrades = createAsyncThunk<
-  any,
+  InstructorGradesResponse,
   number,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('grades/fetchInstructorGrades', async (id, { getState, extra: api }) => {
   const state = getState();
   const gradesData = state.grades.instructors.data[id];
 
   // Don't fetch if already loaded
   if (gradesData && !gradesData.isFetching && gradesData.courseOfferings) {
-    return gradesData;
+    return gradesData as InstructorGradesResponse;
   }
 
   // Get JSON
   const rawData = await api.getInstructorGrades(id);
 
-  const byCourse: Record<string, any> = {};
+  const byCourse: Record<
+    string,
+    {
+      uuid: string;
+      terms: Record<number, GradeDistribution & { termCode: number }>;
+    }
+  > = {};
 
   // Iterate each offering
-  rawData.courseOfferings.forEach((offering: any) => {
+  rawData.courseOfferings.forEach((offering) => {
     const { termCode, courseUuid } = offering;
 
     let courseGrades = byCourse[courseUuid];
@@ -170,17 +189,17 @@ export const fetchInstructorGrades = createAsyncThunk<
   });
 
   // Arrange the data by course
-  rawData.courses = [];
+  const courses: CourseWithGrades[] = [];
 
   // Iterate each course key
   Object.keys(byCourse).forEach((courseKey) => {
     const data = byCourse[courseKey];
-    const terms: any[] = [];
+    const terms: Array<GradeDistribution & { termCode: number }> = [];
     let latestTerm = 0;
 
     // Each term gets added to array
     Object.keys(data.terms).forEach((termKey) => {
-      const termData = data.terms[termKey] as any;
+      const termData = data.terms[Number(termKey)];
       const { termCode } = termData;
       terms.push(termData);
 
@@ -194,7 +213,7 @@ export const fetchInstructorGrades = createAsyncThunk<
     const cumulative = utils.grades.combineAll(terms);
 
     // Add course to data
-    rawData.courses.push({
+    courses.push({
       uuid: data.uuid,
       cumulative,
       terms,
@@ -203,9 +222,9 @@ export const fetchInstructorGrades = createAsyncThunk<
   });
 
   // Sort courses by most recent teachings first
-  rawData.courses.sort((a: any, b: any) => b.latestTerm - a.latestTerm);
+  courses.sort((a, b) => b.latestTerm - a.latestTerm);
 
-  return rawData;
+  return { ...rawData, courses };
 });
 
 // Slice

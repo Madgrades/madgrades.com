@@ -1,30 +1,18 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
+import type { Instructor, InstructorSearchResponse } from '../../types/api';
+import type { ApiClient } from '../../types/apiClient';
 
 // Define types
-interface Instructor {
-  id: number;
-  name: string;
-  // Add other instructor properties as needed
-  [key: string]: any;
-}
-
 interface InstructorData {
   isFetching: boolean;
   id: number;
   data?: Instructor;
 }
 
-interface SearchResult {
-  results: Instructor[];
-  total: number;
-  page: number;
-  perPage: number;
-}
-
 interface SearchPageData {
   isFetching: boolean;
-  data?: SearchResult;
+  data?: InstructorSearchResponse;
 }
 
 interface InstructorsState {
@@ -42,16 +30,16 @@ const initialState: InstructorsState = {
 export const fetchInstructor = createAsyncThunk<
   Instructor,
   number,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('instructors/fetchInstructor', async (id, { extra: api }) => {
   const response = await api.getInstructor(id);
   return response;
 });
 
 export const fetchInstructorSearch = createAsyncThunk<
-  { query: string; page: number; data: SearchResult },
+  { query: string; page: number; data: InstructorSearchResponse },
   { query: string; page: number },
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >(
   'instructors/fetchInstructorSearch',
   async ({ query, page }, { getState, extra: api, dispatch }) => {
@@ -66,16 +54,14 @@ export const fetchInstructorSearch = createAsyncThunk<
     const data = await api.searchInstructors(query, page);
 
     // Populate individual instructor data
-    if (data.results) {
-      data.results.forEach((instructor: Instructor) => {
-        dispatch(
-          instructorsSlice.actions.receiveInstructor({
-            id: instructor.id,
-            data: instructor,
-          })
-        );
-      });
-    }
+    data.results.forEach((instructor) => {
+      dispatch(
+        instructorsSlice.actions.receiveInstructor({
+          id: instructor.id,
+          data: instructor,
+        })
+      );
+    });
 
     return { query, page, data };
   }
@@ -86,11 +72,11 @@ const instructorsSlice = createSlice({
   name: 'instructors',
   initialState,
   reducers: {
-    receiveInstructor: (state, action) => {
+    receiveInstructor: (state, action: PayloadAction<{ id: number; data: Instructor }>) => {
       const { id, data } = action.payload;
       state.data[id.toString()] = {
         isFetching: false,
-        id: Number(id),
+        id,
         data,
       };
     },

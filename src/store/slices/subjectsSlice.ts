@@ -1,30 +1,18 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
+import type { Subject, SubjectSearchResponse } from '../../types/api';
+import type { ApiClient } from '../../types/apiClient';
 
 // Define types
-interface Subject {
-  code: string;
-  name: string;
-  // Add other subject properties as needed
-  [key: string]: any;
-}
-
 interface SubjectData {
   isFetching: boolean;
   code: string;
   data?: Subject;
 }
 
-interface SearchResult {
-  results: Subject[];
-  total: number;
-  page: number;
-  perPage: number;
-}
-
 interface SearchPageData {
   isFetching: boolean;
-  data?: SearchResult;
+  data?: SubjectSearchResponse;
 }
 
 interface SubjectsState {
@@ -42,7 +30,7 @@ const initialState: SubjectsState = {
 export const fetchSubject = createAsyncThunk<
   Subject,
   string,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('subjects/fetchSubject', async (code, { getState, extra: api }) => {
   const state = getState();
   const subjectData = state.subjects.data[code];
@@ -57,9 +45,9 @@ export const fetchSubject = createAsyncThunk<
 });
 
 export const fetchSubjectSearch = createAsyncThunk<
-  { query: string; page: number; data: SearchResult },
+  { query: string; page: number; data: SubjectSearchResponse },
   { query: string; page: number },
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >(
   'subjects/fetchSubjectSearch',
   async ({ query, page }, { getState, extra: api, dispatch }) => {
@@ -74,16 +62,14 @@ export const fetchSubjectSearch = createAsyncThunk<
     const data = await api.searchSubjects(query, page);
 
     // Populate individual subject data
-    if (data.results) {
-      data.results.forEach((subject: Subject) => {
-        dispatch(
-          subjectsSlice.actions.receiveSubject({
-            code: subject.code,
-            data: subject,
-          })
-        );
-      });
-    }
+    data.results.forEach((subject) => {
+      dispatch(
+        subjectsSlice.actions.receiveSubject({
+          code: subject.code,
+          data: subject,
+        })
+      );
+    });
 
     return { query, page, data };
   }
@@ -94,7 +80,7 @@ const subjectsSlice = createSlice({
   name: 'subjects',
   initialState,
   reducers: {
-    receiveSubject: (state, action) => {
+    receiveSubject: (state, action: PayloadAction<{ code: string; data: Subject }>) => {
       const { code, data } = action.payload;
       state.data[code] = {
         isFetching: false,

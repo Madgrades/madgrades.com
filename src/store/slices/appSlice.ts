@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
+import type { Term } from '../../types/api';
 
 // Define types
 interface CourseFilterParams {
@@ -7,11 +8,6 @@ interface CourseFilterParams {
   instructors?: string | string[];
   sort?: string;
   order?: 'asc' | 'desc';
-}
-
-interface Term {
-  code: number;
-  name: string;
 }
 
 interface AppState {
@@ -36,11 +32,16 @@ const initialState: AppState = {
   termsError: null,
 };
 
+// Define the API type from thunk extra argument
+interface ThunkAPI {
+  getTerms: () => Promise<Term[]>;
+}
+
 // Async thunks
 export const fetchTerms = createAsyncThunk<
   Term[],
   void,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ThunkAPI }
 >('app/fetchTerms', async (_, { getState, extra: api }) => {
   const state = getState();
   

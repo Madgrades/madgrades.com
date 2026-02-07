@@ -1,43 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { isEqual } from 'lodash';
 import type { RootState } from '../index';
+import type { Course, CourseSearchResponse, CourseFilterParams } from '../../types/api';
+import type { ApiClient } from '../../types/apiClient';
 
 // Define types
-interface Course {
-  uuid: string;
-  name: string;
-  number: number;
-  credits: number;
-  // Add other course properties as needed
-  [key: string]: any;
-}
-
 interface CourseData {
   isFetching: boolean;
   data?: Course;
 }
 
-interface SearchParams {
-  query?: string;
-  subjects?: string | string[];
-  instructors?: string | string[];
-  sort?: string;
-  order?: 'asc' | 'desc';
-}
-
-interface SearchResult {
-  results: Course[];
-  total: number;
-  page: number;
-  perPage: number;
-}
-
 interface CoursesState {
   data: Record<string, CourseData>;
   search: {
-    params: SearchParams;
+    params: CourseFilterParams;
     isFetching: boolean;
-    pages: Record<number, SearchResult>;
+    pages: Record<number, CourseSearchResponse>;
   };
 }
 
@@ -55,7 +33,7 @@ const initialState: CoursesState = {
 export const fetchCourse = createAsyncThunk<
   Course,
   string,
-  { state: RootState; extra: any }
+  { state: RootState; extra: ApiClient }
 >('courses/fetchCourse', async (uuid, { getState, extra: api }) => {
   const state = getState();
   const courseData = state.courses.data[uuid];
@@ -70,9 +48,9 @@ export const fetchCourse = createAsyncThunk<
 });
 
 export const fetchCourseSearch = createAsyncThunk<
-  { data: SearchResult; params: SearchParams; page: number },
-  { params: SearchParams; page: number },
-  { state: RootState; extra: any }
+  { data: CourseSearchResponse; params: CourseFilterParams; page: number },
+  { params: CourseFilterParams; page: number },
+  { state: RootState; extra: ApiClient }
 >(
   'courses/fetchCourseSearch',
   async ({ params, page }, { getState, extra: api }) => {
@@ -81,7 +59,7 @@ export const fetchCourseSearch = createAsyncThunk<
 
     // If params are the same, don't fetch again
     if (isEqual(searchData.params, params) && searchData.pages[page]) {
-      return { data: searchData.pages[page] as SearchResult, params, page };
+      return { data: searchData.pages[page] as CourseSearchResponse, params, page };
     }
 
     const data = await api.filterCourses(params, page);

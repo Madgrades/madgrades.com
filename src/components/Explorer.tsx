@@ -75,6 +75,9 @@ const Explorer: React.FC<ExplorerProps> = ({
       break;
   }
 
+  // Stringify filterParams to avoid object reference issues
+  const filterParamsString = JSON.stringify(filterParams);
+
   useEffect(() => {
     const params = {
       page,
@@ -83,7 +86,7 @@ const Explorer: React.FC<ExplorerProps> = ({
       min_count_avg: minCountAvg,
       min_gpa_total: minGpaTotal,
       per_page: 15,
-      ...filterParams,
+      ...JSON.parse(filterParamsString),
     };
 
     switch (entityType) {
@@ -97,7 +100,7 @@ const Explorer: React.FC<ExplorerProps> = ({
         dispatch(fetchExploreSubjects(params));
         break;
     }
-  }, [dispatch, entityType, page, sort, order, minCountAvg, minGpaTotal, filterParams]);
+  }, [dispatch, entityType, page, sort, order, minCountAvg, minGpaTotal, filterParamsString]);
 
   const handlePageChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
     const { activePage } = data;

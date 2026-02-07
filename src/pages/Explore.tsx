@@ -79,12 +79,14 @@ const Explore: React.FC = () => {
   useEffect(() => {
     const newEntityType = entity || "course";
     const newParams = getInitialParams(newEntityType);
+    const paramsString = JSON.stringify(newParams);
+    const currentParamsString = JSON.stringify(params);
 
-    if (!_.isEqual(params, newParams) || entityType !== newEntityType) {
+    if (paramsString !== currentParamsString || entityType !== newEntityType) {
       setEntityType(newEntityType);
       setParams(newParams);
     }
-  }, [location, entity]);
+  }, [location.search, entity]); // Use location.search instead of location object
 
   const onEntityChange = (_event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
     navigate("/explore/" + data.value);

@@ -36,7 +36,7 @@ function AnalyticsTracker(): null {
 }
 
 class App extends Component {
-  render = (): JSX.Element => {
+  render = () => {
     return (
       <BrowserRouter>
         <AnalyticsTracker />

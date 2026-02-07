@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { useAppSelector } from "../store/hooks";
 import { Input, InputOnChangeData } from "semantic-ui-react";
 import { useNavigate } from "react-router-dom";
@@ -49,7 +49,7 @@ class SearchBoxClass extends Component<SearchBoxProps, SearchBoxState> {
     }
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { searchValue } = this.state;
 
     return (

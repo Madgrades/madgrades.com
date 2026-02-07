@@ -13,7 +13,7 @@ import { Course } from "../types/api";
 interface CourseFilterParams {
   page?: number;
   compareWith?: string;
-  query?: string | null;
+  query?: string;
   subjects?: string[];
   instructors?: number[];
   sort?: string;
@@ -57,7 +57,7 @@ class CourseSearchResultsClass extends Component<CourseSearchResultsProps> {
     navigate("/search?" + stringify(params));
   };
 
-  renderResults = (results: Course[]): JSX.Element[] =>
+  renderResults = (results: Course[]) =>
     results.map((result) => {
       return (
         <div key={result.uuid} style={{ marginBottom: "10px" }}>
@@ -66,7 +66,7 @@ class CourseSearchResultsClass extends Component<CourseSearchResultsProps> {
       );
     });
 
-  render = (): JSX.Element => {
+  render = () => {
     const { isFetching } = this.props;
     const { results, totalPages } = this.props.searchData;
 
@@ -86,7 +86,7 @@ class CourseSearchResultsClass extends Component<CourseSearchResultsProps> {
               <Col xs={12}>
                 <Pagination
                   onPageChange={this.onPageChange}
-                  activePage={page}
+                  activePage={page || 1}
                   ellipsisItem={{
                     content: <Icon name="ellipsis horizontal" />,
                     icon: true,

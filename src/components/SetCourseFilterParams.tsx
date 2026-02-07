@@ -1,10 +1,11 @@
-import { Component, useEffect } from "react";
+import React, { Component } from "react";
 import { useAppDispatch } from "../store/hooks";
-import { setCourseFilterParams, fetchCourseSearch } from "../store/slices/appSlice";
+import { setCourseFilterParams } from "../store/slices/appSlice";
+import { fetchCourseSearch } from "../store/slices/coursesSlice";
 import _ from "lodash";
 
 interface CourseFilterParams {
-  query?: string | null;
+  query?: string;
   page?: number;
   subjects?: string[];
   instructors?: number[];

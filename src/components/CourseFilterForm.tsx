@@ -7,7 +7,7 @@ import { stringify } from "qs";
 import * as _ from "lodash";
 
 interface CourseFilterParams {
-  query?: string | null;
+  query?: string;
   page?: number;
   subjects?: string[];
   instructors?: number[];
@@ -24,25 +24,25 @@ interface CourseFilterFormProps {
 interface CourseFilterFormState {
   subjects: string[];
   instructors: number[];
-  query: string | undefined;
+  query: string;
 }
 
 class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilterFormState> {
   state: CourseFilterFormState = {
     subjects: [],
     instructors: [],
-    query: undefined,
+    query: "",
   };
 
   componentDidUpdate = (prevProps: CourseFilterFormProps): void => {
     if (
       !_.isEqual(prevProps.courseFilterParams, this.props.courseFilterParams)
     ) {
-      const { subjects, instructors, query } = this.props.courseFilterParams;
+      const { query } = this.props.courseFilterParams;
       this.setState({
         subjects: subjects || [],
         instructors: instructors || [],
-        query,
+        query: query || "",
       });
     }
   };
@@ -70,7 +70,7 @@ class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilte
     this.setState({
       subjects: [],
       instructors: [],
-      query: undefined,
+      query: "",
     });
   };
 
@@ -89,7 +89,7 @@ class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilte
     this.props.navigate("/search?" + stringify(params));
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { instructors, subjects, query } = this.state;
 
     return (
@@ -107,7 +107,7 @@ class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilte
           <label>Subjects</label>
           <EntitySelect
             value={subjects || []}
-            onChange={this.onSubjectChange}
+            onChange={(value: (string | number)[]) => this.onSubjectChange(value as string[])}
             entityType="subject"
           />
         </Form.Field>
@@ -115,7 +115,7 @@ class CourseFilterFormClass extends Component<CourseFilterFormProps, CourseFilte
           <label>Instructors</label>
           <EntitySelect
             value={instructors || []}
-            onChange={this.onInstructorChange}
+            onChange={(value: (string | number)[]) => this.onInstructorChange(value as number[])}
             entityType="instructor"
           />
         </Form.Field>
@@ -134,7 +134,7 @@ const CourseFilterForm: React.FC = () => {
   const navigate = useNavigate();
   const courseFilterParams = useAppSelector(state => state.app.courseFilterParams);
 
-  return <CourseFilterFormClass courseFilterParams={courseFilterParams} navigate={navigate} />;
+  return <CourseFilterFormClass courseFilterParams={courseFilterParams || {}} navigate={navigate} />;
 };
 
 export default CourseFilterForm;

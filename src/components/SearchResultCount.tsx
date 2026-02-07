@@ -4,9 +4,8 @@ import utils from '../utils';
 
 const SearchResultCount: React.FC = () => {
   const courseSearch = useAppSelector(state => state.courses.search);
-  const filterParams = useAppSelector(state => state.app.courseFilterParams);
   
-  const page = filterParams?.page || 1;
+  const page = 1;
   const pageData = courseSearch?.pages?.[page];
   const count = pageData?.total || 0;
 

@@ -21,7 +21,7 @@ class LatestTermClass extends Component<LatestTermClassProps> {
     }
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     return <span>{this.latestTermName()}</span>;
   };
 }

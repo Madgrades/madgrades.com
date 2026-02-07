@@ -112,7 +112,7 @@ class CourseChartViewerClass extends Component<CourseChartViewerClassProps, Cour
       });
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { uuid, data, instructorId, termCode } = this.props;
     const { isExporting } = this.state;
 
@@ -141,7 +141,7 @@ class CourseChartViewerClass extends Component<CourseChartViewerClassProps, Cour
 
       data.courseOfferings!.forEach((o) => {
         termCodes.push(o.termCode);
-        termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true);
+        termDescs[o.termCode] = utils.grades.gpa(o.cumulative, true).toString();
       });
 
       if (instructorId) {

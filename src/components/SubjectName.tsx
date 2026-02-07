@@ -16,7 +16,7 @@ interface SubjectNameClassProps extends SubjectNameProps {
 }
 
 class SubjectNameClass extends Component<SubjectNameClassProps> {
-  render = (): JSX.Element => {
+  render = () => {
     const { name, abbreviation, abbreviate, fallback } = this.props;
 
     const text = abbreviate ? abbreviation : name;

@@ -165,7 +165,7 @@ class ExplorerClass extends Component<ExplorerClassProps> {
     }
   };
 
-  renderEntryName = (entry: ExploreEntry): JSX.Element | undefined => {
+  renderEntryName = (entry: ExploreEntry) => {
     const { entityType } = this.props;
     let link: string;
 
@@ -209,11 +209,11 @@ class ExplorerClass extends Component<ExplorerClassProps> {
           </Header>
         );
       default:
-        break;
+        return undefined;
     }
   };
 
-  renderEntries = (results: ExploreEntry[]): JSX.Element[] | null => {
+  renderEntries = (results: ExploreEntry[]) => {
     if (!results) return null;
 
     return results.map((entry) => {
@@ -237,7 +237,7 @@ class ExplorerClass extends Component<ExplorerClassProps> {
     });
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { data, entityType, sort, order, page } = this.props;
     const entityName = _.upperFirst(entityType) + "s";
 

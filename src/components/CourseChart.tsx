@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCourseGrades } from "../store/slices/gradesSlice";
 import utils from "../utils";
@@ -25,7 +25,7 @@ class CourseChartClass extends Component<CourseChartClassProps> {
     dispatch(fetchCourseGrades(uuid));
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { course, uuid, data, termCode, instructorId } = this.props;
 
     let chart: JSX.Element;

@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCourseGrades } from "../store/slices/gradesSlice";
 import { GpaChart } from "../containers/charts/GpaChart";
@@ -34,7 +34,7 @@ class CourseGpaChartClass extends Component<CourseGpaChartClassProps> {
     }
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { data } = this.props;
 
     if (!data || data.isFetching) return <GpaChart gradeDistributions={[]} />;

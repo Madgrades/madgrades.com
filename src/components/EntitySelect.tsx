@@ -170,6 +170,7 @@ class EntitySelectClass extends Component<EntitySelectClassProps, EntitySelectSt
 
     for (const keyStr of Object.keys(entityData)) {
       const entity = entityData[keyStr];
+      if (!entity) continue;
       const key = this.entityToKey(entity as (Instructor | Subject), entityType);
       options.push(this.entityToOption(key, entity, entityType));
       keys.add(key);
@@ -216,7 +217,7 @@ class EntitySelectClass extends Component<EntitySelectClassProps, EntitySelectSt
     this.componentDidUpdate();
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { options, isFetching, isTyping, query } = this.state;
     const { value, entityType } = this.props;
 

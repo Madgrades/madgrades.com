@@ -164,8 +164,9 @@ export interface ExploreSubjectsResponse {
 // Filter/search params
 export interface CourseFilterParams {
   query?: string;
+  page?: number;
   subjects?: string | string[];
-  instructors?: string | string[];
+  instructors?: string | string[] | number[];
   sort?: string;
   order?: 'asc' | 'desc';
 }

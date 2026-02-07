@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { useAppDispatch } from '../store/hooks';
 
 interface TemplateProps {
   example?: number;
@@ -10,7 +10,7 @@ class TemplateClass extends Component<TemplateProps> {
     // const { actions } = this.props;
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     return <div>Template</div>;
   };
 }

@@ -31,7 +31,7 @@ const sortOptions: SortOption[] = [
 interface CourseFilterParams {
   sort?: string;
   order?: string;
-  query?: string | null;
+  query?: string;
   page?: number;
   subjects?: string[];
   instructors?: number[];
@@ -100,7 +100,7 @@ class CourseSortFormClass extends Component<CourseSortFormProps, CourseSortFormS
     this.props.navigate("/search?" + stringify(params, { encode: false }));
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { value } = this.state;
 
     return (
@@ -120,7 +120,7 @@ const CourseSortForm: React.FC = () => {
   const navigate = useNavigate();
   const courseFilterParams = useAppSelector(state => state.app.courseFilterParams);
 
-  return <CourseSortFormClass courseFilterParams={courseFilterParams} navigate={navigate} />;
+  return <CourseSortFormClass courseFilterParams={courseFilterParams || {}} navigate={navigate} />;
 };
 
 export default CourseSortForm;

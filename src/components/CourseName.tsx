@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCourse } from "../store/slices/coursesSlice";
 import SubjectNameList from "../containers/SubjectNameList";
@@ -37,7 +37,7 @@ class CourseNameClass extends Component<CourseNameClassProps> {
     }
   };
 
-  render = (): JSX.Element => {
+  render = () => {
     const { name, subjects, number, fallback, asSubjectAndNumber } = this.props;
 
     if (asSubjectAndNumber) {

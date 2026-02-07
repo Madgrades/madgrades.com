@@ -24,11 +24,11 @@ class CourseComparison extends Component<CourseComparisonProps> {
     const { course1Uuid, course2Uuid, location, navigate } = this.props;
     const currentParams = parse(location.search.substr(1));
 
-    const newParams = {
-      instructorId: params.instructorId || "0",
-      termCode: params.termCode || "0",
-      course2InstructorId: currentParams.course2InstructorId || "0",
-      course2TermCode: currentParams.course2TermCode || "0",
+    const newParams: Record<string, string> = {
+      instructorId: (params.instructorId || 0).toString(),
+      termCode: (params.termCode || 0).toString(),
+      course2InstructorId: (currentParams['course2InstructorId'] as string || "0"),
+      course2TermCode: (currentParams['course2TermCode'] as string || "0"),
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
@@ -38,11 +38,11 @@ class CourseComparison extends Component<CourseComparisonProps> {
     const { course1Uuid, course2Uuid, location, navigate } = this.props;
     const currentParams = parse(location.search.substr(1));
 
-    const newParams = {
-      instructorId: currentParams.instructorId || "0",
-      termCode: currentParams.termCode || "0",
-      course2InstructorId: params.instructorId || "0",
-      course2TermCode: params.termCode || "0",
+    const newParams: Record<string, string> = {
+      instructorId: (currentParams['instructorId'] as string || "0"),
+      termCode: (currentParams['termCode'] as string || "0"),
+      course2InstructorId: (params.instructorId || 0).toString(),
+      course2TermCode: (params.termCode || 0).toString(),
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
@@ -58,15 +58,15 @@ class CourseComparison extends Component<CourseComparisonProps> {
     navigate(`/search?compareWith=${course1Uuid}&replacing=2`);
   };
 
-  render(): JSX.Element {
+  render() {
     const { course1Uuid, course2Uuid, onRemoveComparison, location } =
       this.props;
     const params = parse(location.search.substr(1));
 
-    const course1InstructorId = parseInt((params.instructorId as string) || "0", 10);
-    const course1TermCode = parseInt((params.termCode as string) || "0", 10);
-    const course2InstructorId = parseInt((params.course2InstructorId as string) || "0", 10);
-    const course2TermCode = parseInt((params.course2TermCode as string) || "0", 10);
+    const course1InstructorId = parseInt((params['instructorId'] as string) || "0", 10);
+    const course1TermCode = parseInt((params['termCode'] as string) || "0", 10);
+    const course2InstructorId = parseInt((params['course2InstructorId'] as string) || "0", 10);
+    const course2TermCode = parseInt((params['course2TermCode'] as string) || "0", 10);
 
     return (
       <Container fluid style={{ padding: "20px 40px" }}>

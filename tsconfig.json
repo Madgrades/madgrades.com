@@ -28,7 +28,7 @@
     "alwaysStrict": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
 
     /* Path mapping */
     "baseUrl": ".",

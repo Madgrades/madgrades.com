@@ -8,6 +8,32 @@ This guide explains how to test the frontend after migrating from Create React A
 - npm >= 8
 - Git
 
+## MCP Configuration for API Access (Important!)
+
+**If you're using Copilot Agent or automated testing tools**, you need to configure the Playwright MCP server to allow external API calls. Without this, API requests will fail with `ERR_BLOCKED_BY_CLIENT`.
+
+The repository includes `mcp.config.json` which configures:
+- **Allowed origins**: Whitelists API domains (api.madgrades.com, api.uptimerobot.com, etc.)
+- **Browser security**: Disables web security checks for external domain access
+- **CORS policy**: Allows cross-origin requests
+
+**To use this configuration:**
+
+```bash
+# If running with Copilot Agent
+copilot agent run --mcp-config ./mcp.config.json
+
+# Or set it as default in your workspace
+```
+
+**Whitelisted domains:**
+- `https://api.madgrades.com` - Main Madgrades API
+- `https://api.uptimerobot.com` - Uptime monitoring
+- `https://www.googletagmanager.com` - Google Analytics
+- `http://pagead2.googlesyndication.com` - Google AdSense
+- `https://fonts.googleapis.com` - Google Fonts
+- `http://localhost:3000` - Dev server
+
 ## Setup Instructions
 
 ### 1. Install Dependencies
@@ -148,6 +174,22 @@ Open browser DevTools (F12) and check:
 
 ### Issue: "Failed to load manifest.json"
 **Solution:** This is expected in development. The manifest is only used in production builds.
+
+### Issue: "ERR_BLOCKED_BY_CLIENT" for API calls
+**Solution:** This occurs when the browser blocks external API requests due to CORS/security policies. 
+
+**For automated testing (Copilot Agent, Playwright):**
+- Use the provided `mcp.config.json` configuration file
+- Run with: `copilot agent run --mcp-config ./mcp.config.json`
+- This configures Playwright to allow external domain access
+
+**For local development in browser:**
+- This is normal if you have ad blockers or strict security settings
+- Analytics/ads may be blocked, but core API functionality should work
+- Check browser console to identify which domains are blocked
+- Disable ad blockers or add exceptions for:
+  - `api.madgrades.com`
+  - `api.uptimerobot.com`
 
 ### Issue: "ERR_BLOCKED_BY_CLIENT" for analytics
 **Solution:** This is normal if you have ad blockers. Analytics/ads will work in production.

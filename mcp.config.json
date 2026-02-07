@@ -1,0 +1,27 @@
+{
+  "playwrightServer": {
+    "host": "0.0.0.0",
+    "port": 3500,
+    "allowedOrigins": [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "https://madgrades.com",
+      "https://api.madgrades.com",
+      "https://api.uptimerobot.com",
+      "https://www.googletagmanager.com",
+      "http://pagead2.googlesyndication.com",
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
+    ]
+  },
+  "browser": {
+    "launchOptions": {
+      "headless": false,
+      "args": [
+        "--disable-web-security",
+        "--disable-features=IsolateOrigins,site-per-process",
+        "--remote-allow-origins=*"
+      ]
+    }
+  }
+}

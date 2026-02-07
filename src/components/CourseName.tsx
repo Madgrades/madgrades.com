@@ -13,21 +13,22 @@ interface CourseNameProps {
 
 const CourseName: React.FC<CourseNameProps> = ({ uuid, data, fallback, asSubjectAndNumber }) => {
   const dispatch = useAppDispatch();
-  const courseData = useAppSelector(state => 
-    !data ? state.courses.data[uuid]?.data : undefined
+  const courseStateData = useAppSelector(state => 
+    !data ? state.courses.data[uuid] : undefined
   );
 
-  const finalData = data || courseData;
+  // Get the actual course data from nested structure
+  const courseData = data || courseStateData?.data;
 
   useEffect(() => {
-    if (!finalData) {
+    if (!data && !courseStateData) {
       dispatch(fetchCourse(uuid));
     }
-  }, [dispatch, uuid, finalData]);
+  }, [dispatch, uuid, data, courseStateData]);
 
-  const name = finalData?.name;
-  const subjects = finalData?.subjects;
-  const number = finalData?.number;
+  const name = courseData?.name;
+  const subjects = courseData?.subjects;
+  const number = courseData?.number;
 
   if (asSubjectAndNumber) {
     if (subjects) {

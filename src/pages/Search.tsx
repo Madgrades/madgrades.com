@@ -101,7 +101,7 @@ const Search: React.FC = () => {
           <Divider />
           <center>
             <AdSlot
-              slot={import.meta.env.VITE_ADSENSE_SIDEBAR_SLOT}
+              slot={import.meta.env.VITE_ADSENSE_SIDEBAR_SLOT || ''}
               adWidth={"250px"}
               adHeight={"250px"}
             />

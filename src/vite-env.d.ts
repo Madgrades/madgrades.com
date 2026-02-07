@@ -6,6 +6,8 @@ interface ImportMetaEnv {
   readonly VITE_GA4_TRACKING_ID?: string;
   readonly VITE_ADSENSE_CLIENT?: string;
   readonly VITE_URL?: string;
+  readonly VITE_UPTIME_ROBOT_API_KEY?: string;
+  readonly VITE_ADSENSE_SIDEBAR_SLOT?: string;
 }
 
 interface ImportMeta {

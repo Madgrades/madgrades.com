@@ -15,6 +15,8 @@ interface AppState {
 const initialState: AppState = {
   searchQuery: '',
   courseFilterParams: {
+    query: undefined,
+    page: 1,
     subjects: undefined,
     instructors: undefined,
     sort: undefined,

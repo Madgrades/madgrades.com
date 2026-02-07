@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchCourseSearch } from "../store/slices/coursesSlice";
 import { Dimmer, Icon, Loader, Pagination, PaginationProps } from "semantic-ui-react";
@@ -19,9 +19,16 @@ const CourseSearchResults: React.FC = () => {
   const page = courseFilterParams.page || 1;
   const searchData = search.pages?.[page];
   const isFetching = search.isFetching;
+  
+  // Use ref to track previous params to avoid unnecessary fetches
+  const prevParamsRef = useRef(courseFilterParams);
 
   useEffect(() => {
-    dispatch(fetchCourseSearch({ params: courseFilterParams, page }));
+    // Only fetch if params actually changed
+    if (!_.isEqual(courseFilterParams, prevParamsRef.current)) {
+      dispatch(fetchCourseSearch({ params: courseFilterParams, page }));
+      prevParamsRef.current = courseFilterParams;
+    }
   }, [dispatch, courseFilterParams, page]);
 
   const onPageChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {

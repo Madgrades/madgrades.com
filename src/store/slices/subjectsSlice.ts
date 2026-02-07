@@ -109,8 +109,9 @@ const subjectsSlice = createSlice({
       })
       .addCase(fetchSubject.rejected, (state, action) => {
         const code = action.meta.arg;
-        if (state.data[code]) {
-          state.data[code].isFetching = false;
+        const subjectData = state.data[code];
+        if (subjectData) {
+          subjectData.isFetching = false;
         }
       })
       // fetchSubjectSearch
@@ -135,8 +136,9 @@ const subjectsSlice = createSlice({
       })
       .addCase(fetchSubjectSearch.rejected, (state, action) => {
         const { query, page } = action.meta.arg;
-        if (state.searches[query]?.[page]) {
-          state.searches[query][page].isFetching = false;
+        const searchPage = state.searches[query]?.[page];
+        if (searchPage) {
+          searchPage.isFetching = false;
         }
       });
   },

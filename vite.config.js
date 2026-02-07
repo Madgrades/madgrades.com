@@ -1,12 +1,23 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { createHtmlPlugin } from 'vite-plugin-html'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react({
       jsxRuntime: 'automatic'
-    })
+    }),
+    createHtmlPlugin({
+      minify: true,
+      inject: {
+        data: {
+          VITE_GA4_TRACKING_ID: process.env.VITE_GA4_TRACKING_ID || '',
+          VITE_ADSENSE_CLIENT: process.env.VITE_ADSENSE_CLIENT || '',
+          VITE_URL: process.env.VITE_URL || 'https://madgrades.com',
+        },
+      },
+    }),
   ],
   server: {
     port: 3000,

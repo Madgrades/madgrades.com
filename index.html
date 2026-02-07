@@ -17,7 +17,7 @@
     <!-- Google Analytics GA4 -->
     <script
       async
-      src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_TRACKING_ID%"
+      src="https://www.googletagmanager.com/gtag/js?id=<%= VITE_GA4_TRACKING_ID %>"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -25,11 +25,11 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "%VITE_GA4_TRACKING_ID%");
+      gtag("config", "<%= VITE_GA4_TRACKING_ID %>");
     </script>
     <!-- AdSense client -->
     <script
-      data-ad-client="%VITE_ADSENSE_CLIENT%"
+      data-ad-client="<%= VITE_ADSENSE_CLIENT %>"
       async
       src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
@@ -38,10 +38,10 @@
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "url": "%VITE_URL%",
+        "url": "<%= VITE_URL %>",
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "%VITE_URL%/search?query={search_term_string}",
+          "target": "<%= VITE_URL %>/search?query={search_term_string}",
           "query-input": {
             "@type": "PropertyValueSpecification",
             "valueRequired": true,

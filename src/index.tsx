@@ -4,7 +4,7 @@ import "normalize.css";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import "semantic-ui-css/semantic.min.css";
-import "./styles/index.css";
+import "./styles/index.scss";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error('Failed to find the root element');

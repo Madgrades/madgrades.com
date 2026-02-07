@@ -3,7 +3,6 @@ import { Container, Divider, List, Label, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "../components/Grid";
 import logo from "../assets/logo-black.svg";
-import gitRevFile from "../assets/git-rev.txt";
 import LatestTerm from "../components/LatestTerm";
 import ApiStatusPill from "./ApiStatusPill";
 
@@ -13,11 +12,15 @@ const SiteFooter: React.FC = () => {
   const [gitRev, setGitRev] = useState("");
 
   useEffect(() => {
-    fetch(gitRevFile)
+    fetch("/git-rev.txt")
       .then((response) => response.text())
       .then((text) => {
         const rev = text.split(" ")[0];
         setGitRev(rev || "");
+      })
+      .catch(() => {
+        // Fallback if file doesn't exist
+        setGitRev("dev");
       });
   }, []);
 

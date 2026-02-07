@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { setCourseFilterParams } from "../store/slices/appSlice";
 import { CourseFilterParams } from "../types/api";
-import * as _ from "lodash";
 
 interface SetCourseFilterParamsProps {
   params: CourseFilterParams;
@@ -10,7 +9,7 @@ interface SetCourseFilterParamsProps {
 
 const SetCourseFilterParams: React.FC<SetCourseFilterParamsProps> = ({ params }) => {
   const dispatch = useAppDispatch();
-  const prevParamsRef = useRef<CourseFilterParams | null>(null);
+  const prevParamsStringRef = useRef<string>("");
 
   useEffect(() => {
     // Normalize the params
@@ -24,10 +23,13 @@ const SetCourseFilterParams: React.FC<SetCourseFilterParamsProps> = ({ params })
         : (params.instructors ? [typeof params.instructors === 'number' ? params.instructors : parseInt(String(params.instructors), 10)] : undefined)
     };
     
+    // Use JSON.stringify for comparison to avoid reference issues
+    const paramsString = JSON.stringify(normalizedParams);
+    
     // Only dispatch if params actually changed
-    if (!_.isEqual(normalizedParams, prevParamsRef.current)) {
+    if (paramsString !== prevParamsStringRef.current) {
       dispatch(setCourseFilterParams(normalizedParams));
-      prevParamsRef.current = normalizedParams;
+      prevParamsStringRef.current = paramsString;
     }
   }, [dispatch, params]);
 

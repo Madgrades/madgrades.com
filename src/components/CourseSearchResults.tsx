@@ -5,7 +5,6 @@ import { Dimmer, Icon, Loader, Pagination, PaginationProps } from "semantic-ui-r
 import { Row, Col } from "./Grid";
 import CourseSearchResultItem from "../containers/CourseSearchResultItem";
 import Div from "../containers/Div";
-import * as _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import { stringify } from "qs";
 import { Course } from "../types/api";
@@ -20,14 +19,16 @@ const CourseSearchResults: React.FC = () => {
   const searchData = search.pages?.[page];
   const isFetching = search.isFetching;
   
-  // Use ref to track previous params to avoid unnecessary fetches
-  const prevParamsRef = useRef(courseFilterParams);
+  // Use ref to track previous params string to avoid unnecessary fetches
+  const prevParamsStringRef = useRef<string>("");
 
   useEffect(() => {
+    const paramsString = JSON.stringify({ params: courseFilterParams, page });
+    
     // Only fetch if params actually changed
-    if (!_.isEqual(courseFilterParams, prevParamsRef.current)) {
+    if (paramsString !== prevParamsStringRef.current) {
       dispatch(fetchCourseSearch({ params: courseFilterParams, page }));
-      prevParamsRef.current = courseFilterParams;
+      prevParamsStringRef.current = paramsString;
     }
   }, [dispatch, courseFilterParams, page]);
 

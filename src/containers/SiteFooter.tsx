@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Divider, List, Label, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "../components/Grid";
@@ -9,27 +9,19 @@ import ApiStatusPill from "./ApiStatusPill";
 
 const commitUrl = "https://github.com/Madgrades/madgrades.com/commit/";
 
-interface SiteFooterState {
-  gitRev: string;
-}
+const SiteFooter: React.FC = () => {
+  const [gitRev, setGitRev] = useState("");
 
-class SiteFooter extends Component<Record<string, never>, SiteFooterState> {
-  state: SiteFooterState = {
-    gitRev: "",
-  };
-
-  componentDidMount = (): void => {
+  useEffect(() => {
     fetch(gitRevFile)
       .then((response) => response.text())
       .then((text) => {
         const rev = text.split(" ")[0];
-        this.setState({
-          gitRev: rev || "",
-        });
+        setGitRev(rev || "");
       });
-  };
+  }, []);
 
-  render = () => (
+  return (
     <div className="SiteFooter">
       <Divider />
       <Container>
@@ -78,9 +70,9 @@ class SiteFooter extends Component<Record<string, never>, SiteFooterState> {
               color="black"
               horizontal
               as="a"
-              href={`${commitUrl}${this.state.gitRev}`}
+              href={`${commitUrl}${gitRev}`}
             >
-              <Icon name="code branch" /> rev {this.state.gitRev || "Source"}
+              <Icon name="code branch" /> rev {gitRev || "Source"}
             </Label>
             <ApiStatusPill />
           </Col>
@@ -88,6 +80,6 @@ class SiteFooter extends Component<Record<string, never>, SiteFooterState> {
       </Container>
     </div>
   );
-}
+};
 
 export default SiteFooter;

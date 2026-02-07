@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../store/hooks";
 import { Dropdown, DropdownProps } from "semantic-ui-react";
-import { useNavigate, NavigateFunction } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { stringify } from "qs";
-import { CourseFilterParams } from "../types/api";
 
 interface SortOption {
   key: string;
@@ -29,89 +28,65 @@ const sortOptions: SortOption[] = [
   },
 ];
 
-interface CourseSortFormProps {
-  courseFilterParams: CourseFilterParams;
-  navigate: NavigateFunction;
-}
+const CourseSortForm: React.FC = () => {
+  const navigate = useNavigate();
+  const courseFilterParams = useAppSelector(state => state.app.courseFilterParams);
+  const [value, setValue] = useState("number");
 
-interface CourseSortFormState {
-  value: string;
-}
-
-class CourseSortFormClass extends Component<CourseSortFormProps, CourseSortFormState> {
-  state: CourseSortFormState = {
-    value: "number",
-  };
-
-  componentDidUpdate = (prevProps: CourseSortFormProps): void => {
-    if (prevProps.courseFilterParams !== this.props.courseFilterParams) {
-      const { sort, order } = this.props.courseFilterParams;
-      let value: string;
+  useEffect(() => {
+    if (courseFilterParams) {
+      const { sort, order } = courseFilterParams;
+      let newValue: string;
 
       if (!sort) {
-        value = "relevance";
+        newValue = "relevance";
       } else if (sort === "relevance") {
-        value = "relevance";
+        newValue = "relevance";
       } else if (sort === "number") {
-        value = "number";
-        if (order === "desc") value = "number_desc";
+        newValue = "number";
+        if (order === "desc") newValue = "number_desc";
       } else {
-        value = "relevance";
+        newValue = "relevance";
       }
 
-      if (value !== this.state.value) {
-        this.setState({
-          value,
-        });
+      if (newValue !== value) {
+        setValue(newValue);
       }
     }
-  };
+  }, [courseFilterParams, value]);
 
-  onChange = (_event: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps): void => {
-    this.setState({
-      value: value as string,
-    });
+  const onChange = (_event: React.SyntheticEvent<HTMLElement>, { value: newValue }: DropdownProps): void => {
+    setValue(newValue as string);
 
     let sort: string | undefined, order: string | undefined;
 
-    if (value === "number") {
+    if (newValue === "number") {
       sort = "number";
-    } else if (value === "number_desc") {
+    } else if (newValue === "number_desc") {
       sort = "number";
       order = "desc";
-    } else if (value === "relevance") {
+    } else if (newValue === "relevance") {
       // nothing to do
     }
 
     const params = {
-      ...this.props.courseFilterParams,
+      ...(courseFilterParams || {}),
       sort,
       order,
     };
-    this.props.navigate("/search?" + stringify(params, { encode: false }));
+    navigate("/search?" + stringify(params, { encode: false }));
   };
 
-  render = () => {
-    const { value } = this.state;
-
-    return (
-      <Dropdown
-        inline
-        direction="left"
-        header="Sort options"
-        options={sortOptions}
-        value={value}
-        onChange={this.onChange}
-      />
-    );
-  };
-}
-
-const CourseSortForm: React.FC = () => {
-  const navigate = useNavigate();
-  const courseFilterParams = useAppSelector(state => state.app.courseFilterParams);
-
-  return <CourseSortFormClass courseFilterParams={courseFilterParams || {}} navigate={navigate} />;
+  return (
+    <Dropdown
+      inline
+      direction="left"
+      header="Sort options"
+      options={sortOptions}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export default CourseSortForm;

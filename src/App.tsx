@@ -1,4 +1,4 @@
-import { Component, useEffect } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, useLocation, Location } from "react-router-dom";
 import SiteHeader from "./containers/SiteHeader";
 import SiteFooter from "./containers/SiteFooter";
@@ -35,21 +35,19 @@ function AnalyticsTracker(): null {
   return null;
 }
 
-class App extends Component {
-  render = () => {
-    return (
-      <BrowserRouter>
-        <AnalyticsTracker />
-        <div className="App">
-          <SiteHeader />
-          <div className="app-content">
-            <Routes />
-          </div>
-          <SiteFooter />
+function App() {
+  return (
+    <BrowserRouter>
+      <AnalyticsTracker />
+      <div className="App">
+        <SiteHeader />
+        <div className="app-content">
+          <Routes />
         </div>
-      </BrowserRouter>
-    );
-  };
+        <SiteFooter />
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default App;

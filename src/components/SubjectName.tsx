@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { fetchSubject } from "../store/slices/subjectsSlice";
 import { Subject } from "../types/api";
@@ -10,21 +10,7 @@ interface SubjectNameProps {
   data?: Subject;
 }
 
-interface SubjectNameClassProps extends SubjectNameProps {
-  name?: string;
-  abbreviation?: string;
-}
-
-class SubjectNameClass extends Component<SubjectNameClassProps> {
-  render = () => {
-    const { name, abbreviation, abbreviate, fallback } = this.props;
-
-    const text = abbreviate ? abbreviation : name;
-    return <span>{text || fallback}</span>;
-  };
-}
-
-const SubjectName: React.FC<SubjectNameProps> = ({ code, data, ...props }) => {
+const SubjectName: React.FC<SubjectNameProps> = ({ code, data, abbreviate, fallback }) => {
   const dispatch = useAppDispatch();
   const subjectData = useAppSelector(state => 
     code && !data ? state.subjects.data[code]?.data : undefined
@@ -37,16 +23,11 @@ const SubjectName: React.FC<SubjectNameProps> = ({ code, data, ...props }) => {
   }, [code, data, dispatch]);
 
   const finalData = data || subjectData;
+  const name = finalData?.name;
+  const abbreviation = finalData?.abbreviation;
 
-  return (
-    <SubjectNameClass
-      {...props}
-      code={code}
-      data={finalData}
-      name={finalData?.name}
-      abbreviation={finalData?.abbreviation}
-    />
-  );
+  const text = abbreviate ? abbreviation : name;
+  return <span>{text || fallback}</span>;
 };
 
 export default SubjectName;

@@ -1,21 +1,17 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
 import { setCourseFilterParams } from "../store/slices/appSlice";
 import { fetchCourseSearch } from "../store/slices/coursesSlice";
-import _ from "lodash";
 import { CourseFilterParams } from "../types/api";
 
 interface SetCourseFilterParamsProps {
   params: CourseFilterParams;
 }
 
-interface SetCourseFilterParamsClassProps extends SetCourseFilterParamsProps {
-  dispatch: ReturnType<typeof useAppDispatch>;
-}
+const SetCourseFilterParams: React.FC<SetCourseFilterParamsProps> = ({ params }) => {
+  const dispatch = useAppDispatch();
 
-class SetCourseFilterParamsClass extends Component<SetCourseFilterParamsClassProps> {
-  setCourseFilterParams = (): void => {
-    const { params, dispatch } = this.props;
+  useEffect(() => {
     const { page } = params;
     
     const normalizedParams: CourseFilterParams = {
@@ -28,25 +24,9 @@ class SetCourseFilterParamsClass extends Component<SetCourseFilterParamsClassPro
     
     dispatch(setCourseFilterParams(normalizedParams));
     dispatch(fetchCourseSearch({ params: normalizedParams, page: page || 1 }));
-  };
+  }, [dispatch, params]);
 
-  componentDidMount = (): void => {
-    this.setCourseFilterParams();
-  };
-
-  componentDidUpdate = (prevProps: SetCourseFilterParamsClassProps): void => {
-    if (!_.isEqual(prevProps.params, this.props.params)) {
-      this.setCourseFilterParams();
-    }
-  };
-
-  render = (): null => null;
-}
-
-const SetCourseFilterParams: React.FC<SetCourseFilterParamsProps> = ({ params }) => {
-  const dispatch = useAppDispatch();
-
-  return <SetCourseFilterParamsClass params={params} dispatch={dispatch} />;
+  return null;
 };
 
 export default SetCourseFilterParams;

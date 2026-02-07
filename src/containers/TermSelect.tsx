@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useMemo } from 'react';
 import { Dropdown, DropdownProps } from 'semantic-ui-react';
 import utils from '../utils/index';
 
@@ -18,26 +19,25 @@ interface TermOption {
   description?: string;
 }
 
-class TermSelect extends Component<TermSelectProps> {
-  static defaultProps = {
-    includeCumulative: false,
-    cumulativeText: 'Cumulative',
-    onChange: (_termCode: number): void => {},
-    descriptions: {}
-  };
-
-  generateOptions = (): TermOption[] => {
-    const { includeCumulative, cumulativeText, descriptions } = this.props;
+const TermSelect: React.FC<TermSelectProps> = ({
+  termCodes,
+  includeCumulative = false,
+  cumulativeText = 'Cumulative',
+  onChange = (_termCode: number): void => {},
+  descriptions = {},
+  value
+}) => {
+  const options = useMemo((): TermOption[] => {
     let cumulativeOption: TermOption[] = [];
 
     if (includeCumulative) {
       cumulativeOption = [
-        { key: 0, value: 0, text: cumulativeText! }
+        { key: 0, value: 0, text: cumulativeText }
       ];
     }
 
-    const termOptions = this.props.termCodes.map(code => {
-      const desc = descriptions![code];
+    const termOptions = termCodes.map(code => {
+      const desc = descriptions[code];
       return {
         key: code,
         value: code,
@@ -47,27 +47,22 @@ class TermSelect extends Component<TermSelectProps> {
     });
 
     return cumulativeOption.concat(termOptions);
+  }, [termCodes, includeCumulative, cumulativeText, descriptions]);
+
+  const handleChange = (_event: React.SyntheticEvent<HTMLElement>, { value: newValue }: DropdownProps): void => {
+    onChange(newValue as number);
   };
 
-  onChange = (_event: React.SyntheticEvent<HTMLElement>, { value }: DropdownProps): void => {
-    this.props.onChange!(value as number);
-  };
-
-  render = () => {
-    const { value } = this.props;
-    const options = this.generateOptions();
-
-    return (
-      <Dropdown
-        fluid
-        selection
-        search
-        value={value !== undefined ? value : options[0]?.value}
-        options={options}
-        onChange={this.onChange}
-      />
-    );
-  };
-}
+  return (
+    <Dropdown
+      fluid
+      selection
+      search
+      value={value !== undefined ? value : options[0]?.value}
+      options={options}
+      onChange={handleChange}
+    />
+  );
+};
 
 export default TermSelect;

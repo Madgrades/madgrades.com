@@ -1,30 +1,7 @@
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { fetchTerms } from '../store/slices/appSlice';
 import utils from '../utils';
-import { Term } from '../types/api';
-
-interface LatestTermClassProps {
-  terms: Term[] | undefined;
-}
-
-class LatestTermClass extends Component<LatestTermClassProps> {
-  latestTermName = (): string => {
-    const { terms } = this.props;
-
-    if (terms && terms.length > 0) {
-      const latestTermCode = Math.max(...terms.map(t => t.code));
-      return utils.termCodes.toName(latestTermCode);
-    }
-    else {
-      return "Unknown";
-    }
-  };
-
-  render = () => {
-    return <span>{this.latestTermName()}</span>;
-  };
-}
 
 const LatestTerm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -34,7 +11,17 @@ const LatestTerm: React.FC = () => {
     dispatch(fetchTerms());
   }, [dispatch]);
 
-  return <LatestTermClass terms={terms} />;
+  const latestTermName = (): string => {
+    if (terms && terms.length > 0) {
+      const latestTermCode = Math.max(...terms.map(t => t.code));
+      return utils.termCodes.toName(latestTermCode);
+    }
+    else {
+      return "Unknown";
+    }
+  };
+
+  return <span>{latestTermName()}</span>;
 };
 
 export default LatestTerm;

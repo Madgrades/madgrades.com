@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { useEffect } from "react";
 
 declare global {
   interface Window {
@@ -12,23 +12,23 @@ interface AdSlotProps {
   adHeight?: string;
 }
 
-class AdSlot extends Component<AdSlotProps> {
-  componentDidMount = (): void => {
+const AdSlot: React.FC<AdSlotProps> = ({ slot, adWidth, adHeight }) => {
+  useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
-  };
+  }, []);
 
-  render = () => (
+  return (
     <ins
       className="adsbygoogle"
       style={{
         display: "inline-block",
-        width: this.props.adWidth || "auto",
-        height: this.props.adHeight || "auto",
+        width: adWidth || "auto",
+        height: adHeight || "auto",
       }}
       data-ad-client={import.meta.env.VITE_ADSENSE_CLIENT}
-      data-ad-slot={this.props.slot}
+      data-ad-slot={slot}
     ></ins>
   );
-}
+};
 
 export default AdSlot;

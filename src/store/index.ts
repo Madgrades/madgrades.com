@@ -7,6 +7,7 @@ import instructorsReducer from './slices/instructorsSlice';
 import subjectsReducer from './slices/subjectsSlice';
 import gradesReducer from './slices/gradesSlice';
 import exploreReducer from './slices/exploreSlice';
+import type { ApiClient } from '../types/apiClient';
 
 // Root reducer
 const rootReducer = {
@@ -18,7 +19,7 @@ const rootReducer = {
   explore: exploreReducer,
 };
 
-const api = utils.api.create(
+const api: ApiClient = utils.api.create(
   import.meta.env.VITE_MADGRADES_API || "https://api.madgrades.com/",
   import.meta.env.VITE_MADGRADES_API_TOKEN,
 );

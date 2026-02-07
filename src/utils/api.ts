@@ -103,23 +103,23 @@ class Api {
     };
 
     if (subjectParam) {
-      queryString.subject = subjectParam;
+      queryString['subject'] = subjectParam;
     }
 
     if (instructorParam) {
-      queryString.instructor = instructorParam;
+      queryString['instructor'] = instructorParam;
     }
 
     if (sort) {
-      queryString.sort = sort;
+      queryString['sort'] = sort;
     }
 
     if (order) {
-      queryString.order = order;
+      queryString['order'] = order;
     }
 
     if (query) {
-      queryString.query = query;
+      queryString['query'] = query;
     }
 
     const res = await this._fetchPath('courses', queryString);

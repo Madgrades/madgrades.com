@@ -89,15 +89,12 @@ export const fetchCourseGrades = createAsyncThunk<
         }
 
         const { terms } = instructorGrades;
-        let base = utils.grades.zero();
+        const existingTerm = terms[termCode];
+        const base: Partial<GradeDistribution> = existingTerm || utils.grades.zero();
 
-        if (termCode in terms) {
-          base = terms[termCode];
-        }
-
-        // Combine existing with new section
-        terms[termCode] = utils.grades.combine(base, section);
-        terms[termCode].termCode = termCode;
+        // Combine existing with new section (section contains all grade distribution fields)
+        const combined = utils.grades.combine(base, section as Partial<GradeDistribution>);
+        terms[termCode] = { ...combined, termCode };
       });
     });
   });
@@ -108,12 +105,16 @@ export const fetchCourseGrades = createAsyncThunk<
   // Iterate each instructor key
   Object.keys(byInstructor).forEach((instructorKey) => {
     const data = byInstructor[instructorKey];
+    if (!data) return;
+    
     const terms: Array<GradeDistribution & { termCode: number }> = [];
     let latestTerm = 0;
 
     // Each term for the instructor gets added to array
     Object.keys(data.terms).forEach((termKey) => {
       const termData = data.terms[Number(termKey)];
+      if (!termData) return;
+      
       const { termCode } = termData;
       terms.push(termData);
 
@@ -124,12 +125,15 @@ export const fetchCourseGrades = createAsyncThunk<
     });
 
     // Combine all terms
-    const cumulative = utils.grades.combineAll(terms);
+    const cumulative = utils.grades.combineAll(terms as Partial<GradeDistribution>[]);
+
+    const instructorName = instructorNames[data.id];
+    if (!instructorName) return;
 
     // Add instructor to data
     instructors.push({
       id: data.id,
-      name: instructorNames[data.id],
+      name: instructorName,
       cumulative,
       terms,
       latestTerm,
@@ -177,15 +181,12 @@ export const fetchInstructorGrades = createAsyncThunk<
     }
 
     const { terms } = courseGrades;
-    let base = utils.grades.zero();
-
-    if (termCode in terms) {
-      base = terms[termCode];
-    }
+    const existingTerm = terms[termCode];
+    const base: Partial<GradeDistribution> = existingTerm || utils.grades.zero();
 
     // Combine existing with new offering
-    terms[termCode] = utils.grades.combine(base, offering.cumulative);
-    terms[termCode].termCode = termCode;
+    const combined = utils.grades.combine(base, offering.cumulative);
+    terms[termCode] = { ...combined, termCode };
   });
 
   // Arrange the data by course
@@ -194,12 +195,16 @@ export const fetchInstructorGrades = createAsyncThunk<
   // Iterate each course key
   Object.keys(byCourse).forEach((courseKey) => {
     const data = byCourse[courseKey];
+    if (!data) return;
+    
     const terms: Array<GradeDistribution & { termCode: number }> = [];
     let latestTerm = 0;
 
     // Each term gets added to array
     Object.keys(data.terms).forEach((termKey) => {
       const termData = data.terms[Number(termKey)];
+      if (!termData) return;
+      
       const { termCode } = termData;
       terms.push(termData);
 
@@ -210,7 +215,7 @@ export const fetchInstructorGrades = createAsyncThunk<
     });
 
     // Combine all terms
-    const cumulative = utils.grades.combineAll(terms);
+    const cumulative = utils.grades.combineAll(terms as Partial<GradeDistribution>[]);
 
     // Add course to data
     courses.push({

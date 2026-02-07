@@ -23,7 +23,7 @@ export interface Course {
   subjects: Subject[];
 }
 
-// Grade distribution
+// Grade distribution - using compatible type with utils/grades.ts
 export interface GradeDistribution {
   aCount: number;
   abCount: number;
@@ -32,20 +32,21 @@ export interface GradeDistribution {
   cCount: number;
   dCount: number;
   fCount: number;
-  sCount: number;
-  ubCount: number;
-  crCount: number;
-  nCount: number;
-  pCount: number;
-  iCount: number;
-  nwCount: number;
-  nrCount: number;
-  otherCount: number;
-  total: number;
+  sCount?: number;
+  ubCount?: number;
+  crCount?: number;
+  nCount?: number;
+  pCount?: number;
+  iCount?: number;
+  nwCount?: number;
+  nrCount?: number;
+  otherCount?: number;
+  total?: number;
+  [key: string]: number | undefined;
 }
 
 // Course offerings and sections
-export interface Section extends GradeDistribution {
+export interface Section {
   uuid: string;
   sectionNumber: number;
   instructors: Instructor[];
@@ -54,6 +55,24 @@ export interface Section extends GradeDistribution {
   facilityCode?: string;
   roomCode?: string;
   termCode: number;
+  aCount: number;
+  abCount: number;
+  bCount: number;
+  bcCount: number;
+  cCount: number;
+  dCount: number;
+  fCount: number;
+  sCount?: number;
+  ubCount?: number;
+  crCount?: number;
+  nCount?: number;
+  pCount?: number;
+  iCount?: number;
+  nwCount?: number;
+  nrCount?: number;
+  otherCount?: number;
+  total?: number;
+  [key: string]: string | number | Instructor[] | undefined;
 }
 
 export interface CourseOffering {
@@ -85,12 +104,12 @@ export interface CourseWithGrades {
 // API response types
 export interface CourseGradesResponse {
   courseOfferings: CourseOffering[];
-  instructors: InstructorWithGrades[];
+  instructors?: InstructorWithGrades[];
 }
 
 export interface InstructorGradesResponse {
   courseOfferings: Array<CourseOffering & { courseUuid: string }>;
-  courses: CourseWithGrades[];
+  courses?: CourseWithGrades[];
 }
 
 export interface PaginatedResponse<T> {
@@ -104,20 +123,42 @@ export type CourseSearchResponse = PaginatedResponse<Course>;
 export type InstructorSearchResponse = PaginatedResponse<Instructor>;
 export type SubjectSearchResponse = PaginatedResponse<Subject>;
 
-// Explore responses
+// Explore entry types
+export interface ExploreCourseEntry {
+  course: Course;
+  countAvg: number;
+  gpaTotal: number;
+  gpa: number;
+}
+
+export interface ExploreInstructorEntry {
+  instructor: Instructor;
+  countAvg: number;
+  gpaTotal: number;
+  gpa: number;
+}
+
+export interface ExploreSubjectEntry {
+  subject: Subject;
+  countAvg: number;
+  gpaTotal: number;
+  gpa: number;
+}
+
+// Explore responses - these can have additional properties from the API
 export interface ExploreCoursesResponse {
-  courses: Course[];
-  [key: string]: unknown;
+  results: ExploreCourseEntry[];
+  totalPages: number;
 }
 
 export interface ExploreInstructorsResponse {
-  instructors: Instructor[];
-  [key: string]: unknown;
+  results: ExploreInstructorEntry[];
+  totalPages: number;
 }
 
 export interface ExploreSubjectsResponse {
-  subjects: Subject[];
-  [key: string]: unknown;
+  results: ExploreSubjectEntry[];
+  totalPages: number;
 }
 
 // Filter/search params

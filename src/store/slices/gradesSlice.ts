@@ -3,18 +3,6 @@ import utils from '../../utils';
 import type { RootState } from '../index';
 
 // Define types
-interface GradeDistribution {
-  aCount: number;
-  abCount: number;
-  bCount: number;
-  bcCount: number;
-  cCount: number;
-  dCount: number;
-  fCount: number;
-  // Add other grade properties as needed
-  [key: string]: any;
-}
-
 interface CourseGradesData {
   isFetching: boolean;
   courseOfferings?: any[];
@@ -107,7 +95,7 @@ export const fetchCourseGrades = createAsyncThunk<
   // Iterate each instructor key
   Object.keys(byInstructor).forEach((instructorKey) => {
     const data = byInstructor[instructorKey];
-    const terms = [];
+    const terms: any[] = [];
     let latestTerm = 0;
 
     // Each term for the instructor gets added to array
@@ -187,7 +175,7 @@ export const fetchInstructorGrades = createAsyncThunk<
   // Iterate each course key
   Object.keys(byCourse).forEach((courseKey) => {
     const data = byCourse[courseKey];
-    const terms = [];
+    const terms: any[] = [];
     let latestTerm = 0;
 
     // Each term gets added to array

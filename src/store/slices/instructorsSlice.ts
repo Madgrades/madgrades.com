@@ -115,8 +115,9 @@ const instructorsSlice = createSlice({
       })
       .addCase(fetchInstructor.rejected, (state, action) => {
         const id = action.meta.arg;
-        if (state.data[id.toString()]) {
-          state.data[id.toString()].isFetching = false;
+        const instructorData = state.data[id.toString()];
+        if (instructorData) {
+          instructorData.isFetching = false;
         }
       })
       // fetchInstructorSearch

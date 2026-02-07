@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import utils from '../utils';
 import appReducer from './slices/appSlice';
 import coursesReducer from './slices/coursesSlice';

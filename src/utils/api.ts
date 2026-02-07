@@ -46,7 +46,7 @@ class Api {
   }
 
   private _queryString = (params: QueryParams): string => Object.keys(params)
-    .filter(k => params[k] !== undefined)
+    .filter(k => params[k] !== undefined && params[k] !== null)
     .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(String(params[k])))
     .join('&');
 

@@ -33,16 +33,22 @@ interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Col: React.FC<ColProps> = ({ children, xs, sm, md, lg, auto, ...props }) => {
   const classNames = ["grid-col"];
 
-  if (xs !== undefined && xs !== false) {
-    classNames.push(`grid-col-xs-${typeof xs === 'number' ? xs : 'auto'}`);
+  if (typeof xs === 'number') {
+    classNames.push(`grid-col-xs-${xs}`);
   }
-  if (sm !== undefined && sm !== false) {
-    classNames.push(`grid-col-sm-${typeof sm === 'number' ? sm : 'auto'}`);
+  if (typeof sm === 'number') {
+    classNames.push(`grid-col-sm-${sm}`);
   }
   if (md) classNames.push(`grid-col-md-${md}`);
   if (lg) classNames.push(`grid-col-lg-${lg}`);
   if (auto) classNames.push("grid-col-auto");
 
+  // If xs or sm is true (boolean), treat as flexible column
+  if ((xs === true || sm === true) && !auto) {
+    classNames.push("grid-col-auto");
+  }
+
+  // Default to auto if no sizing specified
   if (!xs && !sm && !md && !lg && !auto) {
     classNames.push("grid-col-auto");
   }

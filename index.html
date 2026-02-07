@@ -7,8 +7,8 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     <title>Madgrades</title>
     <meta
       name="description"
@@ -17,7 +17,7 @@
     <!-- Google Analytics GA4 -->
     <script
       async
-      src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GA4_TRACKING_ID%"
+      src="https://www.googletagmanager.com/gtag/js?id=<%= VITE_GA4_TRACKING_ID %>"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -25,11 +25,11 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "%REACT_APP_GA4_TRACKING_ID%");
+      gtag("config", "<%= VITE_GA4_TRACKING_ID %>");
     </script>
     <!-- AdSense client -->
     <script
-      data-ad-client="%REACT_APP_ADSENSE_CLIENT%"
+      data-ad-client="<%= VITE_ADSENSE_CLIENT %>"
       async
       src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
@@ -38,10 +38,10 @@
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "url": "%REACT_APP_URL%",
+        "url": "<%= VITE_URL %>",
         "potentialAction": {
           "@type": "SearchAction",
-          "target": "%REACT_APP_URL%/search?query={search_term_string}",
+          "target": "<%= VITE_URL %>/search?query={search_term_string}",
           "query-input": {
             "@type": "PropertyValueSpecification",
             "valueRequired": true,
@@ -55,5 +55,6 @@
   <body>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="root"></div>
+    <script type="module" src="/src/index.jsx"></script>
   </body>
 </html>

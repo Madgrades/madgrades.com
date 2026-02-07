@@ -5,25 +5,21 @@
   "dependencies": {
     "ajv": "^8.17.1",
     "axios": "^1.12.0",
-    "babel-polyfill": "^6.26.0",
     "classnames": "^2.2.5",
     "dom-to-image": "^2.6.0",
-    "dotenv": "^5.0.1",
+    "dotenv": "^16.4.7",
     "file-saver": "^1.3.3",
-    "history": "^4.7.2",
     "lodash": "^4.17.5",
-    "normalize.css": "^npm 8.0.0",
+    "normalize.css": "^8.0.1",
     "npm-run-all": "^4.1.2",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-fastclick": "^3.0.2",
     "react-markdown": "^9.0.1",
     "react-redux": "^9.1.2",
     "react-router": "^6.28.0",
     "react-router-dom": "^6.28.0",
-    "react-scripts": "^5.0.1",
     "recharts": "^2.1.16",
     "redux": "^5.0.1",
     "redux-logger": "^3.0.6",
@@ -37,12 +33,11 @@
     "git-info": "git log -1 --oneline > src/assets/git-rev.txt",
     "build-css": "sass -I ./src -I ./node_modules src/:src/ --no-source-map",
     "watch-css": "npm run build-css && sass -I src/ ./node_modules src/:src/ --watch",
-    "start-js": "react-scripts start",
+    "start-js": "vite",
     "start": "npm-run-all -p git-info watch-css start-js",
-    "build-js": "react-scripts build",
+    "build-js": "vite build",
     "build": "npm-run-all git-info build-css build-js",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
+    "preview": "vite preview",
     "deploy": "npm run build && mv build/index.html build/200.html && surge build",
     "deploy-staging": "npm run build && mv build/index.html build/200.html && surge build staging.madgrades.com",
     "deploy-prod": "npm run build && mv build/index.html build/200.html && surge build madgrades.com"
@@ -58,14 +53,13 @@
     "npm": ">=6.0.0"
   },
   "devDependencies": {
-    "surge": "^0.24.6"
+    "@vitejs/plugin-react": "^5.1.3",
+    "surge": "^0.24.6",
+    "vite": "^7.3.1",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-sass-dts": "^1.3.35"
   },
   "overrides": {
-    "react-scripts": {
-      "svgo": "^3.0.0",
-      "nth-check": "^2.1.1",
-      "postcss": "^8.4.31"
-    },
     "surge": {
       "tough-cookie": "^4.1.3",
       "form-data": "^4.0.0",

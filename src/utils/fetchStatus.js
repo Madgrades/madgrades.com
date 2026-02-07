@@ -1,6 +1,6 @@
 
 const API_URL = 'https://api.uptimerobot.com/v2/getMonitors';
-const API_KEY = process.env.REACT_APP_UPTIME_ROBOT_API_KEY;
+const API_KEY = import.meta.env.VITE_UPTIME_ROBOT_API_KEY;
 
 const errorCodes = {
   0: "PAUSED",

@@ -6,31 +6,84 @@ import utils from "../../utils";
 
 export class GpaChart extends Component {
   static propTypes = {
-    gradeDistributions: PropTypes.arrayOf(PropTypes.object).isRequired,
+    // legacy single-series usage
+    gradeDistributions: PropTypes.arrayOf(PropTypes.object),
+    // new multi-series usage (arrays of gradeDistribution objects)
+    primary: PropTypes.arrayOf(PropTypes.object),
+    secondary: PropTypes.arrayOf(PropTypes.object),
+    // optional labels when using primary/secondary
+    primaryLabel: PropTypes.string,
+    secondaryLabel: PropTypes.string,
     title: PropTypes.string,
     theme: PropTypes.string,
+  };
+
+  // convert gradeDistribution array -> [{ termCode, termName, gpa }]
+  normalize = (arr) => {
+    if (!arr || !Array.isArray(arr)) return [];
+    return arr
+      .map((gd) => ({
+        termCode: gd.termCode || 0,
+        termName: utils.termCodes.toName(gd.termCode),
+        gpa: utils.grades.gpa(gd),
+      }))
+      .sort((a, b) => a.termCode - b.termCode);
+  };
+
+  // merge two normalized series by termName (union of terms, sorted by termCode)
+  mergeSeries = (primaryNorm, secondaryNorm) => {
+    const map = {};
+
+    primaryNorm.forEach((p) => {
+      map[p.termCode] = {
+        termCode: p.termCode,
+        termName: p.termName,
+        primary: p.gpa,
+        secondary: null,
+      };
+    });
+
+    secondaryNorm.forEach((s) => {
+      if (map[s.termCode]) {
+        map[s.termCode].secondary = s.gpa;
+      } else {
+        map[s.termCode] = {
+          termCode: s.termCode,
+          termName: s.termName,
+          primary: null,
+          secondary: s.gpa,
+        };
+      }
+    });
+
+    const merged = Object.keys(map)
+      .map((k) => map[k])
+      .sort((a, b) => a.termCode - b.termCode);
+
+    const termNames = merged.map((m) => m.termName);
+    const primaryGpas = merged.map((m) =>
+      m.primary == null ? null : m.primary,
+    );
+    const secondaryGpas = merged.map((m) =>
+      m.secondary == null ? null : m.secondary,
+    );
+
+    return { termNames, primaryGpas, secondaryGpas };
   };
 
   render = () => {
     const { title, gradeDistributions, theme } = this.props;
 
-    if (!gradeDistributions) return null;
-
-    const data = gradeDistributions.map((gradeDistribution) => ({
-      gpa: utils.grades.gpa(gradeDistribution),
-      termName: utils.termCodes.toName(gradeDistribution.termCode),
-    }));
-
-    const termNames = data.map((d) => d.termName);
-    const gpas = data.map((d) => d.gpa);
+    const isMulti = Array.isArray(this.props.primary);
 
     const isDark = theme === "dark";
-    // Use explicit theme colors for text/grid; always use red for the GPA line (consistent across themes)
     const textColor = isDark ? "#ffffff" : "#222";
     const gridColor = isDark ? "#404040" : "#e6e6e6";
-    const lineColor = "#ff6b6b"; // always red
 
-    const option = {
+    // give extra bottom spacing when rendering multi-series so legend doesn't overlap x-axis labels
+    const gridBottom = isMulti ? 100 : 70;
+
+    let option = {
       backgroundColor: "transparent",
       textStyle: { color: textColor },
       tooltip: {
@@ -38,17 +91,10 @@ export class GpaChart extends Component {
         backgroundColor: isDark ? "#2d2d2d" : "#fff",
         borderColor: gridColor,
         textStyle: { color: textColor },
-        formatter: (params) => {
-          const p = params[0];
-          return `${p.axisValue}<br/>Average GPA: ${utils.grades.formatGpa(
-            p.data,
-          )}`;
-        },
       },
-      grid: { left: 40, right: 20, bottom: 70, top: 20 },
+      grid: { left: 40, right: 20, bottom: gridBottom, top: 20 },
       xAxis: {
         type: "category",
-        data: termNames,
         axisLabel: { rotate: -45, color: textColor, interval: 0, fontSize: 12 },
         axisLine: { lineStyle: { color: gridColor } },
         axisTick: { lineStyle: { color: gridColor } },
@@ -67,22 +113,104 @@ export class GpaChart extends Component {
         nameGap: 45,
         nameTextStyle: { color: textColor },
       },
-      series: [
+      series: [],
+    };
+
+    if (isMulti) {
+      // multi-series rendering (primary + secondary arrays)
+      const primaryNorm = this.normalize(this.props.primary);
+      const secondaryNorm = this.normalize(this.props.secondary || []);
+      const merged = this.mergeSeries(primaryNorm, secondaryNorm);
+
+      option.xAxis.data = merged.termNames;
+      option.legend = { textStyle: { color: textColor }, bottom: 10 };
+
+      const primaryColor = "#4f46e5"; // indigo - primary
+      const secondaryColor = "#ff6b6b"; // red - secondary (consistent)
+
+      option.tooltip.formatter = (params) => {
+        // params may contain multiple series; build a readable tooltip
+        const parts = params.map((p) => {
+          const value = p.data;
+          const formatted =
+            value == null || isNaN(value)
+              ? "N/A"
+              : utils.grades.formatGpa(value);
+          return `${p.marker} ${p.seriesName}: ${formatted}`;
+        });
+        return `${params[0].axisValue}<br/>${parts.join("<br/>")}`;
+      };
+
+      option.series.push(
         {
-          data: gpas,
+          name: this.props.primaryLabel || "Primary",
+          data: merged.primaryGpas,
           type: "line",
           smooth: true,
           symbol: "circle",
           symbolSize: 6,
-          color: lineColor,
-          lineStyle: { color: lineColor, width: 3 },
+          color: primaryColor,
+          lineStyle: { color: primaryColor, width: 3 },
           areaStyle: {
-            color: isDark ? "rgba(255,107,107,0.08)" : "rgba(79,70,229,0.08)",
+            color: isDark ? "rgba(79,70,229,0.08)" : "rgba(79,70,229,0.08)",
           },
-          emphasis: { itemStyle: { color: lineColor } },
+          emphasis: { itemStyle: { color: primaryColor } },
         },
-      ],
-    };
+        {
+          name: this.props.secondaryLabel || "Secondary",
+          data: merged.secondaryGpas,
+          type: "line",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 6,
+          color: secondaryColor,
+          lineStyle: { color: secondaryColor, width: 3 },
+          areaStyle: {
+            color: isDark ? "rgba(255,107,107,0.08)" : "rgba(255,107,107,0.08)",
+          },
+          emphasis: { itemStyle: { color: secondaryColor } },
+        },
+      );
+    } else {
+      // legacy single-series rendering
+      if (!gradeDistributions) return null;
+
+      const data = gradeDistributions.map((gradeDistribution) => ({
+        gpa: utils.grades.gpa(gradeDistribution),
+        termName: utils.termCodes.toName(gradeDistribution.termCode),
+        termCode: gradeDistribution.termCode,
+      }));
+
+      data.sort((a, b) => a.termCode - b.termCode);
+
+      const termNames = data.map((d) => d.termName);
+      const gpas = data.map((d) => d.gpa);
+
+      const lineColor = "#ff6b6b"; // keep backward-compatible color
+
+      option.xAxis.data = termNames;
+      option.tooltip.formatter = (params) => {
+        const p = params[0];
+        const value = p.data;
+        const formatted =
+          value == null || isNaN(value) ? "N/A" : utils.grades.formatGpa(value);
+        return `${p.axisValue}<br/>Average GPA: ${formatted}`;
+      };
+
+      option.series.push({
+        data: gpas,
+        type: "line",
+        smooth: true,
+        symbol: "circle",
+        symbolSize: 6,
+        color: lineColor,
+        lineStyle: { color: lineColor, width: 3 },
+        areaStyle: {
+          color: isDark ? "rgba(255,107,107,0.08)" : "rgba(79,70,229,0.08)",
+        },
+        emphasis: { itemStyle: { color: lineColor } },
+      });
+    }
 
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>

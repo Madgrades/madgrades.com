@@ -3,7 +3,7 @@ import { Container, Grid, Segment, Header, Button } from "semantic-ui-react";
 import PropTypes from "prop-types";
 import CourseName from "./CourseName";
 import CourseChartViewer from "./CourseChartViewer";
-import CourseGpaChart from "./CourseGpaChart";
+import CombinedCourseCharts from "./CombinedCourseCharts";
 import { parse, stringify } from "qs";
 
 class CourseComparison extends Component {
@@ -79,6 +79,19 @@ class CourseComparison extends Component {
             Remove Comparison
           </Button>
         </div>
+
+        {/* combined comparison charts (GPA overlay + Grade Distribution overlay) */}
+        <div style={{ marginBottom: "1.5em" }}>
+          <CombinedCourseCharts
+            course1Uuid={course1Uuid}
+            course2Uuid={course2Uuid}
+            course1InstructorId={course1InstructorId}
+            course1TermCode={course1TermCode}
+            course2InstructorId={course2InstructorId}
+            course2TermCode={course2TermCode}
+          />
+        </div>
+
         <Grid columns={2} divided relaxed>
           <Grid.Row>
             <Grid.Column>
@@ -110,14 +123,10 @@ class CourseComparison extends Component {
                     instructorId={course1InstructorId}
                     termCode={course1TermCode}
                     onChange={this.handleCourse1Change}
+                    hideDistribution={true}
                   />
                 </div>
-                <div
-                  className="chart-container"
-                  style={{ marginTop: "1em", minHeight: "300px" }}
-                >
-                  <CourseGpaChart uuid={course1Uuid} />
-                </div>
+                {/* per-course GPA chart removed in favor of combined overlay above */}
               </Segment>
             </Grid.Column>
             <Grid.Column>
@@ -149,14 +158,10 @@ class CourseComparison extends Component {
                     instructorId={course2InstructorId}
                     termCode={course2TermCode}
                     onChange={this.handleCourse2Change}
+                    hideDistribution={true}
                   />
                 </div>
-                <div
-                  className="chart-container"
-                  style={{ marginTop: "1em", minHeight: "300px" }}
-                >
-                  <CourseGpaChart uuid={course2Uuid} />
-                </div>
+                {/* per-course GPA chart removed in favor of combined overlay above */}
               </Segment>
             </Grid.Column>
           </Grid.Row>

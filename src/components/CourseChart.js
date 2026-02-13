@@ -11,6 +11,12 @@ class CourseChart extends Component {
     uuid: PropTypes.string.isRequired,
     termCode: PropTypes.number,
     instructorId: PropTypes.number,
+    // when true, hide the embedded GradeDistributionChart (used by comparison view)
+    hideDistribution: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    hideDistribution: false,
   };
 
   componentDidMount = () => {
@@ -20,7 +26,8 @@ class CourseChart extends Component {
   };
 
   render = () => {
-    const { course, uuid, data, termCode, instructorId } = this.props;
+    const { course, uuid, data, termCode, instructorId, hideDistribution } =
+      this.props;
 
     let chart, primary, label, secondary, secondaryLabel, isLoaded;
 
@@ -92,7 +99,10 @@ class CourseChart extends Component {
     }
 
     if (isLoaded) {
-      chart = (
+      chart = hideDistribution ? (
+        // show nothing where the GradeDistributionChart would be
+        <div style={{ minHeight: 340 }} />
+      ) : (
         <GradeDistributionChart
           title={title}
           primary={primary}
@@ -102,7 +112,11 @@ class CourseChart extends Component {
         />
       );
     } else {
-      chart = <GradeDistributionChart title="Cumulative Grade Distribution" />;
+      chart = hideDistribution ? (
+        <div style={{ minHeight: 340 }} />
+      ) : (
+        <GradeDistributionChart title="Cumulative Grade Distribution" />
+      );
     }
 
     return (

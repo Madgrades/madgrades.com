@@ -15,6 +15,8 @@ class CourseChartViewer extends Component {
     termCode: PropTypes.number,
     instructorId: PropTypes.number,
     onChange: PropTypes.func,
+    // hide the embedded GradeDistributionChart (used by comparison view)
+    hideDistribution: PropTypes.bool,
   };
 
   state = {
@@ -23,6 +25,7 @@ class CourseChartViewer extends Component {
 
   static defaultProps = {
     onChange: ({ termCode, instructorId }) => {},
+    hideDistribution: false,
   };
 
   fetchCourseGrades = () => {
@@ -216,6 +219,7 @@ class CourseChartViewer extends Component {
               uuid={uuid}
               instructorId={instructorChosen}
               termCode={termChosen}
+              hideDistribution={this.props.hideDistribution}
             />
           </div>
         </Col>

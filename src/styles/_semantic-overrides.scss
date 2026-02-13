@@ -509,6 +509,28 @@
     border-color: var(--border-color);
   }
 
+  // Dropdown / selection labels (selected items inside multi-select dropdowns)
+  // Ensure they contrast with the input background and don't turn bright white on hover
+  .ui.selection.dropdown .label,
+  .ui.multiple.dropdown .label,
+  .ui.dropdown .label {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: none;
+  }
+
+  .ui.selection.dropdown .label:hover,
+  .ui.multiple.dropdown .label:hover,
+  .ui.dropdown .label:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+  }
+
+  .ui.dropdown .label .icon {
+    color: var(--text-secondary);
+  }
+
   // Subject pills - dark mode
   .subject-pill.ui.label {
     background-color: rgba(255, 255, 255, 0.08);

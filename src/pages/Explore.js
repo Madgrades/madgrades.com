@@ -10,17 +10,17 @@ import _ from "lodash";
 const entityOptions = [
   {
     key: "course",
-    text: "Courses",
+    text: "Course",
     value: "course",
   },
   {
     key: "instructor",
-    text: "Instructors",
+    text: "Instructor",
     value: "instructor",
   },
   {
     key: "subject",
-    text: "Subjects",
+    text: "Subject",
     value: "subject",
   },
 ];
@@ -194,17 +194,16 @@ class Explore extends Component {
         <Container>
           <Header as="h1">
             <Header.Content>
-              Explore:{" "}
+              Explore &nbsp;
               <Dropdown
                 inline
+                className="explore-entity-dropdown"
                 options={entityOptions}
                 onChange={this.onEntityChange}
                 value={entityType}
               />
+              &nbsp; GPA Statistics
             </Header.Content>
-            <Header.Subheader>
-              Find GPA stats on courses, instructors, subjects.*
-            </Header.Subheader>
           </Header>
 
           <Row>

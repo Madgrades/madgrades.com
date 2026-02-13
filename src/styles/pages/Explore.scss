@@ -1,3 +1,58 @@
 .Explore {
   margin-top: 20px;
 }
+
+/* Inline entity dropdown: underline & bold (no glow) */
+.Explore .explore-entity-dropdown {
+  cursor: pointer; /* make clickable affordance explicit */
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
+  transition: color 120ms ease, transform 120ms ease;
+}
+
+.Explore .explore-entity-dropdown > .text {
+  padding: 0 4px;
+  background: transparent; /* no pill background */
+  border-radius: 2px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--text-primary);
+  border-bottom: 2px solid currentColor; /* always-underlined */
+  transition: border-color 140ms ease, color 120ms ease, transform 120ms ease;
+  box-shadow: none; /* remove glow */
+}
+
+/* Light mode color */
+:root .Explore .explore-entity-dropdown > .text {
+  color: #1678c2;
+}
+
+/* Dark mode color */
+[data-theme="dark"] .Explore .explore-entity-dropdown > .text {
+  color: var(--accent-red);
+}
+
+/* hover/focus: keep subtle lift only (underline remains) */
+.Explore .explore-entity-dropdown:hover > .text,
+.Explore .explore-entity-dropdown:focus > .text,
+.Explore .explore-entity-dropdown:active > .text {
+  transform: translateY(-1px);
+}
+
+/* emphasize caret color only (no glow) */
+.Explore .explore-entity-dropdown .dropdown.icon {
+  margin-left: 6px;
+  opacity: 0.95;
+  transition: color 120ms ease, transform 120ms ease;
+}
+.Explore .explore-entity-dropdown:hover .dropdown.icon,
+.Explore .explore-entity-dropdown:focus .dropdown.icon {
+  transform: translateY(-1px);
+}
+
+/* keyboard focus outline for accessibility */
+.Explore .explore-entity-dropdown:focus-visible > .text {
+  outline: 3px solid rgba(24, 144, 255, 0.12);
+  outline-offset: 3px;
+}

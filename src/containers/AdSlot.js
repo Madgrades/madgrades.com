@@ -9,7 +9,21 @@ class AdSlot extends Component {
   };
 
   componentDidMount = () => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    // If AdSense client is not configured, skip pushing to `adsbygoogle`.
+    // This prevents an uncaught TagError like "Ad client is missing from the slot".
+    const adClient = import.meta.env.VITE_ADSENSE_CLIENT;
+    if (!adClient) {
+      // eslint-disable-next-line no-console
+      console.warn("Ad client not configured — skipping adsbygoogle.push()");
+      return;
+    }
+
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn("adsbygoogle.push() failed:", err);
+    }
   };
 
   render = () => (

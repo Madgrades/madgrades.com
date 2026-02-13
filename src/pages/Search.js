@@ -68,6 +68,7 @@ const Courses = () => {
           <p>Select a course to compare with the previously selected course.</p>
           <Message.Content>
             <Button
+              secondary
               onClick={() => {
                 const params = new URLSearchParams(location.search);
                 params.delete("compareWith");

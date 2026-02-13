@@ -68,7 +68,7 @@ class CourseComparison extends Component {
     return (
       <Container fluid style={{ padding: "20px 40px" }}>
         <div style={{ display: "flex", gap: "1em", marginBottom: "2em" }}>
-          <Button negative onClick={onRemoveComparison}>
+          <Button secondary onClick={onRemoveComparison}>
             Remove Comparison
           </Button>
         </div>
@@ -91,7 +91,7 @@ class CourseComparison extends Component {
                   </Header.Content>
                 </Header>
                 <Button
-                  primary
+                  secondary
                   icon="exchange"
                   content="Replace Course"
                   onClick={this.handleReplaceCourse1}
@@ -130,7 +130,7 @@ class CourseComparison extends Component {
                   </Header.Content>
                 </Header>
                 <Button
-                  primary
+                  secondary
                   icon="exchange"
                   content="Replace Course"
                   onClick={this.handleReplaceCourse2}

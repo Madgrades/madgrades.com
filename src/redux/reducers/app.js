@@ -1,7 +1,20 @@
 import * as actionTypes from "../actionTypes";
 
+// Detect browser preference if no saved theme
+const getInitialTheme = () => {
+  const savedTheme = localStorage.getItem("madgrades-theme");
+  if (savedTheme) {
+    return savedTheme;
+  }
+  // Check browser preference
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return "dark";
+  }
+  return "light";
+};
+
 const initialState = {
-  theme: localStorage.getItem("madgrades-theme") || "light",
+  theme: getInitialTheme(),
   searchQuery: "",
   courseFilterParams: {
     subjects: undefined,

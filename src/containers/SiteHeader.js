@@ -67,7 +67,7 @@ class SiteHeader extends Component {
                 <Menu.Item
                   as={NavLink}
                   to="/search"
-                  active={pathname.startsWith("/search")}
+                  active={pathname.startsWith("/search") || pathname.startsWith("/courses")}
                 >
                   Courses
                 </Menu.Item>

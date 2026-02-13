@@ -20,10 +20,13 @@ class CourseComparison extends Component {
     const currentParams = parse(location.search.substr(1));
 
     const newParams = {
-      instructorId: params.instructorId || "0",
-      termCode: params.termCode || "0",
-      course2InstructorId: currentParams.course2InstructorId || "0",
-      course2TermCode: currentParams.course2TermCode || "0",
+      // include instructorId/termCode only when provided (omit to clear)
+      ...(params.instructorId !== undefined
+        ? { instructorId: params.instructorId }
+        : {}),
+      ...(params.termCode !== undefined ? { termCode: params.termCode } : {}),
+      course2InstructorId: currentParams.course2InstructorId || undefined,
+      course2TermCode: currentParams.course2TermCode || undefined,
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);
@@ -34,10 +37,14 @@ class CourseComparison extends Component {
     const currentParams = parse(location.search.substr(1));
 
     const newParams = {
-      instructorId: currentParams.instructorId || "0",
-      termCode: currentParams.termCode || "0",
-      course2InstructorId: params.instructorId || "0",
-      course2TermCode: params.termCode || "0",
+      instructorId: currentParams.instructorId || undefined,
+      termCode: currentParams.termCode || undefined,
+      ...(params.instructorId !== undefined
+        ? { course2InstructorId: params.instructorId }
+        : {}),
+      ...(params.termCode !== undefined
+        ? { course2TermCode: params.termCode }
+        : {}),
       compareWith: course2Uuid,
     };
     navigate(`/courses/${course1Uuid}?${stringify(newParams)}`);

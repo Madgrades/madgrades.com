@@ -91,7 +91,7 @@ class GradeDistributionChart extends Component {
         type: "value",
         min: 0,
         max: 100,
-        interval: 10,               // show tick/label every 10
+        interval: 10, // show tick/label every 10
         axisTick: { lineStyle: { color: gridColor }, show: true },
         axisLabel: { color: textColor },
         splitLine: { lineStyle: { color: gridColor } },

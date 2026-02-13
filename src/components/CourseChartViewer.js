@@ -54,12 +54,15 @@ class CourseChartViewer extends Component {
   onInstructorChange = (event, { value }) => {
     const { onChange, termCode } = this.props;
 
+    // keep numeric 0 for "All instructors" in the URL (many components expect it)
+    const newInstructorId = value;
+
     this.setState(
       {
-        instructorId: value,
+        instructorId: newInstructorId,
       },
       () => {
-        onChange({ termCode, instructorId: value });
+        onChange({ termCode, instructorId: newInstructorId });
       },
     );
   };
@@ -160,7 +163,8 @@ class CourseChartViewer extends Component {
       instructorOptions[0].text = instructorText;
     }
 
-    let instructorChosen = instructorId || undefined,
+    // keep dropdown value as numeric (0 = All instructors) so the UI can select the 'All' option
+    let instructorChosen = instructorId,
       termChosen = termCode || undefined;
 
     return (
@@ -175,7 +179,7 @@ class CourseChartViewer extends Component {
                 search
                 options={instructorOptions}
                 onChange={this.onInstructorChange}
-                value={instructorId}
+                value={instructorChosen}
               />
             </Form.Field>
             <Form.Field>
@@ -208,6 +212,7 @@ class CourseChartViewer extends Component {
             style={{ marginBottom: "1em" }}
           >
             <CourseChart
+              key={`chart-${uuid}-${instructorChosen || 0}-${termChosen || 0}`}
               uuid={uuid}
               instructorId={instructorChosen}
               termCode={termChosen}

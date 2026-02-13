@@ -35,9 +35,10 @@ class CourseChart extends Component {
 
       let termName = termCode && utils.termCodes.toName(termCode);
 
+      // Term-specific comparison when termCode is set and no instructor filter is active (instructorId falsy, including 0)
       if (termCode && !instructorId) {
         let offering = data.courseOfferings.filter(
-          (o) => o.termCode === termCode
+          (o) => o.termCode === termCode,
         )[0];
 
         if (offering) {
@@ -47,9 +48,9 @@ class CourseChart extends Component {
         } else {
           console.error(`Invalid course/term combination: ${uuid}/${termCode}`);
         }
-      } else if (instructorId && !termCode) {
+      } else if (instructorId > 0 && !termCode) {
         let instructor = data.instructors.filter(
-          (i) => i.id === instructorId
+          (i) => i.id === instructorId,
         )[0];
 
         if (instructor) {
@@ -58,17 +59,17 @@ class CourseChart extends Component {
           title += ` vs. ${instructor.name}`;
         } else {
           console.error(
-            `Invalid course/instructor combination: ${uuid}/${instructorId}`
+            `Invalid course/instructor combination: ${uuid}/${instructorId}`,
           );
         }
-      } else if (instructorId && termCode) {
+      } else if (instructorId > 0 && termCode) {
         let instructor = data.instructors.filter(
-          (i) => i.id === instructorId
+          (i) => i.id === instructorId,
         )[0];
 
         if (instructor) {
           let offering = instructor.terms.filter(
-            (o) => o.termCode === termCode
+            (o) => o.termCode === termCode,
           )[0];
 
           if (offering) {
@@ -77,7 +78,7 @@ class CourseChart extends Component {
             title += ` vs. ${instructor.name} (${termName})`;
           } else {
             console.error(
-              `Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`
+              `Invalid course/instructor/term combination: ${uuid}/${instructorId}/${termCode}`,
             );
           }
         }

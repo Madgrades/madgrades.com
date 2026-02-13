@@ -113,6 +113,10 @@ export class GpaChart extends Component {
         nameGap: 45,
         nameTextStyle: { color: textColor },
       },
+      // explicitly control legend visibility so switching between multi/single-series fully updates the chart
+      legend: isMulti
+        ? { textStyle: { color: textColor }, bottom: 10 }
+        : { show: false },
       series: [],
     };
 
@@ -221,6 +225,7 @@ export class GpaChart extends Component {
         )}
         <div style={{ height: 340 }}>
           <ReactECharts
+            key={isMulti ? 'gpa-multi' : 'gpa-single'}
             option={option}
             opts={{ renderer: "svg" }}
             style={{ height: "100%", width: "100%" }}

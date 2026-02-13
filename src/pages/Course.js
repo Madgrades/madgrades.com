@@ -75,8 +75,20 @@ const Course = () => {
   return (
     <Container className="Course">
       <CourseData uuid={uuid} onDataLoad={onCourseDataLoad} />
-      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1em", marginBottom: "1em", flexWrap: "wrap" }}>
-        <Header size="huge" style={{ margin: 0, flex: "1 1 auto", minWidth: "min-content" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: "1em",
+          marginBottom: "1em",
+          flexWrap: "wrap",
+        }}
+      >
+        <Header
+          size="huge"
+          style={{ margin: 0, flex: "1 1 auto", minWidth: "min-content" }}
+        >
           <Header.Content style={{ maxWidth: "100%" }}>
             <CourseName uuid={uuid} fallback={"(Unknown Name)"} />
             <Header.Subheader style={{ maxWidth: "100%" }}>
@@ -84,7 +96,11 @@ const Course = () => {
             </Header.Subheader>
           </Header.Content>
         </Header>
-        <Button secondary onClick={handleCompare} style={{ alignSelf: "center", flexShrink: 0 }}>
+        <Button
+          secondary
+          onClick={handleCompare}
+          style={{ alignSelf: "center", flexShrink: 0 }}
+        >
           Compare with Another Course
         </Button>
       </div>
@@ -96,7 +112,11 @@ const Course = () => {
         uuid={uuid}
       />
       <Divider />
-      <CourseGpaChart uuid={uuid} />
+      <CourseGpaChart
+        uuid={uuid}
+        instructorId={instructorId}
+        termCode={termCode}
+      />
     </Container>
   );
 };

@@ -85,7 +85,7 @@
   cursor: pointer;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
@@ -371,17 +371,26 @@
     }
   }
 
-  // Chart text colors in dark mode
-  .recharts-wrapper {
-    .recharts-text,
-    .recharts-cartesian-axis-tick-value,
-    .recharts-label {
-      fill: #ffffff !important;
-    }
+  /* ECharts (echarts-for-react) dark-mode overrides */
+  .echarts-for-react,
+  .echarts {
+    color: var(--text-primary);
+    background: transparent;
+  }
 
-    .recharts-legend-item-text {
-      color: #ffffff !important;
-    }
+  /* ECharts tooltips are often appended to <body> — ensure dark styling when site is dark */
+  .echarts-tooltip,
+  .echarts-for-react .echarts-tooltip {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 12px var(--shadow-card) !important;
+  }
+
+  /* DOM-rendered legend/labels fallback */
+  .echarts-for-react .legend,
+  .echarts-for-react .echarts-legend {
+    color: var(--text-primary) !important;
   }
 
   // Dividers

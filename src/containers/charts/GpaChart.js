@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  CartesianGrid,
-  Label,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import ReactECharts from "echarts-for-react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import utils from "../../utils";
@@ -25,17 +16,73 @@ export class GpaChart extends Component {
 
     if (!gradeDistributions) return null;
 
-    const data = gradeDistributions.map((gradeDistribution) => {
-      return {
-        gpa: utils.grades.gpa(gradeDistribution),
-        termName: utils.termCodes.toName(gradeDistribution.termCode),
-      };
-    });
+    const data = gradeDistributions.map((gradeDistribution) => ({
+      gpa: utils.grades.gpa(gradeDistribution),
+      termName: utils.termCodes.toName(gradeDistribution.termCode),
+    }));
 
-    // Theme-aware colors
-    const textColor = theme === "dark" ? "#ffffff" : "#000000";
-    const gridColor = theme === "dark" ? "#404040" : "#ccc";
-    const lineColor = theme === "dark" ? "#c5050c" : "#8884d8";
+    const termNames = data.map((d) => d.termName);
+    const gpas = data.map((d) => d.gpa);
+
+    const isDark = theme === "dark";
+    // Use explicit theme colors (avoid relying on computed CSS variables). SVG renderer will render text as SVG so styling is consistent.
+    const textColor = isDark ? "#ffffff" : "#222";
+    const gridColor = isDark ? "#404040" : "#e6e6e6";
+    const lineColor = isDark ? "#ff6b6b" : "#4f46e5";
+
+    const option = {
+      backgroundColor: "transparent",
+      textStyle: { color: textColor },
+      tooltip: {
+        trigger: "axis",
+        backgroundColor: isDark ? "#2d2d2d" : "#fff",
+        borderColor: gridColor,
+        textStyle: { color: textColor },
+        formatter: (params) => {
+          const p = params[0];
+          return `${p.axisValue}<br/>Average GPA: ${utils.grades.formatGpa(
+            p.data,
+          )}`;
+        },
+      },
+      grid: { left: 40, right: 20, bottom: 70, top: 20 },
+      xAxis: {
+        type: "category",
+        data: termNames,
+        axisLabel: { rotate: -45, color: textColor, interval: 0, fontSize: 12 },
+        axisLine: { lineStyle: { color: gridColor } },
+        axisTick: { lineStyle: { color: gridColor } },
+        nameTextStyle: { color: textColor },
+      },
+      yAxis: {
+        type: "value",
+        min: (value) => Math.floor(Math.min(3.0, value.min)),
+        max: 4.0,
+        axisLine: { lineStyle: { color: gridColor } },
+        axisTick: { lineStyle: { color: gridColor } },
+        splitLine: { lineStyle: { color: gridColor } },
+        axisLabel: { color: textColor, fontSize: 12 },
+        name: "Average GPA",
+        nameLocation: "middle",
+        nameGap: 45,
+        nameTextStyle: { color: textColor },
+      },
+      series: [
+        {
+          data: gpas,
+          type: "line",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 6,
+          color: lineColor,
+          lineStyle: { color: lineColor, width: 3 },
+          areaStyle: {
+            color: isDark ? "rgba(255,107,107,0.08)" : "rgba(79,70,229,0.08)",
+          },
+          emphasis: { itemStyle: { color: lineColor } },
+        },
+      ],
+    };
 
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -44,51 +91,12 @@ export class GpaChart extends Component {
             <p style={{ textAlign: "center", marginBottom: "10px" }}>{title}</p>
           </div>
         )}
-        <div style={{ flex: 1 }}>
-          <ResponsiveContainer width="100%" aspect={16.0 / 9.0}>
-            <LineChart
-              data={data}
-              margin={{ top: 10, right: 20, left: -15, bottom: 50 }}
-            >
-              <CartesianGrid stroke={gridColor} />
-              <XAxis
-                dataKey="termName"
-                interval={0}
-                angle={-45}
-                textAnchor="end"
-                type="category"
-                tick={{ fill: textColor }}
-              />
-              <YAxis
-                domain={[(min) => Math.floor(Math.min(3.0, min)), (max) => 4.0]}
-                tick={{ fill: textColor }}
-              >
-                <Label
-                  value="Average GPA"
-                  position="insideLeft"
-                  dx={15}
-                  dy={25}
-                  angle={-90}
-                  fill={textColor}
-                />
-              </YAxis>
-              <Line
-                type="monotone"
-                dataKey="gpa"
-                isAnimationActive={false}
-                stroke={lineColor}
-              />
-              <Tooltip
-                formatter={(gpa) => utils.grades.formatGpa(gpa)}
-                contentStyle={{
-                  backgroundColor: theme === "dark" ? "#2d2d2d" : "#fff",
-                  borderColor: gridColor,
-                }}
-                labelStyle={{ color: textColor }}
-                itemStyle={{ color: textColor }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
+        <div style={{ height: 340 }}>
+          <ReactECharts
+            option={option}
+            opts={{ renderer: "svg" }}
+            style={{ height: "100%", width: "100%" }}
+          />
         </div>
       </div>
     );

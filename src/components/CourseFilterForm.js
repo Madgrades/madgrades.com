@@ -103,7 +103,7 @@ class CourseFilterForm extends Component {
         <Form.Button positive floated="right">
           Search
         </Form.Button>
-        <Button onClick={this.onClear} floated="left">
+        <Button onClick={this.onClear} floated="left" secondary>
           Clear
         </Button>
       </Form>

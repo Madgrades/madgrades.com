@@ -1,38 +1,44 @@
-import * as actionTypes from '../actionTypes';
+import * as actionTypes from "../actionTypes";
 
 const initialState = {
-  searchQuery: '',
+  theme: localStorage.getItem("madgrades-theme") || "light",
+  searchQuery: "",
   courseFilterParams: {
     subjects: undefined,
     instructors: undefined,
     sort: undefined,
-    order: undefined
+    order: undefined,
   },
-  terms: undefined
+  terms: undefined,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case actionTypes.SET_THEME:
+      return {
+        ...state,
+        theme: action.theme,
+      };
     case actionTypes.SET_SEARCH_QUERY:
       return {
         ...state,
-        searchQuery: action.query || ''
+        searchQuery: action.query || "",
       };
     case actionTypes.SET_COURSE_FILTER_PARAMS:
       return {
         ...state,
         courseFilterParams: {
           ...state.courseFilterParams,
-          ...action.params
-        }
+          ...action.params,
+        },
       };
     case actionTypes.RECEIVE_TERMS:
       return {
         ...state,
-        terms: action.terms
+        terms: action.terms,
       };
     default: {
-      return state
+      return state;
     }
   }
 }

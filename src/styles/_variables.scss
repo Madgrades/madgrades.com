@@ -1,0 +1,46 @@
+// Theme CSS Custom Properties
+
+:root {
+  // Light mode (default)
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-header: #1b1c1d;
+  --bg-footer: #ffffff;
+  --bg-input: #333333;
+  --bg-card: #ffffff;
+
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: #695f5e;
+  --text-on-dark: #ffffff;
+  --text-muted: #999999;
+
+  --border-color: #d4d4d5;
+  --divider-color: #888888;
+
+  --accent-red: #c5050c;
+
+  --shadow-card: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-header: #0a0a0a;
+  --bg-footer: #0a0a0a;
+  --bg-input: #2a2a2a;
+  --bg-card: #1a1a1a;
+
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: #b3b3b3;
+  --text-on-dark: #ffffff;
+  --text-muted: #888888;
+
+  --border-color: #303030;
+  --divider-color: #303030;
+
+  --accent-red: #c5050c;
+
+  --shadow-card: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
+}

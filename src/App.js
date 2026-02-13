@@ -1,5 +1,6 @@
 import React, { Component, useEffect } from "react";
 import { BrowserRouter, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
 import SiteHeader from "./containers/SiteHeader";
 import SiteFooter from "./containers/SiteFooter";
 import Routes from "./Routes";
@@ -33,6 +34,18 @@ function AnalyticsTracker() {
 }
 
 class App extends Component {
+  componentDidMount() {
+    // Set initial theme attribute
+    document.documentElement.setAttribute("data-theme", this.props.theme);
+  }
+
+  componentDidUpdate(prevProps) {
+    // Update theme attribute when theme changes
+    if (prevProps.theme !== this.props.theme) {
+      document.documentElement.setAttribute("data-theme", this.props.theme);
+    }
+  }
+
   render = () => {
     return (
       <BrowserRouter>
@@ -49,4 +62,8 @@ class App extends Component {
   };
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  theme: state.app.theme,
+});
+
+export default connect(mapStateToProps)(App);

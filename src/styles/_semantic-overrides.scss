@@ -1,0 +1,619 @@
+// Semantic UI Dark Mode Overrides
+
+// Remove border from inverted menu in all modes
+.ui.inverted.menu {
+  border: none !important;
+}
+
+.ui.inverted.segment {
+  border: none !important;
+}
+
+// Make positive buttons red (Search and other action buttons)
+.ui.positive.button,
+.ui.positive.buttons .button {
+  background-color: var(--accent-red) !important;
+  color: #ffffff !important;
+
+  &:hover,
+  &:focus {
+    background-color: #a30409 !important;
+    color: #ffffff !important;
+  }
+
+  &:active {
+    background-color: #8b0308 !important;
+    color: #ffffff !important;
+  }
+}
+
+// Make primary buttons red too (for action buttons like Compare)
+// Except when they're specifically styled as secondary colors (like teal)
+.ui.primary.button:not(.teal):not(.blue):not(.green):not(.orange):not(
+    .purple
+  ):not(.violet):not(.pink):not(.brown):not(.grey):not(.black),
+.ui.primary.buttons
+  .button:not(.teal):not(.blue):not(.green):not(.orange):not(.purple):not(
+    .violet
+  ):not(.pink):not(.brown):not(.grey):not(.black) {
+  background-color: var(--accent-red) !important;
+  color: #ffffff !important;
+
+  &:hover,
+  &:focus {
+    background-color: #a30409 !important;
+    color: #ffffff !important;
+  }
+
+  &:active {
+    background-color: #8b0308 !important;
+    color: #ffffff !important;
+  }
+}
+
+// Dropdown placeholder text should be muted in both light and dark mode
+.ui.dropdown {
+  .default.text {
+    color: var(--text-muted) !important;
+  }
+
+  input.search::placeholder {
+    color: var(--text-muted) !important;
+  }
+}
+
+// Secondary buttons - subtle styling in both light and dark mode
+.ui.secondary.button,
+.ui.secondary.buttons .button {
+  background-color: #f0f0f0;
+  color: rgba(0, 0, 0, 0.8);
+
+  &:hover,
+  &:focus {
+    background-color: #e8e8e8;
+    color: rgba(0, 0, 0, 0.9);
+  }
+}
+
+// Segments - Universal glassmorphism styling for both modes
+.ui.segment:not(.inverted) {
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.6s ease;
+  }
+
+  &:hover {
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 1px 4px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  // Blue link color for headers in light mode
+  .ui.header {
+    color: #2185d0;
+
+    &:hover {
+      color: #1678c2;
+    }
+  }
+}
+
+// Subject pills styling
+.subject-list {
+  display: inline;
+  margin-right: 0;
+}
+
+.subject-pill.ui.label {
+  background-color: #e8e8e8;
+  color: rgba(0, 0, 0, 0.6);
+  border: none;
+  font-weight: 600;
+  padding: 0.3em 0.55em;
+  margin: 0 0.35rem 0.2rem 0 !important;
+  font-size: 0.85em;
+  vertical-align: middle;
+}
+
+// Override Semantic UI header label margin
+.ui.header .ui.label {
+  margin-left: 0 !important;
+}
+
+// Universal header styling
+.ui.header {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+
+  .sub.header {
+    font-weight: 400;
+    margin-top: 0.35em;
+    opacity: 0.8;
+  }
+
+  a {
+    transition: color 0.2s ease;
+  }
+}
+
+[data-theme="dark"] {
+  // Header - make inverted menu match primary background
+  .ui.inverted.menu {
+    background: var(--bg-header);
+  }
+
+  .ui.inverted.segment {
+    background: var(--bg-header);
+    box-shadow: none !important;
+  }
+
+  // Links
+  a {
+    color: #e0e0e0;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
+
+  // Segments - Dark mode colors only
+  .ui.segment:not(.inverted) {
+    background: rgba(26, 26, 26, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+
+    &::before {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+      );
+    }
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(30, 30, 30, 0.65);
+      box-shadow:
+        0 1px 4px 0 rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  .ui.segments .segment,
+  .ui.segments > .segment {
+    border-color: var(--border-color);
+  }
+
+  // Cards - Glassmorphism with layered shadows
+  .ui.card,
+  .ui.cards > .card {
+    background: rgba(26, 26, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    box-shadow:
+      0 1px 3px 0 rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    > .content {
+      border-color: rgba(255, 255, 255, 0.05);
+
+      > .header {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      > .meta,
+      > .description {
+        color: var(--text-secondary);
+      }
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 4px 12px 0 rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 8px 20px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  // Forms
+  .ui.form {
+    .field > label {
+      color: var(--text-primary);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="search"],
+    input[type="password"],
+    textarea {
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+
+      &:focus {
+        background: var(--bg-input);
+        color: var(--text-primary);
+        border-color: var(--accent-red);
+      }
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+    }
+
+    .ui.selection.dropdown {
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+
+      &:focus,
+      &.active {
+        border-color: var(--accent-red);
+      }
+
+      > .text {
+        color: var(--text-primary);
+      }
+
+      > .dropdown.icon {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // Dropdowns
+  .ui.dropdown {
+    .menu {
+      background: var(--bg-secondary);
+      border-color: var(--border-color);
+      box-shadow: 0 2px 4px 0 var(--shadow-card);
+
+      > .header {
+        color: var(--text-primary) !important;
+      }
+
+      > .item {
+        color: var(--text-primary);
+        border-color: var(--border-color);
+
+        .description {
+          color: var(--text-secondary) !important;
+        }
+
+        &:hover {
+          background: var(--bg-input);
+        }
+
+        &.selected {
+          background: var(--bg-input);
+          color: var(--text-primary);
+        }
+
+        &.active {
+          background: var(--bg-input);
+          color: var(--text-primary);
+        }
+      }
+
+      > .message {
+        color: var(--text-secondary);
+      }
+    }
+
+    &.active > .menu,
+    &.visible > .menu {
+      border-color: var(--border-color);
+    }
+  }
+
+  // Override selection dropdown active state border
+  .ui.selection.active.dropdown .menu {
+    border-color: var(--accent-red) !important;
+  }
+
+  // Headers - Dark mode colors only
+  .ui.header {
+    color: var(--text-primary);
+
+    .sub.header {
+      color: var(--text-muted);
+    }
+
+    // Links in headers should be bright
+    a {
+      color: var(--text-primary);
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
+
+  // Chart text colors in dark mode
+  .recharts-wrapper {
+    .recharts-text,
+    .recharts-cartesian-axis-tick-value,
+    .recharts-label {
+      fill: #ffffff !important;
+    }
+
+    .recharts-legend-item-text {
+      color: #ffffff !important;
+    }
+  }
+
+  // Dividers
+  .ui.divider {
+    border-color: var(--divider-color);
+  }
+
+  .ui.horizontal.divider {
+    color: var(--text-secondary);
+
+    &::before,
+    &::after {
+      border-color: var(--divider-color);
+    }
+  }
+
+  // Messages
+  .ui.message {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 1px var(--border-color) inset;
+
+    .header {
+      color: var(--text-primary);
+    }
+  }
+
+  // Tables
+  .ui.table {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+
+    thead th {
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+
+      &.sorted {
+        background: #1a1a1a;
+        color: var(--text-primary) !important;
+      }
+
+      &:hover {
+        background: #3a3a3a;
+        color: var(--text-primary) !important;
+      }
+    }
+
+    tbody td {
+      border-color: var(--border-color);
+    }
+
+    tfoot th {
+      background: var(--bg-input);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    tbody tr {
+      &:hover {
+        background: var(--bg-input);
+      }
+    }
+
+    &.striped tbody tr:nth-child(2n) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  // Pagination
+  .ui.pagination.menu {
+    background: var(--bg-primary);
+    border-color: var(--border-color);
+
+    .item {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+
+      &:hover {
+        background: var(--bg-input);
+      }
+
+      &.active {
+        background: var(--bg-input);
+        color: var(--text-primary) !important;
+      }
+
+      &.disabled {
+        color: var(--text-muted);
+      }
+    }
+  }
+
+  // Dimmer
+  .ui.dimmer {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+
+  // Loader
+  .ui.loader {
+    &::before {
+      border-color: var(--border-color);
+    }
+
+    &::after {
+      border-color: var(--text-primary) transparent transparent;
+    }
+  }
+
+  // Labels
+  .ui.label {
+    background: var(--bg-input);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+
+  // Subject pills - dark mode
+  .subject-pill.ui.label {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85);
+    border: none;
+  }
+
+  // Buttons (non-colored)
+  .ui.button {
+    &.basic {
+      background: transparent !important;
+      color: var(--text-primary) !important;
+      border-color: var(--border-color) !important;
+
+      &:hover {
+        background: var(--bg-input) !important;
+      }
+    }
+
+    &.secondary {
+      background-color: #2a2a2a !important;
+      color: rgba(255, 255, 255, 0.9) !important;
+
+      &:hover,
+      &:focus {
+        background-color: #333333 !important;
+        color: rgba(255, 255, 255, 1) !important;
+      }
+    }
+  }
+
+  // Icons
+  .ui.icon.header .icon {
+    color: var(--text-primary);
+  }
+
+  // Lists
+  .ui.list {
+    .item {
+      color: var(--text-primary);
+
+      .header {
+        color: var(--text-primary);
+      }
+
+      .description {
+        color: var(--text-secondary);
+      }
+    }
+  }
+
+  // Modals
+  .ui.modal {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 6px var(--shadow-card);
+
+    > .header {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+    }
+
+    > .content {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    > .actions {
+      background: var(--bg-secondary);
+      border-color: var(--border-color);
+    }
+  }
+
+  // Accordions
+  .ui.accordion {
+    .title {
+      color: var(--text-primary);
+
+      &:not(.ui) {
+        &:hover {
+          color: var(--text-primary);
+        }
+      }
+    }
+
+    .content {
+      color: var(--text-primary);
+    }
+  }
+
+  // Statistics
+  .ui.statistic {
+    .value {
+      color: var(--text-primary);
+    }
+
+    .label {
+      color: var(--text-secondary);
+    }
+  }
+
+  // Steps
+  .ui.steps {
+    .step {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+
+      .title {
+        color: var(--text-primary);
+      }
+
+      .description {
+        color: var(--text-secondary);
+      }
+
+      &.active {
+        background: var(--bg-secondary);
+
+        .title {
+          color: var(--text-primary);
+        }
+      }
+    }
+  }
+}

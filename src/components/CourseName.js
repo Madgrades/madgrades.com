@@ -35,7 +35,7 @@ class CourseName extends Component {
       if (subjects) {
         return (
           <span>
-            <SubjectNameList subjects={subjects} /> {number}
+            <SubjectNameList subjects={subjects} courseNumber={number} />
           </span>
         );
       } else {

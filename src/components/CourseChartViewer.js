@@ -47,7 +47,7 @@ class CourseChartViewer extends Component {
       },
       () => {
         onChange({ termCode, instructorId });
-      }
+      },
     );
   };
 
@@ -60,7 +60,7 @@ class CourseChartViewer extends Component {
       },
       () => {
         onChange({ termCode, instructorId: value });
-      }
+      },
     );
   };
 
@@ -71,8 +71,10 @@ class CourseChartViewer extends Component {
       isExporting: true,
     });
 
+    const bgcolor = this.props.theme === "dark" ? "#1a1a1a" : "#fff";
+
     domtoimage
-      .toBlob(this.chart, { bgcolor: "#fff" })
+      .toBlob(this.chart, { bgcolor })
       .then((blob) => {
         FileSaver.saveAs(blob, `madgrades-${new Date().toISOString()}.png`);
         this.setState({
@@ -110,7 +112,7 @@ class CourseChartViewer extends Component {
             text: i.name,
             description: utils.grades.gpa(i.cumulative, true),
           };
-        })
+        }),
       );
 
       data.courseOfferings.forEach((o) => {
@@ -126,7 +128,7 @@ class CourseChartViewer extends Component {
           if (code === 0) return true;
 
           const instructor = data.instructors.filter(
-            (i) => i.id === instructorId
+            (i) => i.id === instructorId,
           )[0];
 
           if (!instructor) return true;
@@ -192,7 +194,7 @@ class CourseChartViewer extends Component {
               <Button
                 icon="download"
                 loading={isExporting}
-                basic
+                secondary
                 size="small"
                 content="Save Image"
                 onClick={this.onSaveChart}
@@ -222,10 +224,11 @@ function mapStateToProps(state, ownProps) {
 
   return {
     data,
+    theme: state.app.theme,
   };
 }
 
 export default connect(
   mapStateToProps,
-  utils.mapDispatchToProps
+  utils.mapDispatchToProps,
 )(CourseChartViewer);

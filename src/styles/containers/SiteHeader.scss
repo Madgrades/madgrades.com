@@ -1,17 +1,16 @@
-
 .SiteHeader {
   border: none !important;
 
   .SearchBox.ui.input {
-    color: #fff;
+    color: var(--text-on-dark);
 
     input {
-      background: #333;
-      color: #fff;
+      background: var(--bg-input);
+      color: var(--text-on-dark);
       border: 0;
 
       &::selection {
-        color: #fff;
+        color: var(--text-on-dark);
       }
     }
   }
@@ -32,7 +31,7 @@
   }
 
   .menu .item.active {
-    border-color: #c5050c !important;
+    border-color: var(--accent-red) !important;
   }
 }
 
@@ -53,7 +52,6 @@
       border-color: transparent !important;
     }
 
-
     .toggleable {
       display: none;
     }
@@ -63,4 +61,3 @@
     }
   }
 }
-

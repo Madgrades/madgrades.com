@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Divider, Header, Button } from "semantic-ui-react";
 import CourseName from "../components/CourseName";
 import CourseChartViewer from "../components/CourseChartViewer";
@@ -9,11 +9,13 @@ import CourseData from "../components/CourseData";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 const Course = () => {
-  document.title = " - Madgrades";
-
   const { uuid } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = " - Madgrades";
+  }, [uuid]);
 
   const params = parse(location.search.substr(1));
   const { compareWith } = params;

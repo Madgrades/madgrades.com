@@ -1,7 +1,7 @@
 import React from "react";
 import { Header, Segment, Button } from "semantic-ui-react";
 import CourseName from "../components/CourseName";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SubjectNameList from "./SubjectNameList";
 
 const CourseSearchResultItem = ({ result }) => {
@@ -10,21 +10,26 @@ const CourseSearchResultItem = ({ result }) => {
   const params = new URLSearchParams(location.search);
   const compareWith = params.get("compareWith");
 
-  const handleCompare = () => {
+  const handleCompare = (e) => {
+    e.stopPropagation();
     navigate(`/courses/${compareWith}?compareWith=${result.uuid}`);
   };
 
+  const handleClick = () => {
+    navigate(`/courses/${result.uuid}`);
+  };
+
   return (
-    <Segment color="blue">
+    <Segment onClick={handleClick}>
       <Header>
-        <Header.Content as={Link} to={`/courses/${result.uuid}`}>
+        <Header.Content>
           <CourseName
             data={result}
             uuid={result.uuid}
             fallback={"(Unknown Name)"}
           />
           <Header.Subheader>
-            <SubjectNameList subjects={result.subjects} /> {result.number}
+            <SubjectNameList subjects={result.subjects} courseNumber={result.number} />
           </Header.Subheader>
         </Header.Content>
       </Header>

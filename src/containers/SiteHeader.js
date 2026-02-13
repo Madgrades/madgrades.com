@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Button, Container, Menu, Segment } from "semantic-ui-react";
+import { Button, Container, Icon, Menu, Segment } from "semantic-ui-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { connect } from "react-redux";
+import { toggleTheme } from "../redux/actions/app";
 import Div from "./Div";
 import SearchBox from "../components/SearchBox";
 import logo from "../assets/logo-white.svg";
@@ -75,6 +77,18 @@ class SiteHeader extends Component {
                 <Menu.Item as={NavLink} to="/about">
                   About
                 </Menu.Item>
+                <Menu.Item
+                  as="a"
+                  onClick={this.props.toggleTheme}
+                  style={{ cursor: "pointer" }}
+                  title={
+                    this.props.theme === "dark"
+                      ? "Switch to light mode"
+                      : "Switch to dark mode"
+                  }
+                >
+                  <Icon name={this.props.theme === "dark" ? "sun" : "moon"} />
+                </Menu.Item>
               </Menu.Menu>
             </Menu.Menu>
           </Container>
@@ -92,4 +106,15 @@ function withLocation(Component) {
   };
 }
 
-export default withLocation(SiteHeader);
+const mapStateToProps = (state) => ({
+  theme: state.app.theme,
+});
+
+const mapDispatchToProps = {
+  toggleTheme,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(withLocation(SiteHeader));

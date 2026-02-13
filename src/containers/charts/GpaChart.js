@@ -25,10 +25,10 @@ export class GpaChart extends Component {
     const gpas = data.map((d) => d.gpa);
 
     const isDark = theme === "dark";
-    // Use explicit theme colors (avoid relying on computed CSS variables). SVG renderer will render text as SVG so styling is consistent.
+    // Use explicit theme colors for text/grid; always use red for the GPA line (consistent across themes)
     const textColor = isDark ? "#ffffff" : "#222";
     const gridColor = isDark ? "#404040" : "#e6e6e6";
-    const lineColor = isDark ? "#ff6b6b" : "#4f46e5";
+    const lineColor = "#ff6b6b"; // always red
 
     const option = {
       backgroundColor: "transparent",

@@ -70,6 +70,7 @@ class GradeDistributionChart extends Component {
 
     const isDark = theme === "dark";
     const textColor = isDark ? "#ffffff" : "#000000";
+    const gridColor = isDark ? "#303030" : "#f0f0f0";
     const primaryBarColor = isDark ? "#888888" : "#282728";
 
     const option = {
@@ -77,6 +78,8 @@ class GradeDistributionChart extends Component {
       textStyle: { color: textColor },
       // disable tooltip — labels are shown directly on bars
       tooltip: { show: false },
+      // reduce category gap so A/B/BC labels are closer together
+      barCategoryGap: "10%",
       grid: { left: 20, right: 20, bottom: 60, top: 40 },
       xAxis: {
         type: "category",
@@ -88,8 +91,10 @@ class GradeDistributionChart extends Component {
         type: "value",
         min: 0,
         max: 100,
+        interval: 10,               // show tick/label every 10
+        axisTick: { lineStyle: { color: gridColor }, show: true },
         axisLabel: { color: textColor },
-        splitLine: { lineStyle: { color: isDark ? "#303030" : "#f0f0f0" } },
+        splitLine: { lineStyle: { color: gridColor } },
         name: "Students (%)",
         nameLocation: "middle",
         nameGap: 45,
@@ -102,19 +107,32 @@ class GradeDistributionChart extends Component {
           type: "bar",
           data: primaryValues,
           itemStyle: { color: primaryBarColor },
+          // make single-series bars thicker
+          barWidth: "48%",
           // disable hover emphasis to remove hover effect
           emphasis: { focus: "none", itemStyle: { opacity: 1 } },
           label: {
             show: true,
             position: "top",
-            color: textColor, // ensure label text matches theme
-            fontSize: 10, // ~15% smaller than default
+            // use rich text for two-line styling: bold percentage on top, smaller count below
             textBorderColor: "transparent",
             textBorderWidth: 0,
             formatter: function (params) {
-              return primaryLabels[params.dataIndex];
+              const txt = primaryLabels[params.dataIndex] || "";
+              const parts = txt.split("\n");
+              const pct = parts[0] || "";
+              const cnt = parts[1] || "";
+              return `{pct|${pct}}\n{cnt|${cnt}}`;
             },
-            rich: { lineHeight: 10 },
+            rich: {
+              pct: { fontSize: 10, fontWeight: "700", color: textColor },
+              cnt: {
+                fontSize: 8,
+                color: textColor,
+                opacity: 0.85,
+                padding: [2, 0, 0, 0],
+              },
+            },
           },
         },
       ],
@@ -131,16 +149,31 @@ class GradeDistributionChart extends Component {
         label: {
           show: true,
           position: "top",
-          color: textColor,
-          fontSize: 10,
           textBorderColor: "transparent",
           textBorderWidth: 0,
           formatter: function (params) {
-            return secondaryLabels[params.dataIndex];
+            const txt = secondaryLabels[params.dataIndex] || "";
+            const parts = txt.split("\n");
+            const pct = parts[0] || "";
+            const cnt = parts[1] || "";
+            return `{pct|${pct}}\n{cnt|${cnt}}`;
+          },
+          rich: {
+            pct: { fontSize: 10, fontWeight: "700", color: textColor },
+            cnt: {
+              fontSize: 8,
+              color: textColor,
+              opacity: 0.85,
+              padding: [2, 0, 0, 0],
+            },
           },
         },
       });
-      option.series[0].barGap = 0; // grouped bars
+
+      // increase spacing between bars when comparing (secondary present)
+      option.series[0].barGap = "20%"; // gap between series in a category (smaller than before)
+      option.series[0].barWidth = "36%"; // thicker than before
+      option.series[1].barWidth = "36%";
     }
 
     return (

@@ -1,5 +1,13 @@
 
-const GPA_KEYS = [
+type GradeKey = 'aCount' | 'abCount' | 'bCount' | 'bcCount' | 'cCount' | 'dCount' | 'fCount' | 
+  'sCount' | 'ubCount' | 'crCount' | 'nCount' | 'pCount' | 'iCount' | 'nwCount' | 'nrCount' | 'otherCount';
+
+interface GradeDistribution {
+  total: number;
+  [key: string]: number;
+}
+
+const GPA_KEYS: GradeKey[] = [
   'aCount',
   'abCount',
   'bCount',
@@ -9,7 +17,7 @@ const GPA_KEYS = [
   'fCount'
 ];
 
-const ALL_KEYS = GPA_KEYS.concat([
+const ALL_KEYS: GradeKey[] = GPA_KEYS.concat([
   'sCount',
   'ubCount',
   'crCount',
@@ -21,26 +29,25 @@ const ALL_KEYS = GPA_KEYS.concat([
   'otherCount'
 ]);
 
-export const getGradeKeys = (includeMisc) => {
-  // todo: do include misc thing
+export const getGradeKeys = (includeMisc: boolean): GradeKey[] => {
   if (includeMisc)
     return ALL_KEYS;
   return GPA_KEYS;
 };
 
-export const keyToName = (key) => key.replace('Count', '').toUpperCase();
+export const keyToName = (key: string): string => key.replace('Count', '').toUpperCase();
 
-export const gpaCount = (dist) =>
+export const gpaCount = (dist: GradeDistribution): number =>
     dist.aCount + dist.abCount + dist.bCount + dist.bcCount +
     dist.cCount + dist.dCount + dist.fCount;
 
-export const formatGpa = (gpa) => {
+export const formatGpa = (gpa: number): string => {
   if (isNaN(gpa))
     return 'N/A';
   return gpa.toFixed(2);
 };
 
-export const gpa = (dist, format) => {
+export const gpa = (dist: GradeDistribution, format?: boolean): number | string => {
   const count = gpaCount(dist);
 
   if (count === 0) {
@@ -62,8 +69,8 @@ export const gpa = (dist, format) => {
   return result;
 };
 
-export const zero = () => {
-  const result = {
+export const zero = (): GradeDistribution => {
+  const result: GradeDistribution = {
     total: 0
   };
   getGradeKeys(true).forEach(key => {
@@ -72,8 +79,8 @@ export const zero = () => {
   return result;
 };
 
-export const combine = (a, b) => {
-  let result = zero();
+export const combine = (a: GradeDistribution, b: GradeDistribution): GradeDistribution => {
+  const result = zero();
   result.total = (a.total || 0) + (b.total || 0);
   getGradeKeys(true).forEach(key => {
     result[key] = (a[key] || 0) + (b[key] || 0)
@@ -81,7 +88,7 @@ export const combine = (a, b) => {
   return result;
 };
 
-export const combineAll = (list) => {
+export const combineAll = (list: GradeDistribution[]): GradeDistribution => {
   let result = zero();
   list.forEach(grade => {
     result = combine(result, grade);

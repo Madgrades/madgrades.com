@@ -24,9 +24,6 @@ const store = createStore(
   ),
 );
 
-// Set initial theme attribute to prevent flash
-const savedTheme = localStorage.getItem("madgrades-theme") || "light";
-document.documentElement.setAttribute("data-theme", savedTheme);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

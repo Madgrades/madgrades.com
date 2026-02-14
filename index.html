@@ -10,6 +10,27 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <title>Madgrades</title>
+      <style>
+          :root {
+              --bg-primary: #ffffff;
+              --text-primary: rgba(0, 0, 0, 0.87);
+          }
+
+          [data-theme="dark"] {
+              --bg-primary: #0a0a0a;
+              --text-primary: rgba(255, 255, 255, 0.9);
+          }
+
+          body {
+              background-color: var(--bg-primary);
+              color: var(--text-primary);
+              margin: 0;
+          }
+
+          .preload, .preload * {
+              transition: none !important;
+          }
+      </style>
     <meta
       name="description"
       content="Search and visualize University of Wisconsin Madison (UW Madison) course grade distributions."
@@ -53,6 +74,22 @@
   </head>
 
   <body>
+    <script>
+      (function() {
+          try {
+              document.documentElement.classList.add('preload');
+              let storageKey = 'madgrades-theme';
+              let classNameDark = 'dark';
+              let localTheme = localStorage.getItem(storageKey);
+              let systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+
+              if (localTheme === classNameDark || (!localTheme && systemDark)) {
+                  document.documentElement.setAttribute('data-theme', classNameDark);
+              }
+          } catch (e) {}
+      })();
+    </script>
     <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.jsx"></script>

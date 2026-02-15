@@ -37,6 +37,8 @@ class App extends Component {
   componentDidMount() {
     // Set initial theme attribute
     document.documentElement.setAttribute("data-theme", this.props.theme);
+    setTimeout(() => {
+        document.documentElement.classList.remove('preload');}, 0);
   }
 
   componentDidUpdate(prevProps) {

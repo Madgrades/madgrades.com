@@ -1,5 +1,149 @@
 .Home {
-  margin-top: 20px;
+  margin-top: 0;
+  
+  .home-hero {
+    padding: 6rem 1rem; // Adequate padding, with mobile room
+    text-align: center;
+    background: transparent;
+    margin-bottom: 3rem;
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+      
+      .highlight-red {
+        color: var(--accent-red);
+        display: inline-block;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 2.2rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin: 1.5rem auto 2.5rem;
+      max-width: 600px;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .hero-search-wrapper {
+      display: inline-flex;
+      width: 550px;
+      max-width: 100%;
+      margin-bottom: 4rem;
+      
+      .SearchBox {
+        width: 100%;
+        
+        // Target semantic UI input directly. SearchBox IS the .ui.input container
+        &.ui.input > input {
+          text-align: left;
+          font-size: 1.25rem; // Prominent text
+          padding: 1.2rem 1.5rem !important; // Pill shape feel
+          border-radius: 12px;
+          border: 2px solid var(--border-color);
+          box-shadow: 0 4px 12px var(--shadow-card); // Floating effect
+          transition: all 0.2s ease;
+          background-color: var(--bg-card) !important;
+          color: var(--text-primary) !important;
+          
+          &:focus {
+            border-color: var(--accent-red); // UW Red
+            box-shadow: 0 4px 15px var(--shadow-hover);
+            outline: none;
+            background-color: var(--bg-card) !important;
+          }
+          
+          &::placeholder {
+            color: var(--text-muted);
+            font-weight: 300;
+          }
+        }
+        
+        &.ui.input > .icon {
+          // Adjust icon position for larger input
+          top: 0;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0.5;
+          color: var(--text-secondary);
+        }
+      }
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2rem;
+      text-align: left;
+      
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .feature-card {
+        padding: 2rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px var(--shadow-card);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 15px var(--shadow-hover);
+        }
+        
+        .feature-icon {
+          width: 48px;
+          height: 48px;
+          background: rgba(197, 5, 12, 0.1); // Light red background
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1.5rem;
+          color: var(--accent-red);
+          
+          i.icon {
+            font-size: 1.5rem;
+            margin: 0;
+          }
+        }
+        
+        h3 {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin-bottom: 0.75rem;
+          color: var(--text-primary);
+        }
+        
+        p {
+          font-size: 1rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin: 0;
+        }
+      }
+    }
+  }
 
   .img-example {
     opacity: 0.8;

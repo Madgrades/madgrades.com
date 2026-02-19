@@ -42,11 +42,12 @@ class SearchBox extends Component {
 
   render = () => {
     const { searchValue } = this.state;
+    const { className, style, fluid, size, autoFocus } = this.props;
 
     return (
       <Input
-        className="SearchBox"
-        style={{ minWidth: "250px" }}
+        className={`SearchBox ${className || ''}`}
+        style={style || { minWidth: "250px" }}
         value={searchValue}
         onChange={this.onInputChange}
         onKeyPress={this.onKeyPress}
@@ -56,8 +57,10 @@ class SearchBox extends Component {
           onClick: this.performSearch,
           title: "Perform Search",
         }}
-        placeholder="Search..."
-        fluid
+        placeholder={this.props.placeholder || "Search..."}
+        fluid={fluid === undefined ? true : fluid}
+        size={size}
+        autoFocus={autoFocus}
       />
     );
   };

@@ -60,9 +60,11 @@ class SiteHeader extends Component {
               className={`toggleable ${toggled}`}
               style={{ alignItems: "center" }}
             >
-              <Menu.Item style={{ alignSelf: "center" }}>
-                <SearchBox />
-              </Menu.Item>
+              {pathname !== "/" && (
+                <Menu.Item style={{ alignSelf: "center" }}>
+                  <SearchBox />
+                </Menu.Item>
+              )}
               <Menu.Menu position="right">
                 <Menu.Item
                   as={NavLink}

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Card, Button, Icon, Label } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 /**
  * Promotional card component for showcasing UW Madison student-created sites
@@ -17,42 +17,30 @@ const PromoCard = ({ title, description, link, dateAdded }) => {
     : false;
 
   return (
-    <Card fluid raised>
-      <Card.Content>
-        <Card.Header>
-          {title}
-          {isNew && (
-            <Label
-              color="red"
-              size="mini"
-              style={{ marginLeft: "8px", verticalAlign: "middle" }}
-            >
-              New!
-            </Label>
-          )}
-        </Card.Header>
-        <Card.Description>{description}</Card.Description>
-      </Card.Content>
-      <Button
-        as="a"
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        attached="bottom"
-        secondary
-      >
-        <Icon name="external alternate" />
-        Visit {title}
-      </Button>
-    </Card>
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="promo-card"
+    >
+      <div className="promo-content">
+        <div className="promo-header">
+          <h3>
+            {title}
+            {isNew && <span className="new-badge">New!</span>}
+          </h3>
+          <Icon name="external alternate" className="external-icon" />
+        </div>
+        <p className="promo-description">{description}</p>
+      </div>
+    </a>
   );
 };
 
 PromoCard.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string,
+  description: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   dateAdded: PropTypes.string,
 };
-
 export default PromoCard;

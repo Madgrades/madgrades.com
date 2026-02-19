@@ -1,52 +1,223 @@
-import React from "react";
-import { Container, Header, Divider } from "semantic-ui-react";
+import React, { useState, useEffect } from "react";
+import { Container, Header } from "semantic-ui-react";
 import PromoCard from "../containers/PromoCard";
+import SearchBox from "../components/SearchBox";
+
+const allPlaceholders = [
+  // STEM & Core
+  "Math 222",
+  "Calculus 2",
+  "Calculus 3",
+  "General Chemistry I",
+  "Chem 103",
+  "Chem 104",
+  "Organic Chemistry",
+  "Chem 343",
+  "Chem 345",
+  "Bio 101",
+  "Biology 151",
+  "Biology 152",
+  "Introductory Ecology",
+  "Physics 103",
+  "Physics 202",
+  "Biochem 501",
+  "Microeconomics",
+  "Macroeconomics",
+  "Econ 101",
+  "Psych 202",
+  "Introduction to Psychology",
+  "Abnormal Psychology",
+  "Stat 301",
+  "Stat 371",
+  "Analysis of Variance",
+  "Comp Sci 300",
+  "CS 200",
+  "Programming I",
+  "CS 400",
+  "Machine Learning",
+  "Introduction to Artificial Intelligence",
+  "Anatomy 337",
+  "Physiology 335",
+
+  // Humanities & Social Sciences
+  "Comm Arts 100",
+  "Introduction to Speech Composition",
+  "English 100",
+  "Journalism 201",
+  "Strategic Communication",
+  "Gender & Women's Studies 103",
+  "Soc 134",
+  "Problems of American Racial and Ethnic Minorities",
+  "Political Science 104",
+  "Intro to American Politics",
+  "Philosophy 101",
+  "Ethics",
+  "Logic",
+  "History 101",
+  "The Historian's Craft",
+  "History of Science",
+  "Anthropology 104",
+
+  // Languages & Culture
+  "Spanish 203",
+  "Spanish 226",
+  "First Semester French",
+  "First Semester Italian",
+  "Chinese 101",
+  "Japanese 101",
+  "African American Studies",
+  "Folklore",
+  "Classic 100",
+  "Art History 202",
+
+  // Business & Applied
+  "Marketing 300",
+  "Marketing Management",
+  "Finance 300",
+  "Accounting 100",
+  "Business Law",
+  "Real Estate 306",
+  "Management 300",
+  "Operations Management",
+  "Consumer Science",
+  "Personal Finance",
+  "Nutritional Sciences 132",
+
+  // Arts & Performance
+  "Music 113",
+  "Clap for Credit",
+  "Concert Choir",
+  "Drawing I",
+  "Theatre 120",
+  "Experiencing Theatre",
+  "Intro to Media Production",
+  "Contemporary Hollywood Cinema",
+
+  // Niche & Interesting
+  "Biology of Viruses",
+  "Video Games and Learning",
+  "Rhetoric of Campaigns and Revolutions",
+  "Television Industries",
+  "World Regions in Global Context",
+  "Dynamics",
+  "Thermodynamics",
+  "Manufacturing: Polymers",
+  "Global Change: Atmospheric Issues",
+  "Scand St 101",
+  "Forestry",
+  "Wildlife Ecology",
+  "Entomology",
+  "Food Science",
+  "Genetics 466",
+  "Kinesiology 119",
+  "Introduction to Mindfulness",
+];
 
 const Home = () => {
   document.title = "UW Madison Grade Distributions - Madgrades";
 
+  const [placeholders, setPlaceholders] = useState([]);
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  useEffect(() => {
+    // Shuffle the placeholders on mount
+    setPlaceholders([...allPlaceholders].sort(() => 0.5 - Math.random()));
+  }, []);
+
+  useEffect(() => {
+    if (placeholders.length === 0) return;
+
+    let timer;
+    const i = loopNum % placeholders.length;
+    const fullText = placeholders[i];
+
+    const handleTyping = () => {
+      const nextText = isDeleting
+        ? fullText.substring(0, text.length - 1)
+        : fullText.substring(0, text.length + 1);
+
+      setText(nextText);
+
+      let nextSpeed = isDeleting ? 30 : 150;
+
+      if (!isDeleting && nextText === fullText) {
+        nextSpeed = 2000;
+        setIsDeleting(true);
+      } else if (isDeleting && nextText === "") {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+        nextSpeed = 500;
+      }
+
+      setTypingSpeed(nextSpeed);
+    };
+
+    timer = setTimeout(handleTyping, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [text, isDeleting, loopNum, placeholders]);
+
   return (
     <div className="Home">
+      <div className="home-hero">
+        <Container>
+          <div className="hero-content">
+            <h1 className="hero-title">
+              Master your <span className="highlight-red">Badger</span> journey.
+            </h1>
+            <p className="hero-subtitle">
+              Visualize historical grade data for UW-Madison to compare course
+              and section difficulty. Pick your classes with confidence.
+            </p>
+            <div className="hero-search-wrapper">
+              <SearchBox
+                size="huge"
+                fluid={false}
+                autoFocus={true}
+                placeholder={text}
+              />
+            </div>
+
+            <div className="feature-grid">
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <i aria-hidden="true" className="database icon"></i>
+                </div>
+                <h3>Sourced from Official Records</h3>
+                <p>
+                  Directly sourced from UW-Madison Registrar reports dating back
+                  to 2006.
+                </p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <i aria-hidden="true" className="chart bar icon"></i>
+                </div>
+                <h3>Visualized</h3>
+                <p>
+                  We transform millions of rows of raw PDF data into simple,
+                  readable charts.
+                </p>
+              </div>
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <i aria-hidden="true" className="users icon"></i>
+                </div>
+                <h3>Student & Alumni Driven</h3>
+                <p>
+                  An independent, open-source project built by Badgers to help
+                  Badgers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </div>
+
       <Container>
-        <Header as="h1">
-          <Header.Content>Madgrades</Header.Content>
-          <Header.Subheader>
-            UW Madison grade distribution visualizer built for students.
-          </Header.Subheader>
-        </Header>
-
-        <p>
-          Find grade distributions for University of Wisconsin - Madison (UW
-          Madison) courses. Easily compare cumulative course grade distributions
-          to particular instructors or semesters to get insight into a course
-          which you are interested in taking. Get started by searching for a
-          course in the search bar above.
-        </p>
-
-        <p>
-          Note that this website is not necessarily complete and may contain
-          bugs, misleading information, or errors in the data reported. Please
-          help out by{" "}
-          <a
-            href="https://form.jotform.com/80705132647151"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            reporting issues
-          </a>{" "}
-          or{" "}
-          <a
-            href="https://github.com/Madgrades/madgrades.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            contributing fixes
-          </a>
-          .
-        </p>
-
-        <Divider section />
-
         <Header as="h2">
           <Header.Content>Other UW Madison Student Projects</Header.Content>
           <Header.Subheader className="promo-subheader">

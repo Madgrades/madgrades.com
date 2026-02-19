@@ -134,8 +134,14 @@ const heroTitles = [
     suffix: " enrollment.",
   },
   {
-    prefix: "Navigate your semester.",
+    highlight: "Navigate",
+    suffix: " your semester.",
   },
+  {
+    prefix: "Grade distributions, ",
+    highlight: "visualized",
+    suffix: ".",
+  }
 ];
 
 const Home = () => {

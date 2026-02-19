@@ -113,6 +113,31 @@ const allPlaceholders = [
   "Introduction to Mindfulness",
 ];
 
+const heroTitles = [
+  {
+    prefix: "Enroll with ",
+    highlight: "confidence",
+    suffix: ".",
+  },
+  {
+    prefix: "Plan with ",
+    highlight: "peace of mind",
+    suffix: ".",
+  },
+  {
+    prefix: "Your ",
+    highlight: "Badger",
+    suffix: " compass.",
+  },
+  {
+    highlight: "Smarter",
+    suffix: " enrollment.",
+  },
+  {
+    prefix: "Navigate your semester.",
+  },
+];
+
 const Home = () => {
   document.title = "UW Madison Grade Distributions - Madgrades";
 
@@ -121,6 +146,9 @@ const Home = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
+
+  // Pick random title on mount
+  const [randomTitle] = useState(() => heroTitles[Math.floor(Math.random() * heroTitles.length)]);
 
   useEffect(() => {
     // Shuffle the placeholders on mount
@@ -166,7 +194,11 @@ const Home = () => {
         <Container>
           <div className="hero-content">
             <h1 className="hero-title">
-              Master your <span className="highlight-red">Badger</span> journey.
+              {randomTitle.prefix}
+              {randomTitle.highlight && (
+                <span className="highlight-red">{randomTitle.highlight}</span>
+              )}
+              {randomTitle.suffix}
             </h1>
             <p className="hero-subtitle">
               Visualize historical grade data for UW-Madison to compare course

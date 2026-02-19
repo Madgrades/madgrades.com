@@ -1,16 +1,104 @@
 .SiteHeader {
   border: none !important;
 
-  .SearchBox.ui.input {
-    color: var(--text-on-dark);
+  // SearchBox is now the outer .ui.search container
+  .SearchBox.ui.search {
+    // The input container
+    .ui.input {
+      background: var(--bg-input); 
+      border-radius: 4px; // Normal rounded
+      
+      input {
+        background: transparent !important;
+        color: var(--text-primary) !important; // Use primary text color (dark in light mode, light in dark mode)
+        border: 0;
+        border-radius: 4px !important;
 
-    input {
-      background: var(--bg-input);
-      color: var(--text-on-dark);
-      border: 0;
+        &::selection {
+          color: var(--text-primary);
+          background: rgba(0,0,0,0.1);
+        }
+        &::placeholder {
+            color: var(--text-muted) !important; // Use muted text for placeholder
+        }
+      }
+      
+      .icon {
+        color: var(--text-secondary) !important;
+      }
+    }
 
-      &::selection {
-        color: var(--text-on-dark);
+    // Dropdown results in navbar
+    .results {
+      width: 400px;
+      max-height: 250px; // Scrollable
+      overflow-y: auto;
+      padding: 0;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card) !important;
+      
+      .result {
+        padding: 0 !important;
+        border-bottom: 1px solid var(--border-color);
+        
+        // Match home page styling but smaller
+        .search-result-item {
+            padding: 0.5rem 0.8rem; // Tighter padding
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            
+            .result-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                .course-title {
+                    font-weight: 600;
+                    color: var(--text-primary);
+                    font-size: 0.9rem; // Smaller font
+                }
+                
+                .gpa-badge {
+                    font-size: 0.65rem; // Tiny badge
+                    padding: 0.2em 0.5em;
+                }
+            }
+            
+            .result-bottom {
+                opacity: 0.9;
+                
+                .subject-list .label {
+                    font-size: 0.7rem; // Tiny pills
+                    padding: 0.2em 0.5em;
+                    background: var(--bg-secondary);
+                    color: var(--text-secondary);
+                    border: 1px solid var(--border-color);
+                }
+            }
+        }
+
+        &:hover, &.active {
+            background: var(--bg-hover) !important;
+            .search-result-item .result-bottom .subject-list .label {
+                background: var(--bg-input);
+                border-color: var(--border-color);
+            }
+        }
+      }
+
+      // Message when no results found (Navbar)
+      .message.empty {
+        background-color: var(--bg-card) !important;
+        border-top: 1px solid var(--border-color);
+        
+        .header {
+          color: var(--text-primary) !important;
+          font-weight: 600;
+        }
+        .description {
+          color: var(--text-secondary) !important;
+        }
       }
     }
   }

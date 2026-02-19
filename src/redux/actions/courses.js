@@ -68,3 +68,21 @@ export const fetchCourseSearch = (params, page) => async (dispatch, getState, ap
   // receive action
   dispatch(receiveCourseSearch(params, page, searchData));
 };
+
+export const fetchCourseAutocomplete = (query) => async (dispatch, getState, api) => {
+  // request action
+  dispatch({
+    type: actionTypes.REQUEST_COURSE_AUTOCOMPLETE,
+    query
+  });
+
+  // perform request
+  const data = await api.filterCourses({ query, per_page: 50 }, 1);
+
+  // receive action
+  dispatch({
+    type: actionTypes.RECEIVE_COURSE_AUTOCOMPLETE,
+    query,
+    data
+  });
+};

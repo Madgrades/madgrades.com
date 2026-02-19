@@ -44,44 +44,151 @@
       width: 550px;
       max-width: 100%;
       margin-bottom: 4rem;
-      
-      .SearchBox {
+      position: relative; // For dropdown positioning
+
+      // Target semantic UI Search component
+      .SearchBox.ui.search {
         width: 100%;
         
-        // Target semantic UI input directly. SearchBox IS the .ui.input container
-        &.ui.input > input {
-          text-align: left;
-          font-size: 1.25rem; // Prominent text
-          padding: 1.2rem 1.5rem !important; // Pill shape feel
+        // The input container
+        .ui.input {
+          width: 100%;
           border-radius: 12px;
-          border: 2px solid var(--border-color);
-          box-shadow: 0 4px 12px var(--shadow-card); // Floating effect
-          transition: all 0.2s ease;
-          background-color: var(--bg-card) !important;
-          color: var(--text-primary) !important;
+          overflow: hidden; // Keep the input edges rounded
           
-          &:focus {
-            border-color: var(--accent-red); // UW Red
-            box-shadow: 0 4px 15px var(--shadow-hover);
-            outline: none;
+          > input {
+            text-align: left;
+            font-size: 1.25rem; // Prominent text
+            padding: 1.2rem 1.5rem !important; // Pill shape feel
+            border: 2px solid var(--border-color);
             background-color: var(--bg-card) !important;
+            color: var(--text-primary) !important;
+            box-shadow: 0 4px 12px var(--shadow-card); // Floating effect
+            transition: all 0.2s ease;
+            border-radius: 12px !important; // Force rounded input
+
+            &:focus {
+              border-color: var(--accent-red); // UW Red
+              box-shadow: 0 4px 15px var(--shadow-hover);
+              outline: none;
+            }
+
+            &::placeholder {
+              color: var(--text-muted);
+              font-weight: 300;
+            }
           }
-          
-          &::placeholder {
-            color: var(--text-muted);
-            font-weight: 300;
+
+          // Icon positioning
+          > .icon {
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.5;
+            color: var(--text-secondary);
+            right: 15px !important; // Adjust icon right spacing
           }
         }
-        
-        &.ui.input > .icon {
-          // Adjust icon position for larger input
-          top: 0;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          opacity: 0.5;
-          color: var(--text-secondary);
+
+        // Dropdown Results Styling (Dark Mode Compatible)
+        > .results {
+          width: 100%;
+          max-height: 300px;
+          overflow-y: auto;
+          border-radius: 8px;
+          border: 1px solid var(--border-color);
+          background-color: var(--bg-card) !important;
+          box-shadow: 0 4px 20px var(--shadow-hover);
+          margin-top: 0.5em;
+          z-index: 1000;
+          padding: 0;
+
+          .result {
+            padding: 0; // Padding handled by internal item
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+
+            &:last-child {
+              border-bottom: none;
+            }
+            
+            // Allow full width for our custom renderer
+            .content {
+              padding: 0;
+              width: 100%;
+            }
+
+            .search-result-item {
+                padding: 0.75rem 1rem; // Reduced padding
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem; // Reduced gap
+                
+                .result-top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    
+                    .course-title {
+                        font-weight: 600;
+                        font-size: 1rem; // Slightly smaller font
+                        color: var(--text-primary);
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+
+                    .gpa-badge {
+                        flex-shrink: 0;
+                        margin-left: 10px;
+                        font-size: 0.7em; // Smaller badge
+                    }
+                }
+                
+                .result-bottom {
+                    .subject-list {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.25rem;
+                        
+                        .subject-pill {
+                            background: var(--bg-secondary) !important;
+                            color: var(--text-secondary) !important;
+                            border: 1px solid var(--border-color) !important;
+                            font-weight: 500;
+                            font-size: 0.75em; // Smaller pills
+                            padding: 0.3em 0.6em;
+                        }
+                    }
+                }
+            }
+
+            // Hover state
+            &:hover, &.active {
+              background-color: var(--bg-hover) !important;
+              
+              .search-result-item .result-bottom .subject-list .subject-pill {
+                  background: var(--bg-input) !important;
+                  border-color: var(--border-color) !important;
+              }
+            }
+          }
+
+          // Message when no results found
+          .message.empty {
+            background-color: var(--bg-card) !important;
+            border-top: 1px solid var(--border-color);
+            
+            .header {
+              color: var(--text-primary) !important;
+              font-weight: 600;
+            }
+            .description {
+                color: var(--text-secondary) !important;
+            }
+          }
         }
       }
     }

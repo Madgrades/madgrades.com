@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import utils from "../utils";
-import { Input } from "semantic-ui-react";
+import { Search, Label } from "semantic-ui-react"; // Imported Label
 import { useNavigate } from "react-router-dom";
+import _ from "lodash";
+import { fetchCourseAutocomplete } from "../redux/actions/courses";
+import SubjectNameList from "../containers/SubjectNameList"; // Imported SubjectNameList
 
 class SearchBox extends Component {
   state = {
     searchValue: "",
+    isDebouncing: false,
   };
 
   componentDidUpdate = (prevProps) => {
@@ -21,56 +25,127 @@ class SearchBox extends Component {
 
   performSearch = () => {
     const { searchValue } = this.state;
-
-    // tell the app about the search!
     this.props.navigate(`/search?query=${searchValue}`);
   };
 
-  onInputChange = (event, data) => {
-    // update the state of the search box to the new value
-    this.setState({
-      searchValue: data.value,
-    });
+  handleResultSelect = (e, { result }) => {
+    this.setState({ searchValue: result.title });
+    this.props.navigate(`/courses/${result.uuid}`);
   };
 
-  onKeyPress = (event) => {
-    if (event.key === "Enter") {
-      this.performSearch();
-      event.target.blur();
+  handleSearchChange = (e, { value }) => {
+    this.setState({ searchValue: value, isDebouncing: true });
+
+    if (value.length < 1) {
+      this.setState({ isDebouncing: false });
+      return;
     }
+
+    this.debouncedSearch(value);
   };
+
+  debouncedSearch = _.debounce((value) => {
+    this.setState({ isDebouncing: false });
+    this.props.fetchCourseAutocomplete(value);
+  }, 300);
+
+  resultRenderer = ({ title, subjects, number, gpa }) => (
+    <div className="search-result-item">
+      <div className="result-top">
+        <span className="course-title">{title}</span>
+        {gpa && (
+          <Label
+            size="mini"
+            color={gpa >= 3.5 ? "green" : gpa >= 3.0 ? "yellow" : "orange"}
+            className="gpa-badge"
+          >
+            GPA: {gpa.toFixed(2)}
+          </Label>
+        )}
+      </div>
+      <div className="result-bottom">
+        <SubjectNameList subjects={subjects} courseNumber={number} />
+      </div>
+    </div>
+  );
 
   render = () => {
     const { searchValue } = this.state;
-    const { className, style, fluid, size, autoFocus } = this.props;
+    const { className, style, fluid, size, autoFocus, autocomplete } = this.props;
+
+    const results = autocomplete.results
+      ? autocomplete.results
+          .map((course) => {
+            // Prioritize the main 'name' field as it tends to be the cleanest.
+            // Fallback to 'names' array only if 'name' is missing.
+            let name = course.name;
+
+            if (!name && course.names && course.names.length > 0) {
+              const firstValidName = course.names.filter((n) => n).shift();
+              if (firstValidName) {
+                name = firstValidName;
+              }
+            }
+
+            if (!name) name = "(Unknown Title)";
+
+            return {
+              title: name,
+              subjects: course.subjects || [],
+              number: course.number,
+              uuid: course.uuid,
+              key: course.uuid,
+              gpa: course.gpa,
+            };
+          })
+      : [];
 
     return (
-      <Input
-        className={`SearchBox ${className || ''}`}
+      <Search
+        className={`SearchBox ${className || ""} ${size === "huge" ? "huge-input" : ""}`}
         style={style || { minWidth: "250px" }}
-        value={searchValue}
-        onChange={this.onInputChange}
-        onKeyPress={this.onKeyPress}
-        icon={{
-          name: "search",
-          link: true,
-          onClick: this.performSearch,
-          title: "Perform Search",
+        input={{
+          icon: {
+            name: "search",
+            link: true,
+            onClick: this.performSearch,
+            title: "Perform Search",
+          },
+          fluid: fluid === undefined ? true : fluid,
+          placeholder: this.props.placeholder || "Search..."
         }}
-        placeholder={this.props.placeholder || "Search..."}
-        fluid={fluid === undefined ? true : fluid}
+        value={searchValue}
+        onSearchChange={this.handleSearchChange}
+        onResultSelect={this.handleResultSelect}
+        results={results}
+        loading={autocomplete.isFetching || this.state.isDebouncing}
+        
+        // Hide "No Results" message while loading or debouncing
+        showNoResults={!(autocomplete.isFetching || this.state.isDebouncing)}
+        
+        resultRenderer={this.resultRenderer}
         size={size}
         autoFocus={autoFocus}
+        // open={false}  <-- This was preventing the results from showing
+        // We will let Semantic UI handle open state.
+        
+        // Semantic UI Search input props are passed via `input` prop object, but `onKeyPress` isn't directly exposed on Search itself easily for Enter key unless passed to input.
+        // Let's explicitly pass onKeyPress to the input.
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            this.performSearch();
+            event.target.blur();
+          }
+        }}
       />
     );
   };
 }
 
 function mapStateToProps(state) {
-  // we grab the app state search query, only used on page load basically
-  // like when you refresh the search page for some odd reason
   return {
     searchQuery: state.app.searchQuery,
+    autocomplete: state.courses.autocomplete || { isFetching: false, results: [] }
   };
 }
 
@@ -82,7 +157,12 @@ function withNavigate(Component) {
   };
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  ...utils.mapDispatchToProps(dispatch).actions,
+  fetchCourseAutocomplete: (query) => dispatch(fetchCourseAutocomplete(query))
+});
+
 export default connect(
   mapStateToProps,
-  utils.mapDispatchToProps
+  mapDispatchToProps
 )(withNavigate(SearchBox));

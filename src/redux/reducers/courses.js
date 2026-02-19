@@ -5,11 +5,37 @@ const initialState = {
   search: {
     params: {},
     pages: {}
+  },
+  autocomplete: {
+    query: "",
+    results: [],
+    isFetching: false
   }
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case actionTypes.REQUEST_COURSE_AUTOCOMPLETE: {
+      return {
+        ...state,
+        autocomplete: {
+          ...state.autocomplete,
+          query: action.query,
+          isFetching: true
+        }
+      }
+    }
+    case actionTypes.RECEIVE_COURSE_AUTOCOMPLETE: {
+      return {
+        ...state,
+        autocomplete: {
+          ...state.autocomplete,
+          query: action.query,
+          isFetching: false,
+          results: action.data.results
+        }
+      }
+    }
     case actionTypes.REQUEST_COURSE: {
       return {
         ...state,

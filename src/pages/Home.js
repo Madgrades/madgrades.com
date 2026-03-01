@@ -141,7 +141,7 @@ const heroTitles = [
     prefix: "Grade distributions, ",
     highlight: "visualized",
     suffix: ".",
-  }
+  },
 ];
 
 const Home = () => {
@@ -154,7 +154,9 @@ const Home = () => {
   const [typingSpeed, setTypingSpeed] = useState(150);
 
   // Pick random title on mount
-  const [randomTitle] = useState(() => heroTitles[Math.floor(Math.random() * heroTitles.length)]);
+  const [randomTitle] = useState(
+    () => heroTitles[Math.floor(Math.random() * heroTitles.length)],
+  );
 
   useEffect(() => {
     // Shuffle the placeholders on mount
@@ -263,47 +265,50 @@ const Home = () => {
             projects are not affiliated with Madgrades — use at your own risk.
           </Header.Subheader>
         </Header>
-        <div className="promo-grid">        <PromoCard
-          title="MadSpace"
-          description="Course review platform for UW-Madison with searchable reviews, multi‑dimension ratings, and GPA/grade-distribution context."
-          link="https://madspace.app"
-          dateAdded="2026-02-13"
-        />
-
-        <PromoCard
-          title="BadgerBase"
-          description="Aggregates Madgrades grade data, live enrollment, and RateMyProfessor ratings into a single connected dataset for advanced querying."
-          link="https://badgerbase.app"
-          dateAdded="2026-02-13"
-        />
-
-        <PromoCard
-          title="UW Course Map"
-          description="Visualize course prerequisites with an interactive graph. Explore 10,000+ courses, view detailed course info, and check professor ratings all in one place."
-          link="https://uwcourses.com"
-          dateAdded="2025-11-24"
-        />
-
-        <PromoCard
-          title="EnrollAlert"
-          description="Get notified instantly when seats open up in your courses. Real-time updates synced with UW Course Search & Enroll give you peace of mind and the best chance to snag that perfect class."
-          link="https://enrollalert.com"
-          dateAdded="2025-11-22"
-        />
-
-        <PromoCard
-          title="enRollBadge"
-          description="Sign up today to receive real-time notifications when classes open!"
-          link="http://enrollbadge.com"
-          dateAdded="2023-01-01"
-        />
-
-        <PromoCard
-          title="MadHousing"
-          description="Love your dorm or don't? Come share your opinion! Review UW-Madison dorms and help future students make informed housing decisions."
-          link="http://madhousing.com"
-          dateAdded="2023-01-01"
-        />
+        <div className="promo-grid">
+          {" "}
+          <PromoCard
+            title="MadSpace"
+            description="Course review platform for UW-Madison with searchable reviews, multi‑dimension ratings, and GPA/grade-distribution context."
+            link="https://madspace.app"
+            dateAdded="2026-02-13"
+          />
+          <PromoCard
+            title="BadgerBase"
+            description="Aggregates Madgrades grade data, live enrollment, and RateMyProfessor ratings into a single connected dataset for advanced querying."
+            link="https://badgerbase.app"
+            dateAdded="2026-02-13"
+          />
+          <PromoCard
+            title="UW Course Map"
+            description="Visualize course prerequisites with an interactive graph. Explore 10,000+ courses, view detailed course info, and check professor ratings all in one place."
+            link="https://uwcourses.com"
+            dateAdded="2025-11-24"
+          />
+          <PromoCard
+            title="EnrollAlert"
+            description="Get notified instantly when seats open up in your courses. Real-time updates synced with UW Course Search & Enroll give you peace of mind and the best chance to snag that perfect class."
+            link="https://enrollalert.com"
+            dateAdded="2025-11-22"
+          />
+          <PromoCard
+            title="enRollBadge"
+            description="Sign up today to receive real-time notifications when classes open!"
+            link="https://enrollbadge.com"
+            dateAdded="2023-01-01"
+          />
+          <PromoCard
+            title="MadHousing"
+            description="Love your dorm or don't? Come share your opinion! Review UW-Madison dorms and help future students make informed housing decisions."
+            link="https://madhousing.com"
+            dateAdded="2023-01-01"
+          />
+          <PromoCard
+            title="MadLease.net"
+            description="Helping the campus community find and post available sublease listings."
+            link="https://madlease.net"
+            dateAdded="2026-03-01"
+          />
         </div>
       </Container>
     </div>

@@ -268,6 +268,12 @@ const Home = () => {
         <div className="promo-grid">
           {" "}
           <PromoCard
+            title="MadLease.net"
+            description="Helping the campus community find and post available sublease listings."
+            link="https://madlease.net"
+            dateAdded="2026-03-01"
+          />
+          <PromoCard
             title="MadSpace"
             description="Course review platform for UW-Madison with searchable reviews, multi‑dimension ratings, and GPA/grade-distribution context."
             link="https://madspace.app"

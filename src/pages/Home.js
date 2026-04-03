@@ -309,12 +309,6 @@ const Home = () => {
             link="https://madhousing.com"
             dateAdded="2023-01-01"
           />
-          <PromoCard
-            title="MadLease.net"
-            description="Helping the campus community find and post available sublease listings."
-            link="https://madlease.net"
-            dateAdded="2026-03-01"
-          />
         </div>
       </Container>
     </div>

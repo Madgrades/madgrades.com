@@ -30,6 +30,6 @@ const MECHANIZE = {
   ],
 };
 
-const SPONSOR = null;
+const SPONSOR = MECHANIZE;
 
 export default SPONSOR;

@@ -268,6 +268,12 @@ const Home = () => {
         <div className="promo-grid">
           {" "}
           <PromoCard
+              title='MadEnroll'
+              description="Track UW course and section availability with email alerts for seat openings."
+              link="https://madenroll.com"
+              dateAdded="2026-04-05"
+          />
+          <PromoCard
             title="MadLease.net"
             description="Helping the campus community find and post available sublease listings."
             link="https://madlease.net"

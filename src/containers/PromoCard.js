@@ -6,12 +6,11 @@ import { Icon, Modal, Button, TransitionablePortal } from "semantic-ui-react";
  * Promotional card component for showcasing UW Madison student-created sites
  */
 const PromoCard = ({ title, description, link, dateAdded }) => {
-  // Check if the card was added within the last 6 months
   const isNew = dateAdded
     ? (() => {
         const addedDate = new Date(dateAdded);
         const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 3);
         return addedDate > sixMonthsAgo;
       })()
     : false;

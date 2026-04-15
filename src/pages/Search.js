@@ -83,15 +83,6 @@ const Courses = () => {
       <Row>
         <Col xs={12} md={4} lg={3} style={{ marginBottom: "20px" }}>
           <CourseFilterForm />
-          <br style={{ clear: "both" }} />
-          <Divider />
-          <center>
-            <AdSlot
-              slot={import.meta.env.VITE_ADSENSE_SIDEBAR_SLOT}
-              adWidth={"250px"}
-              adHeight={"250px"}
-            />
-          </center>
         </Col>
         <Col xs={12} md={8} lg={9}>
           <Row middle>

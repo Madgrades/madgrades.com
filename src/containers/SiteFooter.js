@@ -86,8 +86,8 @@ class SiteFooter extends Component {
                   href={SPONSOR.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="sponsor-text"
                   style={{
-                    color: "inherit",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "5px",
@@ -98,7 +98,7 @@ class SiteFooter extends Component {
                     <img
                       alt=""
                       src={sponsorLogo}
-                      style={{ height: "16px", width: "auto", opacity: 0.7 }}
+                      style={{ height: "16px", width: "auto" }}
                     />
                   )}
                   {SPONSOR.name}

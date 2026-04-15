@@ -48,9 +48,10 @@ const About = () => {
         <Divider horizontal>Advertisements</Divider>
         <p>
           Hosting this website costs money: server costs, domain fees, and
-          engineering efforts. You may see ads or sponsored content on various
-          pages to help fund the project. Please reach out if you are interested
-          in supporting Madgrades through partnerships or advertising.
+          engineering efforts. There is a single ad on the search page that
+          helps fund the project. We do not sell any other ad slots, but we are
+          happy to link out to support other student projects. Feel free to
+          reach out!
         </p>
         <p></p>
       </Container>

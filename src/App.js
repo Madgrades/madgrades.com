@@ -3,6 +3,8 @@ import { BrowserRouter, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import SiteHeader from "./containers/SiteHeader";
 import SiteFooter from "./containers/SiteFooter";
+import SponsorBanner from "./containers/SponsorBanner";
+import SPONSOR from "./config/sponsorship";
 import Routes from "./Routes";
 
 const updateGa = (location) => {
@@ -38,7 +40,8 @@ class App extends Component {
     // Set initial theme attribute
     document.documentElement.setAttribute("data-theme", this.props.theme);
     setTimeout(() => {
-        document.documentElement.classList.remove('preload');}, 0);
+      document.documentElement.classList.remove("preload");
+    }, 0);
   }
 
   componentDidUpdate(prevProps) {
@@ -54,6 +57,7 @@ class App extends Component {
         <AnalyticsTracker />
         <div className="App">
           <SiteHeader />
+          {SPONSOR && <SponsorBanner sponsor={SPONSOR} />}
           <div className="app-content">
             <Routes />
           </div>

@@ -1,0 +1,40 @@
+.SponsorBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  // Light mode: soft blue
+  background-color: #ddeaf5;
+  color: #2c5278;
+
+  [data-theme="dark"] & {
+    background-color: #162333;
+    color: #7aaac8;
+  }
+
+  .sponsor-tagline {
+    font-size: 0.9em;
+  }
+
+  .sponsor-apply {
+    color: inherit;
+    white-space: nowrap;
+  }
+
+  .sponsor-dismiss {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: 0.6;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

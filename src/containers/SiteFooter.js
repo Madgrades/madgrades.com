@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Row, Col } from "../components/Grid";
 import logoBlack from "../assets/logo-black.svg";
 import logoWhite from "../assets/logo-white.svg";
+import SPONSOR from "../config/sponsorship";
 import gitRevFile from "../assets/git-rev.txt";
 import LatestTerm from "../components/LatestTerm";
 import ApiStatusPill from "./ApiStatusPill";
@@ -28,13 +29,18 @@ class SiteFooter extends Component {
 
   render = () => {
     const logo = this.props.theme === "dark" ? logoWhite : logoBlack;
+    const sponsorLogo = SPONSOR
+      ? this.props.theme === "dark"
+        ? SPONSOR.logoWhite
+        : SPONSOR.logoBlack
+      : null;
 
     return (
       <div className="SiteFooter">
         <Divider />
         <Container>
           <Row between>
-            <Col sm style={{ display: "flex" }}>
+            <Col sm style={{ display: "flex", flex: "0 0 auto" }}>
               <Link to="/">
                 <img
                   alt="Madgrades Logo"
@@ -56,15 +62,50 @@ class SiteFooter extends Component {
                     </a>
                     <br />
                     <small>
-                      Madgrades is unaffiliated with UW Madison. Courses updated{" "}
-                      <LatestTerm />.
+                      Madgrades is unaffiliated with UW Madison.
+                      <br />
+                      Courses updated <LatestTerm />.
                     </small>
                   </List.Item>
                 </List>
                 <br />
               </span>
             </Col>
-            <Col auto style={{ textAlign: "right" }}>
+            {SPONSOR && (
+              <Col
+                xs
+                style={{
+                  flex: "1 1 auto",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                Sponsored by{" "}
+                <a
+                  href={SPONSOR.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="sponsor-text"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "5px",
+                    marginLeft: "4px",
+                  }}
+                >
+                  {sponsorLogo && (
+                    <img
+                      alt=""
+                      src={sponsorLogo}
+                      style={{ height: "16px", width: "auto" }}
+                    />
+                  )}
+                  {SPONSOR.name}
+                </a>
+              </Col>
+            )}
+            <Col auto style={{ textAlign: "right", flex: "0 0 auto" }}>
               <Label
                 color="teal"
                 horizontal

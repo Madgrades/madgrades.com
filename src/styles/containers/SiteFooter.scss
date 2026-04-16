@@ -7,4 +7,22 @@
     width: 36px;
     opacity: 0.3;
   }
+
+  .footer-row {
+    gap: 16px;
+  }
+
+  // Add vertical spacing between footer cols when they wrap on mobile
+  .grid-row {
+    gap: 16px;
+  }
+
+  .sponsor-text {
+    color: #000;
+    font-weight: bold;
+
+    [data-theme="dark"] & {
+      color: #fff;
+    }
+  }
 }

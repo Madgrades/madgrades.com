@@ -17,7 +17,7 @@ import logoWhite from "../assets/sponsors/mechanize-white.svg";
 // eslint-disable-next-line no-unused-vars
 const MECHANIZE = {
   name: "Mechanize, Inc.",
-  url: "https://jobs.ashbyhq.com/mechanize?utm_source=UWMadison",
+  url: "https://mechanize.work/apply/software-engineer/?utm_source=uw-madison&utm_campaign=uw-madison",
   logoBlack,
   logoWhite,
   storageKey: "madgrades-sponsor-dismissed-mechanize",

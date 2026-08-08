@@ -14,12 +14,13 @@ jobs:
         uses: actions/checkout@master
       - uses: actions/setup-node@v3
         with:
-          node-version: 24
+          node-version: 22
+          cache: 'npm'
       - name: "Create env file"
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install dependencies
-        run: npm install
+        run: npm install --verbose
       - if: github.event_name == 'push'
         name: Deploy
         env:

@@ -14,22 +14,6 @@ import logoWhite from "../assets/sponsors/mechanize-white.svg";
  *   taglines   - Array of rotating banner taglines (pick one at random)
  */
 
-// eslint-disable-next-line no-unused-vars
-const MECHANIZE = {
-  name: "Mechanize, Inc.",
-  url: "https://mechanize.work/apply/software-engineer/?utm_source=uw-madison&utm_campaign=uw-madison",
-  logoBlack,
-  logoWhite,
-  storageKey: "madgrades-sponsor-dismissed-mechanize",
-  callToAction: "Apply now!",
-  taglines: [
-    "Mechanize is hiring junior SWEs. $300K base + equity.",
-    "Better at coding than AI? Prove it.",
-    "Mechanize hires engineers to outsmart AI. It's harder than you think. $300K + equity.",
-    "Most engineers can't beat Claude on our take-home. Think you can? $300K + equity for Jr SWEs at Mechanize.",
-  ],
-};
-
-const SPONSOR = MECHANIZE;
+const SPONSOR = null;
 
 export default SPONSOR;

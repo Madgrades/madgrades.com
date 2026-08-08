@@ -31,7 +31,7 @@
     "universal-cookie": "^7.2.1"
   },
   "scripts": {
-    "git-info": "git log -1 --oneline > src/assets/git-rev.txt",
+    "git-info": "git log -1 --oneline > src/assets/git-rev.txt || echo \"unknown\" > src/assets/git-rev.txt",
     "build-css": "sass -I ./src -I ./node_modules src/:src/ --no-source-map",
     "watch-css": "npm run build-css && sass -I src/ ./node_modules src/:src/ --watch",
     "start-js": "vite",

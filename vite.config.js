@@ -11,6 +11,7 @@ export default ({ mode }) => {
     plugins: [
       react({
         jsxRuntime: "automatic",
+        include: "**/*.{jsx,js,ts,tsx}",
       }),
       createHtmlPlugin({
         minify: true,

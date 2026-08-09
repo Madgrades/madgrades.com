@@ -70,6 +70,7 @@
     "semantic-ui-react": {
       "react": "$react",
       "react-dom": "$react-dom"
-    }
+    },
+    "minimatch": "3.1.3"
   }
 }

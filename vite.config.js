@@ -11,7 +11,7 @@ export default ({ mode }) => {
     plugins: [
       react({
         jsxRuntime: "automatic",
-        include: "**/*.{jsx,js,ts,tsx}",
+        include: /\.(jsx|js)$/,
       }),
       createHtmlPlugin({
         minify: true,
@@ -38,8 +38,16 @@ export default ({ mode }) => {
     build: {
       outDir: "build",
       sourcemap: false,
+      rolldownOptions: {
+        moduleTypes: {
+          ".js": "jsx",
+        },
+      },
     },
     css: {
+      lightningcss: {
+        errorRecovery: true,
+      },
       preprocessorOptions: {
         scss: {
           includePaths: ["./src", "./node_modules"],
@@ -51,9 +59,18 @@ export default ({ mode }) => {
       include: /src\/.*\.jsx?$/,
       exclude: [],
     },
+    oxc: {
+      include: /src\/.*\.jsx?$/,
+      jsx: true,
+    },
     optimizeDeps: {
       esbuildOptions: {
         loader: {
+          ".js": "jsx",
+        },
+      },
+      rolldownOptions: {
+        moduleTypes: {
           ".js": "jsx",
         },
       },

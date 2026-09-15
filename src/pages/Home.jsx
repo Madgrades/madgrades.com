@@ -315,6 +315,12 @@ const Home = () => {
             link="https://madhousing.com"
             dateAdded="2023-01-01"
           />
+          <PromoCard
+            title="Janus"
+            description="Looking for new study buddies on campus? Add your classes, create study groups, track your studying, and post your study sessions."
+            link="https://janusproof.com"
+            dateAdded="2026-09-15"
+          />
         </div>
       </Container>
     </div>

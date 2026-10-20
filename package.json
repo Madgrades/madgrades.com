@@ -56,7 +56,7 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^5.2.0",
     "surge": "^0.33.0",
-    "vite": "^8.2.1",
+    "vite": "^8.3.4",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-sass-dts": "^1.3.37"
   },
